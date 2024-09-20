@@ -3,6 +3,7 @@
 #include <PxPhysicsAPI.h>
 
 #include <vector>
+#include "Vector3D.h"
 
 #include "core.hpp"
 #include "RenderUtils.hpp"
