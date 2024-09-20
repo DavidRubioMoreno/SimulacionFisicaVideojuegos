@@ -21,6 +21,8 @@ PxDefaultErrorCallback	gErrorCallback;
 PxFoundation*			gFoundation = NULL;
 PxPhysics*				gPhysics	= NULL;
 
+RenderItem*       gSphere     = NULL;
+
 
 PxMaterial*				gMaterial	= NULL;
 
@@ -45,6 +47,13 @@ void initPhysics(bool interactive)
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
 
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+
+	PxSphereGeometry* geo = new PxSphereGeometry(10);
+	PxShape* shape = CreateShape(*geo, gMaterial);
+	PxTransform* t = new PxTransform(0, 0, 0);
+	Vector4 color = { 1, 1, 1, 1 };
+
+	gSphere = new RenderItem(shape, t, color);
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
