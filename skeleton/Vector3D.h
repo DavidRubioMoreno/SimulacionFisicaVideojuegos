@@ -7,14 +7,13 @@
 class Vector3D {
 private:
     float x, y, z;
-    float module;
 
 public:
     // Constructor por defecto
-    Vector3D() : x(0), y(0), z(0), module(0) {}
+    Vector3D() : x(0), y(0), z(0) {}
 
     // Constructor con parámetros
-    Vector3D(float x, float y, float z) : x(x), y(y), z(z), module(0) {}
+    Vector3D(float x, float y, float z) : x(x), y(y), z(z) {}
 
     // Sobrecarga del operador = (asignación)
     Vector3D& operator=(const Vector3D& v) {

@@ -22,7 +22,10 @@ PxDefaultErrorCallback	gErrorCallback;
 PxFoundation*			gFoundation = NULL;
 PxPhysics*				gPhysics	= NULL;
 
-RenderItem*       gSphere     = NULL;
+RenderItem*       gSphereX     = NULL;
+RenderItem* gSphereY = NULL;
+RenderItem* gSphereZ = NULL;
+RenderItem* gSphereCentre = NULL;
 
 
 PxMaterial*				gMaterial	= NULL;
@@ -49,12 +52,39 @@ void initPhysics(bool interactive)
 
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
-	PxSphereGeometry* geo = new PxSphereGeometry(10);
-	PxShape* shape = CreateShape(*geo, gMaterial);
-	PxTransform* t = new PxTransform(0, 0, 0);
-	Vector4 color = { 1, 1, 1, 1 };
+	const float DISTANCE_TO_CENTRE = 10;
 
-	gSphere = new RenderItem(shape, t, color);
+	const Vector3D centre;
+	//Ejes
+	const Vector3D X_axis = { 1, 0, 0 };
+	const Vector3D Y_axis = { 0, 1, 0 };
+	const Vector3D Z_axis = { 0, 0, 1 };
+
+
+	//Transforms de los ejes
+	PxTransform* t1 = new PxTransform(X_axis.getX() * DISTANCE_TO_CENTRE, X_axis.getY(), X_axis.getZ());
+	PxTransform* t2 = new PxTransform(Y_axis.getX(), Y_axis.getY() * DISTANCE_TO_CENTRE, Y_axis.getZ());
+	PxTransform* t3 = new PxTransform(Z_axis.getX(), Z_axis.getY(), Z_axis.getZ() * DISTANCE_TO_CENTRE);
+
+	//Centro transform(0, 0, 0)
+	PxTransform* t4 = new PxTransform(centre.getX(), centre.getY(), centre.getZ());
+
+	//Colores
+	const Vector4 colorRed = { 1, 0, 0, 1 };
+	const Vector4 colorGreen = { 0, 1, 0, 1 };
+	const Vector4 colorBlue = { 0, 0, 1, 1 };
+	const Vector4 colorWhite = { 1, 1, 1, 1 };
+
+	//Geometrias y formas
+	PxSphereGeometry* geo = new PxSphereGeometry(1);
+	PxShape* shape = CreateShape(*geo, gMaterial);
+	
+	//Items
+	gSphereX = new RenderItem(shape, t1, colorRed);
+	gSphereY = new RenderItem(shape, t2, colorGreen);
+	gSphereZ = new RenderItem(shape, t3, colorBlue);
+	gSphereCentre = new RenderItem(shape, t4, colorWhite);
+	
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
