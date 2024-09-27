@@ -89,10 +89,9 @@ void initPhysics(bool interactive)
 	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
 
 	//Particles
-	Vector3 vel = { 0.2, 0, 0 };
-	Vector3 acc = { 0, 0.5, 0 };
+	Vector3 vel = { 1, 0, 0 };
 	Vector3 pos = { 0, 0, 0 };
-	p = new Particle(pos, vel, acc, 0.0001);
+	p = new Particle(pos, vel);
 	
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
