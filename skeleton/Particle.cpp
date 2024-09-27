@@ -2,7 +2,7 @@
 
 using namespace physx;
 
-Particle::Particle(Vector3 pos, Vector3 vel) : vel(vel) {
+Particle::Particle(Vector3 pos, Vector3 vel, Vector3 a, double d) : vel(vel), acc(a), damping(d) {
 
     pose = new physx::PxTransform(pos);
     PxSphereGeometry* geo = new PxSphereGeometry(1);
@@ -20,6 +20,10 @@ Particle::~Particle() {
 
 void Particle::integrate(double t) {
      // Calcula el desplazamiento
+    vel += acc * t;
+
+    vel *= (1.0 - damping);
+
     pose->p += vel * t; // Actualiza la posición
 
 }
