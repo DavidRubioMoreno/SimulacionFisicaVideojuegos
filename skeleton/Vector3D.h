@@ -56,7 +56,7 @@ public:
     }
 
     // Método para realizar el producto escalar con otro vector
-    float dotProduct(const Vector3D& v) const {
+    double dotProduct(const Vector3D& v) const {
         return x * v.x + y * v.y + z * v.z;
     }
 
@@ -73,6 +73,7 @@ public:
     float getX() const { return x; }
     float getY() const { return y; }
     float getZ() const { return z; }
+
     void setX(float xVal) { x = xVal; }
     void setY(float yVal) { y = yVal; }
     void setZ(float zVal) { z = zVal; }

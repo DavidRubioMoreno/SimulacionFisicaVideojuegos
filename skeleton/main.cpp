@@ -8,6 +8,7 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
+#include "Particle.h"
 
 #include <iostream>
 
@@ -26,6 +27,8 @@ RenderItem*       gSphereX     = NULL;
 RenderItem* gSphereY = NULL;
 RenderItem* gSphereZ = NULL;
 RenderItem* gSphereCentre = NULL;
+
+Particle* p = NULL;
 
 
 PxMaterial*				gMaterial	= NULL;
@@ -83,7 +86,12 @@ void initPhysics(bool interactive)
 	gSphereX = new RenderItem(shape, t1, colorRed);
 	gSphereY = new RenderItem(shape, t2, colorGreen);
 	gSphereZ = new RenderItem(shape, t3, colorBlue);
-	gSphereCentre = new RenderItem(shape, t4, colorWhite);
+	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
+
+	//Particles
+	Vector3 vel = { 1, 0, 0 };
+	Vector3 pos = { 0, 0, 0 };
+	p = new Particle(pos, vel);
 	
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
@@ -103,6 +111,8 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
+
+	p->integrate(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
