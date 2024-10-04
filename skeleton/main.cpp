@@ -9,6 +9,7 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 #include "Particle.h"
+#include "Proyectil.h"
 
 #include <iostream>
 
@@ -29,6 +30,7 @@ RenderItem* gSphereZ = NULL;
 RenderItem* gSphereCentre = NULL;
 
 Particle* p = NULL;
+Proyectil* pro = NULL;
 
 
 PxMaterial*				gMaterial	= NULL;
@@ -89,10 +91,12 @@ void initPhysics(bool interactive)
 	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
 
 	//Particles
-	Vector3 vel = { 0.2, 0, 0 };
-	Vector3 acc = { 0, 0.5, 0 };
+	Vector3 vel = { 3, 0, 0 };
+	Vector3 acc = { 0, 3, 0 };
 	Vector3 pos = { 0, 0, 0 };
 	p = new Particle(pos, vel, acc, 0.0001);
+
+	 pro = new Proyectil(pos, 0.0001, 10, Proyectil::ProjectileType::MORTAR);
 	
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
@@ -114,6 +118,7 @@ void stepPhysics(bool interactive, double t)
 	PX_UNUSED(interactive);
 
 	p->integrate(t);
+	pro->integrate(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);

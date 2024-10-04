@@ -14,8 +14,7 @@ Particle::Particle(Vector3 pos, Vector3 vel, Vector3 a, double d) : vel(vel), ac
 }
 
 Particle::~Particle() {
-    // Destructor logic if needed
-    //delete renderItem;
+
 }
 
 void Particle::integrate(double t) {

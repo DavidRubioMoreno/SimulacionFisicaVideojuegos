@@ -12,7 +12,7 @@ public:
 
 	void integrate(double t);
 
-private:
+protected:
 	Vector3 vel;
 	Vector3 acc;
 	double damping;
