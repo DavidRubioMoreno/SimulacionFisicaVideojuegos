@@ -1,8 +1,13 @@
 #include "ProyectileController.h"
 
+ProyectileController::ProyectileController(){
+}
 
-void ProyectileController::addProyectile(Proyectil::ProjectileType type, Vector3 pos, Vector3 dir) {
-	projectiles.push_back(new Proyectil(pos, DAMPING, 100, type));
+ProyectileController::ProyectileController(Vector3 dir, Vector3 pos) : dir(dir), pos(pos) {}
+
+void ProyectileController::addProyectile(Proyectil::ProjectileType type) {
+	Proyectil* p = new Proyectil(pos, dir, DAMPING, 10, type);
+	projectiles.push_back(p);
 }
 
 void ProyectileController::integrateProjectiles(double t) {
@@ -12,6 +17,19 @@ void ProyectileController::integrateProjectiles(double t) {
 	}
 }
 
-ProyectileController::~ProyectileController() {
+void ProyectileController::setDir(Vector3 newDir) {
+	dir = newDir;
+}
 
+void ProyectileController::setPos(Vector3 newPos) {
+	pos = newPos;
+}
+
+ProyectileController::~ProyectileController() {
+	for (auto& p : projectiles)
+	{
+		delete p;
+	}
+
+	projectiles.clear();
 }

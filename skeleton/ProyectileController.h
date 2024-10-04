@@ -5,13 +5,18 @@
 class ProyectileController
 {
 public:
-	ProyectileController() = default;
+	ProyectileController();
+	ProyectileController(Vector3 dir, Vector3 pos);
 	~ProyectileController();
-
-private:
-	const double DAMPING = 0.0001;
 	void integrateProjectiles(double t);
-	void addProyectile(Proyectil::ProjectileType type, Vector3 pos, Vector3 dir);
+	void addProyectile(Proyectil::ProjectileType type);
+	void setDir(Vector3 dir);
+	void setPos(Vector3 pos);
+private:
+	const double DAMPING = 0.0000001;
 	std::vector<Proyectil*> projectiles;
+	Vector3 dir = Vector3(0, 0, 0);
+	Vector3 pos = Vector3(0, 0, 0);
+	
 };
 

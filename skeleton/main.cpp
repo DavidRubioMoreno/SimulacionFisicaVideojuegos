@@ -9,7 +9,7 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 #include "Particle.h"
-#include "Proyectil.h"
+#include "ProyectileController.h"
 
 #include <iostream>
 
@@ -30,7 +30,7 @@ RenderItem* gSphereZ = NULL;
 RenderItem* gSphereCentre = NULL;
 
 Particle* p = NULL;
-Proyectil* pro = NULL;
+ProyectileController* pController = NULL;
 
 
 PxMaterial*				gMaterial	= NULL;
@@ -38,7 +38,8 @@ PxMaterial*				gMaterial	= NULL;
 PxPvd*                  gPvd        = NULL;
 
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
-PxScene*				gScene      = NULL;
+PxScene* gScene = NULL;
+
 ContactReportCallback gContactReportCallback;
 
 
@@ -91,13 +92,13 @@ void initPhysics(bool interactive)
 	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
 
 	//Particles
-	Vector3 vel = { 3, 0, 0 };
+	Vector3* dir = new Vector3(-3, 2, -3);
 	Vector3 acc = { 0, 3, 0 };
 	Vector3 pos = { 0, 0, 0 };
-	p = new Particle(pos, vel, acc, 0.0001);
-
-	 pro = new Proyectil(pos, 0.0001, 10, Proyectil::ProjectileType::MORTAR);
-	
+	//p = new Particle(pos, vel, acc, 0.0001);
+	float angle = 0;
+	 
+	pController = new ProyectileController();
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
@@ -117,8 +118,7 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 
-	p->integrate(t);
-	pro->integrate(t);
+	pController->integrateProjectiles(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
@@ -130,6 +130,7 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
+	delete pController;
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -145,16 +146,32 @@ void cleanupPhysics(bool interactive)
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
 {
+
+	
 	PX_UNUSED(camera);
+
+	PxVec3 vectorOriginal(0, 0, -1);  // Un vector en el eje X
+
+	// Aplicamos la rotación usando el cuaternión
+	PxVec3 vectorRotado = camera.q.rotate(vectorOriginal);
+
+	pController->setDir(vectorRotado);
+	pController->setPos(camera.p);
+
+	std::cout << "VECTOR: " << vectorRotado.x << ", " << vectorRotado.y << ", " << vectorRotado.z << "\n";
+	std::cout << "INIT_POS: " << camera.p.x << ", " << camera.p.y << ", " << camera.p.z << "\n";
 
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
-	case ' ':
-	{
+	case 'G':
+		pController->addProyectile(Proyectil::ProjectileType::BEACH_BALL);
 		break;
-	}
+	case 'H':
+		pController->addProyectile(Proyectil::ProjectileType::MORTAR);
+		break;
+	case 'J':
+		pController->addProyectile(Proyectil::ProjectileType::PROYECTILE);
+		break;
 	default:
 		break;
 	}

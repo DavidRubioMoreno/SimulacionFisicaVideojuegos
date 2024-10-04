@@ -3,17 +3,18 @@
 std::vector<std::pair<float, float>> bulletData = {
 	{400, 0.008},   // Pistola (9mm): Velocidad 400 m/s, Peso 8g
 	{1750, 7},      // Proyectil de tanque (APFSDS): Velocidad 1750 m/s, Peso 7kg
-	{300, 2}        // Mortero 60mm: Velocidad 300 m/s, Peso 2kg
+	{300, 2},        // Mortero 60mm: Velocidad 300 m/s, Peso 2kg
+	{25, 0.05}       //Pelota de playa  
 };
 
-Proyectil::Proyectil(Vector3 pos, double damping, float scaleFactor, ProjectileType type)
-	: Particle::Particle(pos, Vector3(bulletData[type].first, 0, 0), Vector3(0, GRAVITY, 0), damping), scaleFactor(scaleFactor), type(type)
+Proyectil::Proyectil(Vector3 pos, Vector3 dir, double damping, float scaleFactor, ProjectileType type)
+	: Particle::Particle(pos, (dir / dir.magnitude()) * bulletData[type].first, Vector3(0, GRAVITY, 0), damping), scaleFactor(scaleFactor), type(type)
 {
 
 	adjustMass(scaleFactor);
 	adjustGravity(scaleFactor);
 
-	std::cout << "Speed: " << vel.x << " NewMass: " << mass << " Gravedad: "<< acc.y << "\n";
+	std::cout << "Speed: " << vel.magnitude() << " NewMass: " << mass << " Gravedad: "<< acc.y << "\n";
 }
 
 Proyectil::~Proyectil() {
