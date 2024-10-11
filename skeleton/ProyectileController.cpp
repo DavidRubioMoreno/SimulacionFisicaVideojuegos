@@ -6,7 +6,7 @@ ProyectileController::ProyectileController(){
 ProyectileController::ProyectileController(Vector3 dir, Vector3 pos) : dir(dir), pos(pos) {}
 
 void ProyectileController::addProyectile(Proyectil::ProjectileType type) {
-	Proyectil* p = new Proyectil(pos, dir, DAMPING, 10, type);
+	Proyectil* p = new Proyectil(pos, dir, DAMPING, 5, type);
 	projectiles.push_back(p);
 }
 

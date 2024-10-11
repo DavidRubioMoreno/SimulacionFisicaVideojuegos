@@ -13,6 +13,10 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Proyectil.cpp" />
     <ClCompile Include="ProyectileController.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="GaussianGenerator.cpp" />
+    <ClCompile Include="UniformGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -28,6 +32,10 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Proyectil.h" />
     <ClInclude Include="ProyectileController.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="ParticleGenerator.h" />
+    <ClInclude Include="GaussianGenerator.h" />
+    <ClInclude Include="UniformGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

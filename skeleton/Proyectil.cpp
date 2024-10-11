@@ -8,7 +8,7 @@ std::vector<std::pair<float, float>> bulletData = {
 };
 
 Proyectil::Proyectil(Vector3 pos, Vector3 dir, double damping, float scaleFactor, ProjectileType type)
-	: Particle::Particle(pos, (dir / dir.magnitude()) * bulletData[type].first, Vector3(0, GRAVITY, 0), damping), scaleFactor(scaleFactor), type(type)
+	: Particle::Particle(pos, (dir / dir.magnitude()) * bulletData[type].first, Vector3(0, GRAVITY, 0), damping, 1000), scaleFactor(scaleFactor), type(type)
 {
 
 	adjustMass(scaleFactor);

@@ -155,11 +155,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	// Aplicamos la rotación usando el cuaternión
 	PxVec3 vectorRotado = camera.q.rotate(vectorOriginal);
 
-	pController->setDir(vectorRotado);
+	pController->setDir(vectorRotado); 
 	pController->setPos(camera.p);
 
-	std::cout << "VECTOR: " << vectorRotado.x << ", " << vectorRotado.y << ", " << vectorRotado.z << "\n";
-	std::cout << "INIT_POS: " << camera.p.x << ", " << camera.p.y << ", " << camera.p.z << "\n";
+	//std::cout << "VECTOR: " << vectorRotado.x << ", " << vectorRotado.y << ", " << vectorRotado.z << "\n";
+	//std::cout << "INIT_POS: " << camera.p.x << ", " << camera.p.y << ", " << camera.p.z << "\n";
 
 	switch(toupper(key))
 	{
