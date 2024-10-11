@@ -11,6 +11,8 @@
 #include "Particle.h"
 #include "ProyectileController.h"
 #include "ParticleSystem.h"
+#include "ParticleGenerator.h"
+#include <list>
 
 #include <iostream>
 
@@ -92,19 +94,17 @@ void initPhysics(bool interactive)
 	gSphereY = new RenderItem(shape, t2, colorGreen);
 	gSphereZ = new RenderItem(shape, t3, colorBlue);
 	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
-
-	//Particles
-	Vector3* dir = new Vector3(-3, 2, -3);
-	Vector3 acc = { 0, 3, 0 };
-	Vector3 pos = { 0, 0, 0 };
-	//p = new Particle(pos, vel, acc, 0.0001);
-	float angle = 0;
-	 
+	
+	//SISTEMA DE PROYECTILES
 	pController = new ProyectileController();
 
+	//SISTEMA DE PARTICULAS
 	pSystem = new ParticleSystem();
-	pSystem->addGenerator(ParticleSystem::GAUSSIAN);
-	pSystem->addGenerator(ParticleSystem::UNIFORM);
+	auto gen1 = pSystem->addGenerator(ParticleSystem::GAUSSIAN);
+	auto gen2 = pSystem->addGenerator(ParticleSystem::UNIFORM);
+
+	pSystem->setGeneratorPosition(gen1, Vector3(0, 50, 0));
+	pSystem->setGeneratorPosition(gen2, Vector3(30, 10, 0));
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());

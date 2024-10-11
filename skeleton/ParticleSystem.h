@@ -3,6 +3,10 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <PxPhysicsAPI.h>
+
+constexpr float GRAVITY = -9.81;
+constexpr double DAMPING = 0.000001;
 
 class ParticleGenerator;
 
@@ -18,7 +22,8 @@ public:
 	void updateParticles(double t);
 	void updateGenerators(double t);
 	void addParticle(Particle* p);
-	void addGenerator(GeneratorType type);
+	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
+	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 private:
 	std::list<ParticleGenerator*> generators;
 	std::list<Particle*> particles;

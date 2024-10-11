@@ -14,3 +14,7 @@ void ParticleGenerator::update(double t) {
 ParticleGenerator::~ParticleGenerator() {
 	sys = nullptr;
 }
+
+void ParticleGenerator::setSpawnPoint(Vector3& v) {
+	generationSpawn = v;
+}

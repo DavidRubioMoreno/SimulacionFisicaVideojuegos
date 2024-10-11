@@ -40,7 +40,11 @@ void ParticleSystem::addParticle(Particle* p) {
 	particles.push_back(p);
 }
 
-void ParticleSystem::addGenerator(GeneratorType type) {
+void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position) {
+	(*id)->setSpawnPoint(position);
+}
+
+std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorType type) {
 	switch (type)
 	{
 	case ParticleSystem::GAUSSIAN:
@@ -52,4 +56,8 @@ void ParticleSystem::addGenerator(GeneratorType type) {
 	default:
 		break;
 	}
+	
+	return --generators.end();
 }
+
+
