@@ -66,9 +66,9 @@ void initPhysics(bool interactive)
 
 	const Vector3D centre;
 	//Ejes
-	const Vector3D X_axis = { 1, 0, 0 };
-	const Vector3D Y_axis = { 0, 1, 0 };
-	const Vector3D Z_axis = { 0, 0, 1 };
+	const Vector3D X_axis(1, 0, 0 );
+	const Vector3D Y_axis(0, 1, 0 );
+	const Vector3D Z_axis(0, 0, 1 );
 
 
 	//Transforms de los ejes
@@ -86,7 +86,7 @@ void initPhysics(bool interactive)
 	const Vector4 colorWhite = { 1, 1, 1, 1 };
 
 	//Geometrias y formas
-	PxSphereGeometry* geo = new PxSphereGeometry(1);
+	PxSphereGeometry* geo = new PxSphereGeometry(PxSphereGeometry(1));
 	PxShape* shape = CreateShape(*geo, gMaterial);
 	
 	//Items
@@ -94,6 +94,7 @@ void initPhysics(bool interactive)
 	gSphereY = new RenderItem(shape, t2, colorGreen);
 	gSphereZ = new RenderItem(shape, t3, colorBlue);
 	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
+
 	
 	//SISTEMA DE PROYECTILES
 	pController = new ProyectileController();
@@ -101,10 +102,10 @@ void initPhysics(bool interactive)
 	//SISTEMA DE PARTICULAS
 	pSystem = new ParticleSystem();
 	auto gen1 = pSystem->addGenerator(ParticleSystem::GAUSSIAN);
-	auto gen2 = pSystem->addGenerator(ParticleSystem::UNIFORM);
+	//auto gen2 = pSystem->addGenerator(ParticleSystem::UNIFORM);
 
 	pSystem->setGeneratorPosition(gen1, Vector3(0, 50, 0));
-	pSystem->setGeneratorPosition(gen2, Vector3(30, 10, 0));
+	//pSystem->setGeneratorPosition(gen2, Vector3(30, 10, 0));
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
@@ -140,6 +141,7 @@ void cleanupPhysics(bool interactive)
 
 	delete pController;
 	delete pSystem;
+
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();

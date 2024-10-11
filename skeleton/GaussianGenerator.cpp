@@ -15,7 +15,7 @@ void GaussianGenerator::generateParticle() {
     std::default_random_engine generator(seed);
 
     // Definimos la distribución normal con media 0.0 y desviación estándar 1.0 (modificable)
-    std::normal_distribution<float> distribution(0.0, 0.5);  // media, desviación estándar
+    std::normal_distribution<float> distribution(0.0, 1);  // media, desviación estándar
 
     // Generamos velocidades aleatorias siguiendo una distribución normal
     float vx = distribution(generator);  // Velocidad en X

@@ -24,11 +24,11 @@ void ParticleSystem::updateParticles(double t) {
 void ParticleSystem::updateGenerators(double t) {
 	for (auto& gen : generators)
 	{
-		gen->update(t);
+		gen->update(t); //update generadores
 	}
 }
 
-ParticleSystem::~ParticleSystem() {
+ParticleSystem::~ParticleSystem() {//limpiamos
 	for (auto& g : generators) { delete g; }	
 	generators.clear();
 
@@ -36,28 +36,28 @@ ParticleSystem::~ParticleSystem() {
 	particles.clear();
 }
 
-void ParticleSystem::addParticle(Particle* p) {
+void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva particula
 	particles.push_back(p);
 }
 
 void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position) {
-	(*id)->setSpawnPoint(position);
+	(*id)->setSpawnPoint(position);//podemos modificar la posicion de un genrador con su iterador
 }
 
 std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorType type) {
 	switch (type)
 	{
 	case ParticleSystem::GAUSSIAN:
-		generators.push_back(new GaussianGenerator(0.1, 0.0, this));
+		generators.push_back(new GaussianGenerator(0.01, 0.0, this));//generador de tipo gausiano
 		break;
 	case ParticleSystem::UNIFORM:
-		generators.push_back(new UniformGenerator(0.1, 0.0, this));
+		generators.push_back(new UniformGenerator(0.1, 0.0, this));//generador uniforme
 		break;
 	default:
 		break;
 	}
 	
-	return --generators.end();
+	return --generators.end();//devolvemos un iterador al generador que hemos creado
 }
 
 
