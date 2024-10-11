@@ -14,7 +14,8 @@ Particle::Particle(Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime) :
 }
 
 Particle::~Particle() {
-
+    renderItem->release();
+    renderItem = nullptr;
 }
 
 void Particle::integrate(double t) {

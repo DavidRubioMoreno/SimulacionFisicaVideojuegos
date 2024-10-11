@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <list>
+#include <vector>
 
 class ParticleGenerator;
 
@@ -21,5 +22,6 @@ public:
 private:
 	std::list<ParticleGenerator*> generators;
 	std::list<Particle*> particles;
+	float elapsedTime = 0;
 };
 

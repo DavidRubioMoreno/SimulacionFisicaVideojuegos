@@ -10,6 +10,7 @@
 #include "callbacks.hpp"
 #include "Particle.h"
 #include "ProyectileController.h"
+#include "ParticleSystem.h"
 
 #include <iostream>
 
@@ -31,6 +32,7 @@ RenderItem* gSphereCentre = NULL;
 
 Particle* p = NULL;
 ProyectileController* pController = NULL;
+ParticleSystem* pSystem = NULL;
 
 
 PxMaterial*				gMaterial	= NULL;
@@ -100,6 +102,10 @@ void initPhysics(bool interactive)
 	 
 	pController = new ProyectileController();
 
+	pSystem = new ParticleSystem();
+	pSystem->addGenerator(ParticleSystem::GAUSSIAN);
+	pSystem->addGenerator(ParticleSystem::UNIFORM);
+
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
 	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
@@ -119,6 +125,8 @@ void stepPhysics(bool interactive, double t)
 	PX_UNUSED(interactive);
 
 	pController->integrateProjectiles(t);
+	pSystem->updateGenerators(t);
+	pSystem->updateParticles(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
@@ -131,6 +139,7 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 	delete pController;
+	delete pSystem;
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
