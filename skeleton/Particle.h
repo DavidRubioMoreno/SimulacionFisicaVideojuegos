@@ -12,6 +12,7 @@ public:
 
 	void integrate(double t);
 	float getTime() const { return destroyTime; }
+	Vector3 getPos() const { return renderItem->transform->p; }
 
 protected:
 	Vector3 vel;

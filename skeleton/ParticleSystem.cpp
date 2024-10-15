@@ -10,7 +10,7 @@ void ParticleSystem::updateParticles(double t) {
 	//update particulas
 	for (auto it = particles.begin(); it != particles.end();)
 	{		
-		if (elapsedTime > (*it)->getTime()) {
+		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos())) {
 			delete *it;  // Liberamos la memoria de la partícula
 			it = particles.erase(it);  // Eliminamos la partícula y obtenemos el siguiente iterador
 		}
@@ -42,6 +42,11 @@ void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva pa
 
 void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position) {
 	(*id)->setSpawnPoint(position);//podemos modificar la posicion de un genrador con su iterador
+}
+
+bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const
+{
+	return  abs(position.x) > DESTROY_RANGE || abs(position.y) > DESTROY_RANGE || abs(position.z) > DESTROY_RANGE;
 }
 
 std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorType type) {

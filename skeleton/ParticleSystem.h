@@ -7,6 +7,7 @@
 
 constexpr float GRAVITY = -9.81;
 constexpr double DAMPING = 0.000001;
+constexpr float DESTROY_RANGE = 1000;
 
 class ParticleGenerator;
 
@@ -25,6 +26,7 @@ public:
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 private:
+	bool particleOutOfRange(const physx::PxVec3& position) const;
 	std::list<ParticleGenerator*> generators;
 	std::list<Particle*> particles;
 	float elapsedTime = 0;
