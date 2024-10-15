@@ -7,8 +7,6 @@ void ParticleGenerator::update(double t) {
 		generateParticle();
 		timeToNextGen += generationTime;
 	}
-	//std::cout << "ELAPSED: " << elapsedTime
-	//	<< " NEXTGEN: " << timeToNextGen << "\n";
 }
 
 ParticleGenerator::~ParticleGenerator() {

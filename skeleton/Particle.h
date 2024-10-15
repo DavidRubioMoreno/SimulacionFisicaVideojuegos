@@ -7,9 +7,8 @@
 class Particle
 {
 public:
-	Particle(Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime);
+	Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime);
 	~Particle();
-
 	void integrate(double t);
 	float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return renderItem->transform->p; }

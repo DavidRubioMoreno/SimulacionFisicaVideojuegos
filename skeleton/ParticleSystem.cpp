@@ -52,11 +52,14 @@ bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const
 std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorType type) {
 	switch (type)
 	{
-	case ParticleSystem::GAUSSIAN:
-		generators.push_back(new GaussianGenerator(0.01, 0.0, this));//generador de tipo gausiano
+	case ParticleSystem::FOUNTAIN:
+		generators.push_back(new GaussianGenerator(0.01, 0.0, this, FOUNTAIN));//generador de tipo gausiano
 		break;
-	case ParticleSystem::UNIFORM:
-		generators.push_back(new UniformGenerator(0.1, 0.0, this));//generador uniforme
+	case ParticleSystem::FOG:
+		generators.push_back(new UniformGenerator(0.1, 0.0, this, FOG));//generador uniforme
+		break;
+	case ParticleSystem::EXPLOSION:
+		generators.push_back(new UniformGenerator(0.1, 0.0, this, EXPLOSION));//generador uniforme
 		break;
 	default:
 		break;

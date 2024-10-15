@@ -101,11 +101,13 @@ void initPhysics(bool interactive)
 
 	//SISTEMA DE PARTICULAS
 	pSystem = new ParticleSystem();
-	auto gen1 = pSystem->addGenerator(ParticleSystem::GAUSSIAN);
-	//auto gen2 = pSystem->addGenerator(ParticleSystem::UNIFORM);
+	auto gen1 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
+	auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
+	auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
 
-	pSystem->setGeneratorPosition(gen1, Vector3(0, 50, 0));
-	//pSystem->setGeneratorPosition(gen2, Vector3(30, 10, 0));
+	pSystem->setGeneratorPosition(gen1, Vector3(0, 0, 0));
+	pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
+	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
