@@ -10,7 +10,7 @@ void ParticleSystem::updateParticles(double t) {
 	//update particulas
 	for (auto it = particles.begin(); it != particles.end();)
 	{		
-		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos())) {
+		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
 			delete *it;  // Liberamos la memoria de la partícula
 			it = particles.erase(it);  // Eliminamos la partícula y obtenemos el siguiente iterador
 		}
@@ -44,6 +44,36 @@ void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterato
 	(*id)->setSpawnPoint(position);//podemos modificar la posicion de un genrador con su iterador
 }
 
+void ParticleSystem::setGenSpeed(GeneratorType type, float genSpeed)
+{
+	data.generationSpeed[type] = genSpeed;
+}
+
+void ParticleSystem::setVelGaussian(GeneratorType type, std::pair<float, float> vel)
+{
+	data.velocityGaussian[type] = vel;
+}
+
+void ParticleSystem::setVelUniform(GeneratorType type, std::pair<float, float> vel)
+{
+	data.velocityUniform[type] = vel;
+}
+
+void ParticleSystem::setPosGaussian(GeneratorType type, std::pair<float, float> dis)
+{
+	data.positionGaussian[type] = dis;
+}
+
+void ParticleSystem::setPosUniform(GeneratorType type, std::pair<float, float> dis)
+{
+	data.positionUniform[type] = dis;
+}
+
+void ParticleSystem::setColor(GeneratorType type, physx::PxVec4 color)
+{
+	data.color[type] = color;
+}
+
 bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const
 {
 	return  abs(position.x) > DESTROY_RANGE || abs(position.y) > DESTROY_RANGE || abs(position.z) > DESTROY_RANGE;
@@ -60,6 +90,9 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorTy
 		break;
 	case ParticleSystem::EXPLOSION:
 		generators.push_back(new UniformGenerator(0.1, 0.0, this, EXPLOSION));//generador uniforme
+		break;
+	case ParticleSystem::RAIN:
+		generators.push_back(new GaussianGenerator(0.1, 0.0, this, RAIN));//generador de tipo gausiano
 		break;
 	default:
 		break;

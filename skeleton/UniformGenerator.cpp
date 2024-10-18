@@ -14,8 +14,8 @@ void UniformGenerator::generateParticle() {
     std::default_random_engine generator(seed);
 
     // Definimos la distribución uniforme 
-    std::uniform_real_distribution<float> distribution(sys->getData().uniform[type].first, sys->getData().uniform[type].second);  // Rango de la distribución uniforme
-    std::uniform_real_distribution<float> distributionPosition(sys->getData().position[type].first, sys->getData().position[type].second);
+    std::uniform_real_distribution<float> distribution(sys->getData().velocityUniform[type].first, sys->getData().velocityUniform[type].second);  // Rango de la distribución uniforme
+    std::uniform_real_distribution<float> distributionPosition(sys->getData().positionUniform[type].first, sys->getData().positionUniform[type].second);
 
     // Generamos velocidades aleatorias en los ejes X, Y y Z
     float vx = distribution(generator);  // Velocidad en X

@@ -2,6 +2,7 @@
 
 #include "Particle.h"
 #include "ParticleSystem.h"
+#include <PxPhysicsAPI.h>
 #include <random>
 #include <chrono>
 
@@ -10,8 +11,7 @@
 class ParticleGenerator
 {	
 public:
-	ParticleGenerator(float genTime, double t, ParticleSystem* sys, ParticleSystem::GeneratorType type)
-		: generationTime(sys->getData().generationSpeed[type]), elapsedTime(t), timeToNextGen(genTime + t), sys(sys), generationSpawn(Vector3(0, 0, 0)), type(type) {}
+	ParticleGenerator(float genTime, double t, ParticleSystem* sys, ParticleSystem::GeneratorType type);		
 	virtual ~ParticleGenerator();
 	virtual void init() = 0;	
 	virtual void update(double t);
@@ -25,6 +25,7 @@ protected:
 	const float PARTICLE_TIME = 5.0;
 	ParticleSystem* sys = nullptr;
 	ParticleSystem::GeneratorType type;
+	physx::PxShape* sphere = nullptr;
 	
 };
 

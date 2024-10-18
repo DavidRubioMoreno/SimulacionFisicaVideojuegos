@@ -2,7 +2,7 @@
 
 using namespace physx;
 
-Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime) : vel(vel), acc(a), damping(d), destroyTime(dTime) {
+Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime) : vel(vel), acc(a), damping(d), destroyTime(dTime), initPosition(pos) {
 
     pose = new physx::PxTransform(pos);
     PxSphereGeometry* geo = new PxSphereGeometry(1);

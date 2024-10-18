@@ -104,10 +104,12 @@ void initPhysics(bool interactive)
 	auto gen1 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
 	auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
 	auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
+	auto gen4 = pSystem->addGenerator(ParticleSystem::RAIN);
 
 	pSystem->setGeneratorPosition(gen1, Vector3(0, 0, 0));
 	pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
 	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
+	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());

@@ -12,10 +12,12 @@ public:
 	void integrate(double t);
 	float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return renderItem->transform->p; }
+	Vector3 getInitPos() const { return initPosition; }
 
 protected:
 	Vector3 vel;
 	Vector3 acc;
+	Vector3 initPosition;
 	double damping;
 	float destroyTime;
 	physx::PxTransform* pose;
