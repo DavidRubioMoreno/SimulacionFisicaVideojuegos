@@ -10,13 +10,12 @@
 
 class ParticleGenerator
 {	
-public:
+protected:
 	ParticleGenerator(float genTime, double t, ParticleSystem* sys, ParticleSystem::GeneratorType type);		
 	virtual ~ParticleGenerator();
 	virtual void init() = 0;	
 	virtual void update(double t);
 	void setSpawnPoint(Vector3& v);
-protected:
 	virtual void generateParticle() = 0;
 	Vector3 generationSpawn;
 	double generationTime;
@@ -26,6 +25,7 @@ protected:
 	ParticleSystem* sys = nullptr;
 	ParticleSystem::GeneratorType type;
 	physx::PxShape* sphere = nullptr;
-	
+	ParticleSystem::Info currentData;
+	friend class ParticleSystem;	
 };
 

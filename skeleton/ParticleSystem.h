@@ -26,7 +26,7 @@ class ParticleSystem
 {
 public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN };
-
+	struct Info : GeneratorInfo{};
 	ParticleSystem() = default;
 	~ParticleSystem();
 	void updateParticles(double t);
@@ -35,12 +35,12 @@ public:
 	GeneratorInfo getData() const { return data; }
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
-	void setGenSpeed(GeneratorType type, float genSpeed);
-	void setVelGaussian(GeneratorType type, std::pair<float, float> distr);
-	void setVelUniform(GeneratorType type, std::pair<float, float> range);
-	void setPosGaussian(GeneratorType type, std::pair<float, float> distr);
-	void setPosUniform(GeneratorType type, std::pair<float, float> range);
-	void setColor(GeneratorType type, physx::PxVec4 color);
+	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);
+	void setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr);
+	void setGeneratorVelUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range);
+	void setGeneratorPosGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr);
+	void setGeneratorPosUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range);
+	void setGeneratorColor(std::list<ParticleGenerator*>::iterator id, physx::PxVec4 color);
 private:
 	bool particleOutOfRange(const physx::PxVec3& position) const;
 	std::list<ParticleGenerator*> generators;

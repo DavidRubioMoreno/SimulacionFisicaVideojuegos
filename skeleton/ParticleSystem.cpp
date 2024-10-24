@@ -44,34 +44,34 @@ void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterato
 	(*id)->setSpawnPoint(position);//podemos modificar la posicion de un genrador con su iterador
 }
 
-void ParticleSystem::setGenSpeed(GeneratorType type, float genSpeed)
+void ParticleSystem::setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed)
 {
-	data.generationSpeed[type] = genSpeed;
+	(*id)->currentData.generationSpeed[0] = genSpeed;
 }
 
-void ParticleSystem::setVelGaussian(GeneratorType type, std::pair<float, float> vel)
+void ParticleSystem::setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr)
 {
-	data.velocityGaussian[type] = vel;
+	(*id)->currentData.velocityGaussian[0] = distr;
 }
 
-void ParticleSystem::setVelUniform(GeneratorType type, std::pair<float, float> vel)
+void ParticleSystem::setGeneratorVelUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range)
 {
-	data.velocityUniform[type] = vel;
+	(*id)->currentData.velocityUniform[0] = range;
 }
 
-void ParticleSystem::setPosGaussian(GeneratorType type, std::pair<float, float> dis)
+void ParticleSystem::setGeneratorPosGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr)
 {
-	data.positionGaussian[type] = dis;
+	(*id)->currentData.positionGaussian[0] = distr;
 }
 
-void ParticleSystem::setPosUniform(GeneratorType type, std::pair<float, float> dis)
+void ParticleSystem::setGeneratorPosUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range)
 {
-	data.positionUniform[type] = dis;
+	(*id)->currentData.positionUniform[0] = range;
 }
 
-void ParticleSystem::setColor(GeneratorType type, physx::PxVec4 color)
+void ParticleSystem::setGeneratorColor(std::list<ParticleGenerator*>::iterator id, physx::PxVec4 color)
 {
-	data.color[type] = color;
+	(*id)->currentData.color[0] = color;
 }
 
 bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const

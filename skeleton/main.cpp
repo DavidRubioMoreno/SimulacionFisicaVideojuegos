@@ -46,6 +46,10 @@ PxScene* gScene = NULL;
 
 ContactReportCallback gContactReportCallback;
 
+std::list<ParticleGenerator*>::iterator generator1;
+
+float speedIncrease = 0.0f;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -101,12 +105,13 @@ void initPhysics(bool interactive)
 
 	//SISTEMA DE PARTICULAS
 	pSystem = new ParticleSystem();
-	auto gen1 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
+
+	generator1 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
 	auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
 	auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
 	auto gen4 = pSystem->addGenerator(ParticleSystem::RAIN);
 
-	pSystem->setGeneratorPosition(gen1, Vector3(0, 0, 0));
+	pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
 	pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
 	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
 	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
@@ -132,6 +137,12 @@ void stepPhysics(bool interactive, double t)
 	pController->integrateProjectiles(t);
 	pSystem->updateGenerators(t);
 	pSystem->updateParticles(t);
+
+	//pSystem->setGeneratorVelUniform(generator1, { -speedIncrease, speedIncrease });
+	pSystem->setGeneratorColor(generator1, Vector4((1 / speedIncrease),speedIncrease, 0, 1));
+	//pSystem->setGeneratorPosition(generator1, Vector3(speedIncrease, 0, 0));
+	speedIncrease+=0.003;
+	
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);

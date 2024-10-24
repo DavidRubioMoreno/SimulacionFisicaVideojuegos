@@ -14,8 +14,10 @@ void UniformGenerator::generateParticle() {
     std::default_random_engine generator(seed);
 
     // Definimos la distribución uniforme 
-    std::uniform_real_distribution<float> distribution(sys->getData().velocityUniform[type].first, sys->getData().velocityUniform[type].second);  // Rango de la distribución uniforme
-    std::uniform_real_distribution<float> distributionPosition(sys->getData().positionUniform[type].first, sys->getData().positionUniform[type].second);
+    std::uniform_real_distribution<float> distribution(currentData.velocityUniform[0].first, currentData.velocityUniform[0].second);  // Rango de la distribución uniforme
+    std::uniform_real_distribution<float> distributionPosition(currentData.positionUniform[0].first, currentData.positionUniform[0].second);
+
+  
 
     // Generamos velocidades aleatorias en los ejes X, Y y Z
     float vx = distribution(generator);  // Velocidad en X
@@ -31,6 +33,6 @@ void UniformGenerator::generateParticle() {
     Vector3 velocity(vx, vy, vz);
 
     // Generamos la partícula con la velocidad aleatoria
-    sys->addParticle(new Particle(sys->getData().color[type], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, GRAVITY, 0), DAMPING, elapsedTime + PARTICLE_TIME));
+    sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, GRAVITY, 0), DAMPING, elapsedTime + PARTICLE_TIME));
 }
 
