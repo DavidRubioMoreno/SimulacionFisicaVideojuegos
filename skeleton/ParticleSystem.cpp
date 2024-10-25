@@ -12,8 +12,13 @@ void ParticleSystem::updateParticles(double t) {
 	for (auto it = particles.begin(); it != particles.end();)
 	{		
 		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
+			//for (auto& gen : (*it)->getGenerator()->subscriptions)
+			//{
+			//	(*gen)->elimParticle(it);//eliminamos la particula de todos los genradores de fuerza
+			//}
 			delete *it;  // Liberamos la memoria de la partícula
 			it = particles.erase(it);  // Eliminamos la partícula y obtenemos el siguiente iterador
+			
 		}
 		else {
 			(*it)->integrate(t);  // Si no se elimina, integramos la partícula
@@ -46,7 +51,6 @@ ParticleSystem::~ParticleSystem() {//limpiamos
 
 void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva particula
 	particles.push_back(p);
-	(*forceGenerators.begin())->addParticle(p);
 }
 
 void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position) {
@@ -110,7 +114,7 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorTy
 	return --generators.end();//devolvemos un iterador al generador que hemos creado
 }
 
-void ParticleSystem::addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force)
+std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force)
 {
 	switch (id)
 	{
@@ -124,6 +128,8 @@ void ParticleSystem::addForceGenerator(ForceGeneratorType id, physx::PxVec3 cent
 	default:
 		break;
 	}
+
+	return --forceGenerators.end();
 }
 
 

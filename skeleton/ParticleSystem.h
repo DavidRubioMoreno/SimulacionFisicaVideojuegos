@@ -36,7 +36,7 @@ public:
 	void addParticle(Particle* p);
 	GeneratorInfo getData() const { return data; }
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
-	void addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force);
+	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force);
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);
 	void setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr);

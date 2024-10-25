@@ -44,3 +44,8 @@ void ParticleGenerator::update(double t) {
 void ParticleGenerator::setSpawnPoint(Vector3& v) {
 	generationSpawn = v;
 }
+
+void ParticleGenerator::addForceGenerator(std::list<ForceGenerator*>::iterator forceGenerator)
+{
+	subscriptions.push_back(forceGenerator);
+}
