@@ -106,6 +106,7 @@ void initPhysics(bool interactive)
 	//SISTEMA DE PARTICULAS
 	pSystem = new ParticleSystem();
 
+	//GENERADORES PARTICULAS
 	generator1 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
 	auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
 	auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
@@ -116,7 +117,17 @@ void initPhysics(bool interactive)
 	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
 	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
 
-	pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 100, 0));
+	//GENERADORES DE FUERZA
+	auto fgen1 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 100, 0));
+	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(100, 0, 100));
+
+	//GENERADORES A LOS QUE AFECTAN
+	pSystem->applyForceGenerator(generator1, fgen1);
+	pSystem->applyForceGenerator(generator1, fgen2);
+	pSystem->applyForceGenerator(gen2, fgen1);
+
+
+	
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());

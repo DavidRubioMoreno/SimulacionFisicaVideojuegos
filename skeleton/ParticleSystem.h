@@ -29,14 +29,19 @@ public:
 	enum ForceGeneratorType { GRAVITY, WIND, TORNADO };
 
 	struct Info : GeneratorInfo{};
+
 	ParticleSystem() = default;
 	~ParticleSystem();
 	void updateParticles(double t);
 	void updateGenerators(double t);
 	void addParticle(Particle* p);
 	GeneratorInfo getData() const { return data; }
+
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
 	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force);
+	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
+	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
+
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);
 	void setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr);
@@ -46,6 +51,7 @@ public:
 	void setGeneratorColor(std::list<ParticleGenerator*>::iterator id, physx::PxVec4 color);
 private:
 	bool particleOutOfRange(const physx::PxVec3& position) const;
+	void eliminateSubscriptions(Particle* p);
 	std::list<ParticleGenerator*> generators;
 	std::list<ForceGenerator*> forceGenerators;
 	std::list<Particle*> particles;

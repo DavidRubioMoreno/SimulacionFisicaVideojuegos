@@ -12,11 +12,13 @@ public:
 	~ForceGenerator();
 	std::list<Particle*>::iterator addParticle(Particle* p);
 	void elimParticle(std::list<Particle*>::iterator p);
+	void activate(bool activate);
 	virtual void updateParticles(double t) = 0;
 protected:
 	std::list<Particle*>particles;
 	ParticleSystem::ForceGeneratorType type;
 	Vector3 force;
 	Vector3 centre;
+	bool active;
 };
 

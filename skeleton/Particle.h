@@ -22,6 +22,7 @@ public:
 	float getMass() const { return mass; }
 	ParticleGenerator* getGenerator() { return generator; }
 	void addSub(std::list<Particle*>::iterator id);
+	const std::vector<std::list<Particle*>::iterator>& getSubs() { return subs; };
 
 protected:
 	Vector3 vel;

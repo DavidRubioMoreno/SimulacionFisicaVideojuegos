@@ -12,13 +12,9 @@ void ParticleSystem::updateParticles(double t) {
 	for (auto it = particles.begin(); it != particles.end();)
 	{		
 		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
-			//for (auto& gen : (*it)->getGenerator()->subscriptions)
-			//{
-			//	(*gen)->elimParticle(it);//eliminamos la particula de todos los genradores de fuerza
-			//}
+			eliminateSubscriptions((*it));
 			delete *it;  // Liberamos la memoria de la partícula
-			it = particles.erase(it);  // Eliminamos la partícula y obtenemos el siguiente iterador
-			
+			it = particles.erase(it);  // Eliminamos la partícula y obtenemos el siguiente iterador			
 		}
 		else {
 			(*it)->integrate(t);  // Si no se elimina, integramos la partícula
@@ -97,6 +93,18 @@ bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const
 	return  abs(position.x) > DESTROY_RANGE || abs(position.y) > DESTROY_RANGE || abs(position.z) > DESTROY_RANGE;
 }
 
+void ParticleSystem::eliminateSubscriptions(Particle* p)
+{
+	int i = 0;
+	for (auto& gen : p->getGenerator()->subscriptions)
+	{
+		if (i >= p->getSubs().size())
+			break;
+		(*gen)->elimParticle(p->getSubs()[i]);
+		i++;
+	}
+}
+
 std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorType type) {
 	switch (type)
 	{
@@ -135,6 +143,16 @@ std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGene
 	}
 
 	return --forceGenerators.end();
+}
+
+void ParticleSystem::applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen)
+{
+	(*pGen)->addForceGenerator(fGen);
+}
+
+void ParticleSystem::activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active)
+{
+	(*fGen)->activate(active);
 }
 
 

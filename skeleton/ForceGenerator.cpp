@@ -1,6 +1,6 @@
 #include "ForceGenerator.h"
 
-ForceGenerator::ForceGenerator(ParticleSystem::ForceGeneratorType id, Vector3 centre, Vector3 f) : type(id), centre(centre), force(f)
+ForceGenerator::ForceGenerator(ParticleSystem::ForceGeneratorType id, Vector3 centre, Vector3 f) : type(id), centre(centre), force(f), active(true)
 {
 
 }
@@ -20,5 +20,10 @@ std::list<Particle*>::iterator ForceGenerator::addParticle(Particle* p)
 void ForceGenerator::elimParticle(std::list<Particle*>::iterator p)
 {
 	particles.erase(p);
+}
+
+void ForceGenerator::activate(bool a)
+{
+	active = a;
 }
 
