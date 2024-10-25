@@ -30,5 +30,5 @@ void GaussianGenerator::generateParticle() {
 
     Vector3 velocity(vx , vy , vz );  // Factor de escala de 5 para aumentar la magnitud
 
-	sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, GRAVITY, 0), DAMPING, elapsedTime + PARTICLE_TIME, this));
+	sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, GRAVITY, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
 }

@@ -10,12 +10,12 @@ class Particle
 {
 public:
 	Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime);
-	Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime, ParticleGenerator* gen);
+	Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime, ParticleGenerator* gen, physx::PxShape* shape);
 	~Particle();
 	void integrate(double t);
-	float getTime() const { return destroyTime; }
+	inline float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return renderItem->transform->p; }
-	Vector3 getInitPos() const { return initPosition; }
+	inline Vector3 getInitPos() const { return initPosition; }
 	void setMass(float mass);
 	void addMass(float mass);
 	void addForce(Vector3 force, double t);

@@ -15,14 +15,11 @@ Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d,
 
 }
 
-Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime, ParticleGenerator* gen)
+Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime, ParticleGenerator* gen, PxShape* shape)
     : vel(vel), acc(a), damping(d), destroyTime(dTime), initPosition(pos), generator(gen)
 {
 
     pose = new physx::PxTransform(pos);
-    PxSphereGeometry* geo = new PxSphereGeometry(1);
-    PxShape* shape = CreateShape(*geo);
-
     renderItem = new RenderItem(shape, pose, color);// creamos render item
 
 }
