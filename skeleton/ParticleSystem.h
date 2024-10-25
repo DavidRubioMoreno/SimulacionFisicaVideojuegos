@@ -10,7 +10,7 @@ constexpr double DAMPING = 0.000001;
 constexpr float DESTROY_RANGE = 50;
 
 class ParticleGenerator;
-
+class ForceGenerator;
 class Particle;
 
 struct GeneratorInfo {
@@ -26,6 +26,8 @@ class ParticleSystem
 {
 public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN };
+	enum ForceGeneratorType { GRAVITY, WIND, TORNADO };
+
 	struct Info : GeneratorInfo{};
 	ParticleSystem() = default;
 	~ParticleSystem();
@@ -34,6 +36,7 @@ public:
 	void addParticle(Particle* p);
 	GeneratorInfo getData() const { return data; }
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
+	void addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force);
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);
 	void setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr);
@@ -44,6 +47,7 @@ public:
 private:
 	bool particleOutOfRange(const physx::PxVec3& position) const;
 	std::list<ParticleGenerator*> generators;
+	std::list<ForceGenerator*> forceGenerators;
 	std::list<Particle*> particles;
 	float elapsedTime = 0;
 	GeneratorInfo data;

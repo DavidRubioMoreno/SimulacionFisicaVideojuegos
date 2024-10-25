@@ -1,6 +1,7 @@
 #include "ParticleSystem.h"
 #include "GaussianGenerator.h"
 #include "UniformGenerator.h"
+#include "GravitatoryGenerator.h"
 
 
 void ParticleSystem::updateParticles(double t) {
@@ -26,6 +27,11 @@ void ParticleSystem::updateGenerators(double t) {
 	{
 		gen->update(t); //update generadores
 	}
+
+	for (auto& gen : forceGenerators)
+	{
+		gen->updateParticles(t);
+	}
 }
 
 ParticleSystem::~ParticleSystem() {//limpiamos
@@ -34,10 +40,13 @@ ParticleSystem::~ParticleSystem() {//limpiamos
 
 	for (auto& p : particles) { delete p; }	
 	particles.clear();
+
+	forceGenerators.clear();
 }
 
 void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva particula
 	particles.push_back(p);
+	(*forceGenerators.begin())->addParticle(p);
 }
 
 void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position) {
@@ -99,6 +108,22 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorTy
 	}
 	
 	return --generators.end();//devolvemos un iterador al generador que hemos creado
+}
+
+void ParticleSystem::addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force)
+{
+	switch (id)
+	{
+	case ParticleSystem::GRAVITY:
+		forceGenerators.push_back(new GravitatoryGenerator(id, centre, force));
+		break;
+	case ParticleSystem::WIND:
+		break;
+	case ParticleSystem::TORNADO:
+		break;
+	default:
+		break;
+	}
 }
 
 

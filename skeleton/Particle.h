@@ -2,7 +2,6 @@
 
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
-#include "Vector3D.h"
 
 class Particle
 {
@@ -13,11 +12,16 @@ public:
 	float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return renderItem->transform->p; }
 	Vector3 getInitPos() const { return initPosition; }
+	void setMass(float mass);
+	void addMass(float mass);
+	void addForce(Vector3 force, double t);
+	float getMass() const { return mass; }
 
 protected:
 	Vector3 vel;
 	Vector3 acc;
 	Vector3 initPosition;
+	float mass;
 	double damping;
 	float destroyTime;
 	physx::PxTransform* pose;

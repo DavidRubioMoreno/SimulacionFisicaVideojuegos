@@ -2,7 +2,9 @@
 
 using namespace physx;
 
-Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime) : vel(vel), acc(a), damping(d), destroyTime(dTime), initPosition(pos) {
+Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime)
+    : vel(vel), acc(a), damping(d), destroyTime(dTime), initPosition(pos) 
+{
 
     pose = new physx::PxTransform(pos);
     PxSphereGeometry* geo = new PxSphereGeometry(1);
@@ -25,4 +27,19 @@ void Particle::integrate(double t) {
 
     pose->p += vel * t; // Actualiza la posición
 
+}
+
+void Particle::setMass(float m)
+{
+    mass = m;
+}
+
+void Particle::addMass(float m)
+{
+    mass += m;
+}
+
+void Particle::addForce(Vector3 force, double t)
+{
+    acc += force;
 }

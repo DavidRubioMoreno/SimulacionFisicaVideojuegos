@@ -14,7 +14,6 @@ protected:
 	void adjustGravity(float scale);
 
 	float scaleFactor;
-	float mass;
 	const float GRAVITY = -9.81;
 	ProjectileType type;
 

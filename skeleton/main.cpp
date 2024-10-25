@@ -116,6 +116,8 @@ void initPhysics(bool interactive)
 	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
 	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
 
+	pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 1, 0));
+
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
 	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);

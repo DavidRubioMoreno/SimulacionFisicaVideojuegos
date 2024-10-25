@@ -14,7 +14,7 @@ Proyectil::Proyectil(Vector3 pos, Vector3 dir, double damping, float scaleFactor
 	adjustMass(scaleFactor);
 	adjustGravity(scaleFactor);
 
-	std::cout << "Speed: " << vel.magnitude() << " NewMass: " << mass << " Gravedad: "<< acc.y << "\n";
+	//std::cout << "Speed: " << vel.magnitude() << " NewMass: " << mass << " Gravedad: "<< acc.y << "\n";
 }
 
 Proyectil::~Proyectil() {
@@ -24,7 +24,7 @@ Proyectil::~Proyectil() {
 void Proyectil::adjustMass(float scale) {
 	float module = vel.magnitude();
 	mass = bulletData[type].second * ((module * module) / ((module / scale) * (module / scale)));
-	vel = vel / scaleFactor;
+	vel = vel / scale;
 }
 
 void Proyectil::adjustGravity(float scale) {
