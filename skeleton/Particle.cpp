@@ -30,6 +30,7 @@ Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d,
 Particle::~Particle() {//liberamos el render item
     renderItem->release();
     renderItem = nullptr;
+    subs.clear();
 }
 
 void Particle::integrate(double t) {
@@ -55,4 +56,9 @@ void Particle::addMass(float m)
 void Particle::addForce(Vector3 force, double t)
 {
     acc += force * t;
+}
+
+void Particle::addSub(std::list<Particle*>::iterator id)
+{
+    subs.push_back(id);
 }

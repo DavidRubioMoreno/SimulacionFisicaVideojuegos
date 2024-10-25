@@ -51,6 +51,11 @@ ParticleSystem::~ParticleSystem() {//limpiamos
 
 void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva particula
 	particles.push_back(p);
+
+	for (auto& gen : p->getGenerator()->subscriptions)
+	{
+		 p->addSub((*gen)->addParticle(p));//añadimos la particula a los generadores de fuerza
+	}
 }
 
 void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position) {

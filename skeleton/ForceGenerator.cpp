@@ -10,9 +10,11 @@ ForceGenerator::~ForceGenerator()
 	particles.clear();
 }
 
-void ForceGenerator::addParticle(Particle* p)
+std::list<Particle*>::iterator ForceGenerator::addParticle(Particle* p)
 {
 	particles.push_back(p);
+
+	return --particles.end();
 }
 
 void ForceGenerator::elimParticle(std::list<Particle*>::iterator p)

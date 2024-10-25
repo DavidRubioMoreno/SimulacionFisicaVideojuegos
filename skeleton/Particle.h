@@ -2,6 +2,7 @@
 
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
+#include <list>
 
 class ParticleGenerator;
 
@@ -20,6 +21,7 @@ public:
 	void addForce(Vector3 force, double t);
 	float getMass() const { return mass; }
 	ParticleGenerator* getGenerator() { return generator; }
+	void addSub(std::list<Particle*>::iterator id);
 
 protected:
 	Vector3 vel;
@@ -31,5 +33,6 @@ protected:
 	physx::PxTransform* pose;
 	RenderItem* renderItem;
 	ParticleGenerator* generator = nullptr;
+	std::vector<std::list<Particle*>::iterator> subs;
 };
 

@@ -10,7 +10,7 @@ public:
 
 	ForceGenerator(ParticleSystem::ForceGeneratorType id, Vector3 centre, Vector3 f);
 	~ForceGenerator();
-	void addParticle(Particle* p);
+	std::list<Particle*>::iterator addParticle(Particle* p);
 	void elimParticle(std::list<Particle*>::iterator p);
 	virtual void updateParticles(double t) = 0;
 protected:
