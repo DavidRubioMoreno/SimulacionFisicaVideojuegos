@@ -10,7 +10,7 @@
 class ParticleGenerator
 {	
 protected:
-	ParticleGenerator(float genTime, double t, ParticleSystem* sys, ParticleSystem::GeneratorType type);		
+	ParticleGenerator(double t, ParticleSystem* sys, ParticleSystem::GeneratorType type);		
 	virtual ~ParticleGenerator();
 	virtual void init() = 0;	
 	virtual void update(double t);

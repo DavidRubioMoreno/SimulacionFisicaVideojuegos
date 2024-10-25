@@ -109,16 +109,16 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorTy
 	switch (type)
 	{
 	case ParticleSystem::FOUNTAIN:
-		generators.push_back(new GaussianGenerator(0.01, 0.0, this, FOUNTAIN));//generador de tipo gausiano
+		generators.push_back(new GaussianGenerator(0, this, type));//generador de tipo gausiano
 		break;
 	case ParticleSystem::FOG:
-		generators.push_back(new UniformGenerator(0.1, 0.0, this, FOG));//generador uniforme
+		generators.push_back(new UniformGenerator(0, this, type));//generador uniforme
 		break;
 	case ParticleSystem::EXPLOSION:
-		generators.push_back(new UniformGenerator(0.1, 0.0, this, EXPLOSION));//generador uniforme
+		generators.push_back(new UniformGenerator(0, this, type));//generador uniforme
 		break;
 	case ParticleSystem::RAIN:
-		generators.push_back(new GaussianGenerator(0.1, 0.0, this, RAIN));//generador de tipo gausiano
+		generators.push_back(new GaussianGenerator(0, this, type));//generador de tipo gausiano
 		break;
 	default:
 		break;

@@ -28,7 +28,7 @@ void GaussianGenerator::generateParticle() {
     float py = distributionP(generator);  // Posicion en Y
     float pz = distributionP(generator);  // Posicion en Z
 
-    Vector3 velocity(vx * 5.0f, abs(vy * 10.0f), vz * 5.0f);  // Factor de escala de 5 para aumentar la magnitud
+    Vector3 velocity(vx , vy , vz );  // Factor de escala de 5 para aumentar la magnitud
 
 	sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, GRAVITY, 0), DAMPING, elapsedTime + PARTICLE_TIME, this));
 }
