@@ -117,13 +117,16 @@ void initPhysics(bool interactive)
 	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
 	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
 
+	pSystem->setGeneratorParticleNumber(generator1, 100);
+	pSystem->setGeneratorSpeed(generator1, 1);
+
 	//GENERADORES DE FUERZA
 	auto fgen1 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 100, 0));
 	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(100, 0, 100));
 
 	//GENERADORES A LOS QUE AFECTAN
 	pSystem->applyForceGenerator(generator1, fgen1);
-	pSystem->applyForceGenerator(generator1, fgen2);
+	//pSystem->applyForceGenerator(generator1, fgen2);
 	pSystem->applyForceGenerator(gen2, fgen1);
 
 
@@ -154,7 +157,7 @@ void stepPhysics(bool interactive, double t)
 	//pSystem->setGeneratorVelUniform(generator1, { -speedIncrease, speedIncrease });
 	pSystem->setGeneratorColor(generator1, Vector4((1 / speedIncrease),speedIncrease, 0, 1));
 	//pSystem->setGeneratorPosition(generator1, Vector3(speedIncrease, 0, 0));
-	speedIncrease+=0.003;
+	speedIncrease+=0.001;
 	
 
 	gScene->simulate(t);

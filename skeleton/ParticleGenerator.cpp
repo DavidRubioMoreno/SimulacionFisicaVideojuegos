@@ -12,6 +12,7 @@ ParticleGenerator::ParticleGenerator(double t, ParticleSystem* sys, ParticleSyst
 	sphere = CreateShape(*geo);
 
 	currentData.color.clear();
+	currentData.particleNumber.clear();
 	currentData.generationSpeed.clear();
 	currentData.velocityGaussian.clear();
 	currentData.positionGaussian.clear();
@@ -19,6 +20,7 @@ ParticleGenerator::ParticleGenerator(double t, ParticleSystem* sys, ParticleSyst
 	currentData.positionUniform.clear();
 
 	currentData.color.push_back(sys->getData().color[type]);
+	currentData.particleNumber.push_back(sys->getData().particleNumber[type]);
 	currentData.generationSpeed.push_back(sys->getData().generationSpeed[type]);
 	currentData.velocityGaussian.push_back(sys->getData().velocityGaussian[type]);
 	currentData.velocityUniform.push_back(sys->getData().velocityUniform[type]);
@@ -36,7 +38,10 @@ ParticleGenerator::~ParticleGenerator() {
 void ParticleGenerator::update(double t) {
 	elapsedTime += t;
 	if (elapsedTime > timeToNextGen) {
-		generateParticle();
+		for (size_t i = 0; i < currentData.particleNumber[0]; i++)
+		{
+			generateParticle();
+		}	
 		timeToNextGen += currentData.generationSpeed[0];
 	}
 }

@@ -63,6 +63,11 @@ void ParticleSystem::setGeneratorSpeed(std::list<ParticleGenerator*>::iterator i
 	(*id)->currentData.generationSpeed[0] = genSpeed;
 }
 
+void ParticleSystem::setGeneratorParticleNumber(std::list<ParticleGenerator*>::iterator id, int particlesPerGen)
+{
+	(*id)->currentData.particleNumber[0] = particlesPerGen;
+}
+
 void ParticleSystem::setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr)
 {
 	(*id)->currentData.velocityGaussian[0] = distr;

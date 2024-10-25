@@ -15,6 +15,7 @@ class Particle;
 
 struct GeneratorInfo {
 	 std::vector<float> generationSpeed = { 0.05f, 0.01f, 0.005f, 0.01f };
+	 std::vector<int> particleNumber = { 1, 1, 1, 1 };
 	 std::vector<std::pair<float, float>> velocityGaussian = { {0.0, 1.0}, {0,0}, {0,0}, {0.0, 2.0} };
 	 std::vector<std::pair<float, float>> velocityUniform = { {0,0}, {-10,10}, {-40,40}, {0,0} };
 	 std::vector<std::pair<float, float>> positionGaussian = { {0,0.01}, {0,0}, {0,0} , {0.0, 10.0}};
@@ -44,6 +45,7 @@ public:
 
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);
+	void setGeneratorParticleNumber(std::list<ParticleGenerator*>::iterator id, int particlesPerGen);
 	void setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr);
 	void setGeneratorVelUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range);
 	void setGeneratorPosGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr);
