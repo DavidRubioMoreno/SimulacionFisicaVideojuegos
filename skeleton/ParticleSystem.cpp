@@ -2,7 +2,7 @@
 #include "GaussianGenerator.h"
 #include "UniformGenerator.h"
 #include "GravitatoryGenerator.h"
-#include "WindGenerator.h"
+#include "TornadoGenerator.h"
 
 
 void ParticleSystem::updateParticles(double t) {
@@ -147,6 +147,7 @@ std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGene
 		forceGenerators.push_back(new WindGenerator(id, centre, force, volume));
 		break;
 	case ParticleSystem::TORNADO:
+		forceGenerators.push_back(new TornadoGenerator(id, centre, force, volume));
 		break;
 	default:
 		break;

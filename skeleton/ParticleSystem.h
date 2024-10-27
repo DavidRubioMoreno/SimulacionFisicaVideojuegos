@@ -7,7 +7,7 @@
 
 constexpr float GRAVITY = -9.81;
 constexpr double DAMPING = 0.000001;
-constexpr float DESTROY_RANGE = 500;
+constexpr float DESTROY_RANGE = 50;
 
 class ParticleGenerator;
 class ForceGenerator;

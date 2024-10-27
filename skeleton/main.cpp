@@ -107,29 +107,29 @@ void initPhysics(bool interactive)
 	pSystem = new ParticleSystem();
 
 	//GENERADORES PARTICULAS
-	generator1 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
-	auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
+	generator1 = pSystem->addGenerator(ParticleSystem::RAIN);
+	/*auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
 	auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
 	auto gen4 = pSystem->addGenerator(ParticleSystem::RAIN);
 
 	pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
 	pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
 	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
-	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
+	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));*/
 
-	pSystem->setGeneratorParticleNumber(generator1, 100);
-	pSystem->setGeneratorSpeed(generator1, 1);
+	//pSystem->setGeneratorParticleNumber(generator1, 100);
+	pSystem->setGeneratorSpeed(generator1, 0.005);
 
 	//GENERADORES DE FUERZA
-	auto fgen1 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
-	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(200, -50, 0), Vector3(10, 0, 0), Vector3(50, 100, 100));
+	auto fgen1 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 9.8, 0));
+	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(0, 0, 0), Vector3(5, 0, 0), Vector3(100, 100, 100));
 	auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(350, -50, 0), Vector3(0, 0, 0), Vector3(100, 100, 100));
 
 	//GENERADORES A LOS QUE AFECTAN
-	pSystem->applyForceGenerator(generator1, fgen1);
+	//pSystem->applyForceGenerator(generator1, fgen1);
+	pSystem->applyForceGenerator(generator1, fgen2);
 	//pSystem->applyForceGenerator(generator1, fgen2);
-	pSystem->applyForceGenerator(gen4, fgen2);
-	pSystem->applyForceGenerator(gen4, fgen3);
+	//pSystem->applyForceGenerator(gen4, fgen3);
 
 
 	
@@ -157,9 +157,9 @@ void stepPhysics(bool interactive, double t)
 	pSystem->updateParticles(t);
 
 	//pSystem->setGeneratorVelUniform(generator1, { -speedIncrease, speedIncrease });
-	pSystem->setGeneratorColor(generator1, Vector4((1 / speedIncrease),speedIncrease, 0, 1));
+	//pSystem->setGeneratorColor(generator1, Vector4((1 / speedIncrease),speedIncrease, 0, 1));
 	//pSystem->setGeneratorPosition(generator1, Vector3(speedIncrease, 0, 0));
-	speedIncrease+=0.001;
+	//speedIncrease+=0.001;
 	
 
 	gScene->simulate(t);

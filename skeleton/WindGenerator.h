@@ -9,5 +9,7 @@ public:
 protected:
 	float windCoeficcient;
 	float cuadraticCoeficcient;
+	Vector3 areaLimit1;
+	Vector3 areaLimit2;
 };
 
