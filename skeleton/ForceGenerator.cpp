@@ -1,6 +1,6 @@
 #include "ForceGenerator.h"
 
-ForceGenerator::ForceGenerator(ParticleSystem::ForceGeneratorType id, Vector3 centre, Vector3 f) : type(id), centre(centre), force(f), active(true)
+ForceGenerator::ForceGenerator(ParticleSystem::ForceGeneratorType id, Vector3 centre, Vector3 f, Vector3(volume)) : type(id), centre(centre), force(f), active(true), volume(volume)
 {
 
 }

@@ -8,5 +8,4 @@ void GravitatoryGenerator::updateParticles(double t)
 			p->addForce(force, t);
 		}
 	}	
-
 }

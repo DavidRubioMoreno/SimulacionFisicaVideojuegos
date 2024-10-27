@@ -15,6 +15,7 @@ public:
 	void integrate(double t);
 	inline float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return renderItem->transform->p; }
+	Vector3 getVel() const { return vel; }
 	inline Vector3 getInitPos() const { return initPosition; }
 	void setMass(float mass);
 	void addMass(float mass);

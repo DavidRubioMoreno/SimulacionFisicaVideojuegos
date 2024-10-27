@@ -7,7 +7,7 @@
 
 constexpr float GRAVITY = -9.81;
 constexpr double DAMPING = 0.000001;
-constexpr float DESTROY_RANGE = 50;
+constexpr float DESTROY_RANGE = 500;
 
 class ParticleGenerator;
 class ForceGenerator;
@@ -39,7 +39,7 @@ public:
 	GeneratorInfo getData() const { return data; }
 
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
-	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force);
+	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume = physx::PxVec3(100, 100, 100));
 	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
 	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
 
