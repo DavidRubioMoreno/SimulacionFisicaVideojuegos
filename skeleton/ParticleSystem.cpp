@@ -3,6 +3,7 @@
 #include "UniformGenerator.h"
 #include "GravitatoryGenerator.h"
 #include "TornadoGenerator.h"
+#include "ExplosionGenerator.h"
 
 
 void ParticleSystem::updateParticles(double t) {
@@ -148,6 +149,9 @@ std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGene
 		break;
 	case ParticleSystem::TORNADO:
 		forceGenerators.push_back(new TornadoGenerator(id, centre, force, volume));
+		break;
+	case ParticleSystem::EXPLOSIVE:
+		forceGenerators.push_back(new ExplosionGenerator(id, centre, force, volume));
 		break;
 	default:
 		break;

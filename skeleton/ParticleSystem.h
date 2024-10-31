@@ -27,7 +27,7 @@ class ParticleSystem
 {
 public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN };
-	enum ForceGeneratorType { GRAVITY, WIND, TORNADO };
+	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE };
 
 	struct Info : GeneratorInfo{};
 
