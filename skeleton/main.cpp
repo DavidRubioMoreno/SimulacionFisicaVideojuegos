@@ -108,30 +108,33 @@ void initPhysics(bool interactive)
 
 	//GENERADORES PARTICULAS
 	generator1 = pSystem->addGenerator(ParticleSystem::FOG);
-	/*auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
+	auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
 	auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
 	auto gen4 = pSystem->addGenerator(ParticleSystem::RAIN);
 
 	
 	pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
 	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
-	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));*/
+	pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
 
 	pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
 	pSystem->setGeneratorPosUniform(generator1, {-20, 20});
 	pSystem->setGeneratorParticleNumber(generator1, 10);
 	pSystem->setGeneratorSpeed(generator1, 0.1);
+	pSystem->setGeneratorColor(generator1, colorRed);
+
+	pSystem->setGeneratorColor(gen2, colorWhite);
 
 	//GENERADORES DE FUERZA
 	auto fgen1 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
-	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(0, 0, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
-	auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 1000, 0), Vector3(100, 200, 100));
+	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(100, 0, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
+	auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(200, 0, 0), Vector3(0, 1000, 0), Vector3(100, 100, 100));
 
 	//GENERADORES A LOS QUE AFECTAN
 	//pSystem->applyForceGenerator(generator1, fgen1);
-	//pSystem->applyForceGenerator(generator1, fgen2);
-	//pSystem->applyForceGenerator(generator1, fgen3);
-	//pSystem->applyForceGenerator(gen4, fgen3);
+	pSystem->applyForceGenerator(gen2, fgen2);
+	pSystem->applyForceGenerator(gen4, fgen3);
+	pSystem->applyForceGenerator(gen3, fgen1);
 
 
 	
@@ -176,6 +179,8 @@ void cleanupPhysics(bool interactive)
 
 	delete pController;
 	delete pSystem;
+
+
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
