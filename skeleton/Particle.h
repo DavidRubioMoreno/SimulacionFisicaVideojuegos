@@ -16,8 +16,10 @@ public:
 	inline float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return renderItem->transform->p; }
 	Vector3 getVel() const { return vel; }
+	Vector3 getAccel() const { return acc; }
 	inline Vector3 getInitPos() const { return initPosition; }
 	void setMass(float mass);
+	void addPuntualForce(Vector3 force);
 	void addMass(float mass);
 	void addForce(Vector3 force, double t);
 	float getMass() const { return mass; }

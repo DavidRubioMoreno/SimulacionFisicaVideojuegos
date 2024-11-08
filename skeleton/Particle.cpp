@@ -45,6 +45,11 @@ void Particle::setMass(float m)
     mass = m;
 }
 
+void Particle::addPuntualForce(Vector3 force)
+{
+    acc += force;
+}
+
 void Particle::addMass(float m)
 {
     mass += m;

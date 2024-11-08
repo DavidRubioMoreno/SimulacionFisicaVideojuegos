@@ -24,6 +24,8 @@ void ParticleSystem::updateParticles(double t) {
 			++it;  // Solo incrementamos el iterador si no se eliminó
 		}
 	}
+
+	//std::cout << particles.size() << "\n";
 }
 
 void ParticleSystem::updateGenerators(double t) {
@@ -50,7 +52,7 @@ ParticleSystem::~ParticleSystem() {//limpiamos
 
 void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva particula
 	//Masa por defecto
-	p->setMass(0.01);
+	p->setMass(2);
 
 	particles.push_back(p);
 
@@ -174,15 +176,18 @@ void ParticleSystem::activateForceGenerator(std::list<ForceGenerator*>::iterator
 std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(int nParticles, float K, float initialLenght)
 {
 	generators.push_back(new DefaultParticleGenerator(0, this, DEFAULT));
-	forceGenerators.push_back(new SpringForceGenerator(SPRING, Vector3(), Vector3(), Vector3(0), K, initialLenght));
+	forceGenerators.push_back(new SpringForceGenerator(SPRING, Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), K, initialLenght));
 
 	auto gen = --generators.end();
 
 	applyForceGenerator(gen, --forceGenerators.end());
 
+	Vector3 init(0, 0, 0);
+
 	for (size_t i = 0; i < nParticles; i++)
 	{
 		(*gen)->generateParticle();
+		setGeneratorPosition(gen, init + Vector3(20, 0, 0));
 	}
 
 	return gen;
