@@ -136,6 +136,8 @@ void initPhysics(bool interactive)
 	pSystem->applyForceGenerator(gen4, fgen3);
 	pSystem->applyForceGenerator(gen3, fgen1);
 
+	//pSystem->generateSpring(2, 1, 2);
+
 
 	
 
