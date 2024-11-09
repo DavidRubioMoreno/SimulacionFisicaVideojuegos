@@ -5,7 +5,7 @@ void GravitatoryGenerator::updateParticles(double t)
 	if (active) {
 		for (auto& p : particles)
 		{
-			p->addForce(force, t);
+			p->addAccel(force, t);
 		}
 	}	
 }

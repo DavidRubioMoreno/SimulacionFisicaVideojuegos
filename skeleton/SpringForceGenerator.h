@@ -11,5 +11,6 @@ public:
 protected:
 	float K;
 	float lenght;
+	float forceTotal = 0.0;
 };
 

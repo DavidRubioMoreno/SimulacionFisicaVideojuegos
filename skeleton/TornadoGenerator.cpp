@@ -13,7 +13,7 @@ void TornadoGenerator::updateParticles(double t) {
 				tornadoVelocity.x = -K * (pos.z - centre.z);                 // (x - x_c)
 				//tornadoVelocity.y = K * (50 - (pos.y - centre.y));                // -(y - y_c)
 				tornadoVelocity.z = K * (pos.x - centre.x);        // -(z - z_c) / 50
-				p->addForce(tornadoVelocity, t);
+				p->addForce(tornadoVelocity);
 			}
 		}
 	}

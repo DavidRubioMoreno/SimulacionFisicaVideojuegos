@@ -178,16 +178,20 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(int nPart
 	generators.push_back(new DefaultParticleGenerator(0, this, DEFAULT));
 	forceGenerators.push_back(new SpringForceGenerator(SPRING, Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), K, initialLenght));
 
+
 	auto gen = --generators.end();
 
 	applyForceGenerator(gen, --forceGenerators.end());
+	applyForceGenerator(gen, addForceGenerator(GRAVITY, Vector3(0,0,0), Vector3(0,-9.8,0)));
 
 	Vector3 init(0, 0, 0);
 
 	for (size_t i = 0; i < nParticles; i++)
 	{
+		init.x += initialLenght;
 		(*gen)->generateParticle();
-		setGeneratorPosition(gen, init + Vector3(20, 0, 0));
+		setGeneratorPosition(gen, init);
+		
 	}
 
 	return gen;

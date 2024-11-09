@@ -10,27 +10,53 @@ SpringForceGenerator::~SpringForceGenerator()
 
 void SpringForceGenerator::updateParticles(double t)
 {
-	if (active) {
-		int i = 0;
+	if (active && particles.size() > 0) {
+
+		Vector3 lastForce(0,0,0);
+
 		for (auto it = particles.begin(); it != --particles.end(); ++it)
 		{
-			i++;
-			std::cout << (*it)->getMass() << "\n";
 			auto next = it;
 			next++;
 			Vector3 relativePosV = (*next)->getPos() - (*it)->getPos();
-			Vector3 finalForce;
+			const float l = relativePosV.magnitude();                        // Longitud actual sin normalizar
+			const float deltaX = l - lenght;                    // Deformación del resorte			
 
-			const float l = relativePosV.normalize();
-			const float deltaX = l - lenght;
+			// Fuerza de resorte (magnitud)
+			const float forceMagnitude = deltaX * K;
 
-			// Fuerza de resorte usando la ley de Hooke
-			finalForce = relativePosV * deltaX * K;
+			// Normalización del vector de posición relativa para dirección de la fuerza
+			relativePosV.normalize();
 
-			(*it)->addForce(finalForce / (*it)->getMass(), t);
-			(*next)->addForce(-finalForce / (*it)->getMass(), t);
+			// Calcula la fuerza final como magnitud * dirección
+			const Vector3 finalForce = relativePosV * forceMagnitude;
 
-			std::cout << "Speed: " << (*it)->getVel().x << " Accel: " << (*it)->getAccel().x << " Increase: " << (finalForce / (*it)->getMass()).x << "\n";
+			(*it)->setMass(1);
+			(*next)->setMass(1);
+
+			if (it == particles.begin()) {
+
+				(*it)->setMass(100000000);
+				(*it)->addAccel(Vector3(0, 9.8, 0), t);
+			}
+
+
+			(*it)->addForce(finalForce + lastForce);
+
+			if(next == --particles.end())
+			 (*next)->addForce(-finalForce);
+
+			lastForce = -finalForce;
+
+			//std::cout << (*it)->getMass() << "\n";
+			//std::cout << (*next)->getMass() << "\n";
+
+			//std::cout << "Speed: " << (*next)->getVel().x << " Accel: " << (*next)->getAccel().x << " Increase: " << (-finalForce / (*next)->getMass()).x << " T: " << t << "\n";
+
+			
+			
+
+			
 		}	
 	}
 	

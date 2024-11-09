@@ -55,9 +55,13 @@ void Particle::addMass(float m)
     mass += m;
 }
 
-void Particle::addForce(Vector3 force, double t)
+void Particle::addForce(Vector3 force)
 {
-    acc += force * t;
+    acc = force / mass;
+}
+
+void Particle::addAccel(Vector3 accel, double t) {
+    vel += accel * t;
 }
 
 void Particle::addSub(std::list<Particle*>::iterator id)

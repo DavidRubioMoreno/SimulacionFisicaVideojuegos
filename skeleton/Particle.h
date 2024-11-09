@@ -21,7 +21,8 @@ public:
 	void setMass(float mass);
 	void addPuntualForce(Vector3 force);
 	void addMass(float mass);
-	void addForce(Vector3 force, double t);
+	void addForce(Vector3 force);
+	void addAccel(Vector3 accel, double t);
 	float getMass() const { return mass; }
 	ParticleGenerator* getGenerator() { return generator; }
 	void addSub(std::list<Particle*>::iterator id);

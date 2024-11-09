@@ -49,6 +49,7 @@ ContactReportCallback gContactReportCallback;
 std::list<ParticleGenerator*>::iterator generator1;
 
 float speedIncrease = 0.0f;
+double elapsedTime = 0.0;
 
 
 // Initialize physics engine
@@ -136,7 +137,7 @@ void initPhysics(bool interactive)
 	//pSystem->applyForceGenerator(gen4, fgen3);
 	//pSystem->applyForceGenerator(gen3, fgen1);
 
-	pSystem->generateSpring(2, 1, 30);
+	pSystem->generateSpring(20, 50, 1);
 
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
@@ -157,9 +158,13 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 
-	pController->integrateProjectiles(t);
-	pSystem->updateGenerators(t);
-	pSystem->updateParticles(t);
+	elapsedTime += t;
+
+	if (elapsedTime > 0.5f) {
+		pController->integrateProjectiles(t);
+		pSystem->updateGenerators(t);
+		pSystem->updateParticles(t);
+	}
 
 	//pSystem->setGeneratorVelUniform(generator1, { -speedIncrease, speedIncrease });
 	//pSystem->setGeneratorColor(generator1, Vector4((1 / speedIncrease),speedIncrease, 0, 1));

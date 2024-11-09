@@ -17,7 +17,7 @@ void ExplosionGenerator::updateParticles(double t)
 			float r = (centre - particlePos).magnitude();
 			if (r < R) {
 				finalForce = (K / (r * r)) * (particlePos - centre) * pow(2.711828, t / elapsedTime);
-				p->addForce(finalForce, t);
+				p->addForce(finalForce);
 			}
 		}
 	}	
