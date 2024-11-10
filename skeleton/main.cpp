@@ -127,9 +127,10 @@ void initPhysics(bool interactive)
 	//pSystem->setGeneratorColor(gen2, colorWhite);
 
 	////GENERADORES DE FUERZA
-	//auto fgen1 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
+	auto fgen1 = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
 	//auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(100, 0, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
-	//auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(200, 0, 0), Vector3(0, 1000, 0), Vector3(100, 100, 100));
+	auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(5000, 0, -3000), Vector3(100, 100, 100));
+	auto fgen4 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, -50, 0), Vector3(-200, 0, 3000), Vector3(100, 100, 100));
 
 	////GENERADORES A LOS QUE AFECTAN
 	////pSystem->applyForceGenerator(generator1, fgen1);
@@ -137,7 +138,19 @@ void initPhysics(bool interactive)
 	//pSystem->applyForceGenerator(gen4, fgen3);
 	//pSystem->applyForceGenerator(gen3, fgen1);
 
-	pSystem->generateSpring(20, 50, 1);
+	float init = 1.0;
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		auto spring = pSystem->generateSpring(20, 50, init);
+
+		pSystem->applyForceGenerator(spring, fgen3);
+		pSystem->applyForceGenerator(spring, fgen1);
+		pSystem->applyForceGenerator(spring, fgen4);
+
+		init -= 0.05;
+	}
+	
 
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++

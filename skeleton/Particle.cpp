@@ -38,6 +38,8 @@ void Particle::integrate(double t) {
 
     pose->p += vel * t; // Actualiza la posición
 
+    acc = Vector3(0, 0, 0);
+
 }
 
 void Particle::setMass(float m)
@@ -57,7 +59,7 @@ void Particle::addMass(float m)
 
 void Particle::addForce(Vector3 force)
 {
-    acc = force / mass;
+    acc = force / mass + acc;
 }
 
 void Particle::addAccel(Vector3 accel, double t) {

@@ -15,7 +15,7 @@ void WindGenerator::updateParticles(double t)
 		{
 			Vector3 pos = p->getPos();
 			if (pos.x < areaLimit1.x && pos.x > areaLimit2.x && pos.y < areaLimit1.y && pos.y > areaLimit2.y && pos.z < areaLimit1.z && pos.z > areaLimit2.z) {
-				finalForce = (windCoeficcient / p->getMass()) * (force - p->getVel());
+				finalForce = (windCoeficcient) * (force - p->getVel());
 				p->addForce(finalForce);
 			}
 		}

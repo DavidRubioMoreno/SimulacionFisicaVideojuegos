@@ -166,6 +166,13 @@ std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGene
 void ParticleSystem::applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen)
 {
 	(*pGen)->addForceGenerator(fGen);
+
+	for (auto& p : particles)//subscribe a las particulas de ese generador ya creadas
+	{
+		if ((*pGen) == p->getGenerator() && fGen == p->getGenerator()->subs().back()) {
+			p->addSub((*fGen)->addParticle(p));
+		}
+	}
 }
 
 void ParticleSystem::activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active)
@@ -182,7 +189,7 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(int nPart
 	auto gen = --generators.end();
 
 	applyForceGenerator(gen, --forceGenerators.end());
-	applyForceGenerator(gen, addForceGenerator(GRAVITY, Vector3(0,0,0), Vector3(0,-9.8,0)));
+	//applyForceGenerator(gen, addForceGenerator(GRAVITY, Vector3(0,0,0), Vector3(0,-9.8,0)));
 
 	Vector3 init(0, 0, 0);
 
@@ -190,8 +197,7 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(int nPart
 	{
 		init.x += initialLenght;
 		(*gen)->generateParticle();
-		setGeneratorPosition(gen, init);
-		
+		setGeneratorPosition(gen, init);	
 	}
 
 	return gen;
