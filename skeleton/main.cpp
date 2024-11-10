@@ -108,7 +108,7 @@ void initPhysics(bool interactive)
 	pSystem = new ParticleSystem();
 
 	//GENERADORES PARTICULAS
-	//generator1 = pSystem->addGenerator(ParticleSystem::FOG);
+	generator1 = pSystem->addGenerator(ParticleSystem::FOG);
 	//auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
 	//auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
 	//auto gen4 = pSystem->addGenerator(ParticleSystem::RAIN);
@@ -118,27 +118,29 @@ void initPhysics(bool interactive)
 	//pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
 	//pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
 
-	//pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
-	//pSystem->setGeneratorPosUniform(generator1, {-20, 20});
+	pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
+	pSystem->setGeneratorPosUniform(generator1, {-20, 20});
 	//pSystem->setGeneratorParticleNumber(generator1, 10);
-	//pSystem->setGeneratorSpeed(generator1, 0.1);
-	//pSystem->setGeneratorColor(generator1, colorRed);
+	pSystem->setGeneratorSpeed(generator1, 0.01);
+	pSystem->setGeneratorColor(generator1, colorRed);
 
 	//pSystem->setGeneratorColor(gen2, colorWhite);
 
 	////GENERADORES DE FUERZA
 	auto gravity = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
-	//auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(100, 0, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
+	auto water = pSystem->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(1000, 20, 1000), 1000);
+	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(100, 0, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
 	auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 200000, 0), Vector3(100, 100, 100));
 	auto fgen4 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(320000, 0, 3000), Vector3(100, 100, 100));
 
-	////GENERADORES A LOS QUE AFECTAN
-	////pSystem->applyForceGenerator(generator1, fgen1);
+	//////GENERADORES A LOS QUE AFECTAN
+	pSystem->applyForceGenerator(generator1, gravity);
+	pSystem->applyForceGenerator(generator1, water);
 	//pSystem->applyForceGenerator(gen2, fgen2);
 	//pSystem->applyForceGenerator(gen4, fgen3);
-	//pSystem->applyForceGenerator(gen3, fgen1);
+	//pSystem->applyForceGenerator(gen3, gravity);
 
-	float init = 1.0;
+	/*float init = 1.0;
 
 	for (size_t i = 0; i < 1; i++)
 	{
@@ -149,7 +151,7 @@ void initPhysics(bool interactive)
 		pSystem->applyForceGenerator(spring, fgen4);
 
 		init -= 0.05;
-	}
+	}*/
 	
 
 
@@ -178,13 +180,7 @@ void stepPhysics(bool interactive, double t)
 		pSystem->updateGenerators(t);
 		pSystem->updateParticles(t);
 	}
-
-	//pSystem->setGeneratorVelUniform(generator1, { -speedIncrease, speedIncrease });
-	//pSystem->setGeneratorColor(generator1, Vector4((1 / speedIncrease),speedIncrease, 0, 1));
-	//pSystem->setGeneratorPosition(generator1, Vector3(speedIncrease, 0, 0));
-	//speedIncrease+=0.001;
 	
-
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }

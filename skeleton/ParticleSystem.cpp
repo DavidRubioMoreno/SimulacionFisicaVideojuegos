@@ -6,6 +6,7 @@
 #include "ExplosionGenerator.h"
 #include "AnchoredSpringFG.h"
 #include "DefaultParticleGenerator.h"
+#include "BuoyancyForceGenerator.h"
 
 void ParticleSystem::updateParticles(double t) {
 
@@ -25,7 +26,7 @@ void ParticleSystem::updateParticles(double t) {
 		}
 	}
 
-	//std::cout << particles.size() << "\n";
+	std::cout << "FPS: " << 1.0 / t << "\n";
 }
 
 void ParticleSystem::updateGenerators(double t) {
@@ -47,6 +48,7 @@ ParticleSystem::~ParticleSystem() {//limpiamos
 	for (auto& p : particles) { delete p; }	
 	particles.clear();
 
+	for (auto& g : forceGenerators) { delete g; }
 	forceGenerators.clear();
 }
 
@@ -140,7 +142,7 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorTy
 	return --generators.end();//devolvemos un iterador al generador que hemos creado
 }
 
-std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume)
+std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume, float density)
 {
 	switch (id)
 	{
@@ -155,6 +157,9 @@ std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGene
 		break;
 	case ParticleSystem::EXPLOSIVE:
 		forceGenerators.push_back(new ExplosionGenerator(id, centre, force, volume));
+		break;
+	case ParticleSystem::BUOYANCY:
+		forceGenerators.push_back(new BuoyancyForceGenerator(id, centre, force, volume, density));
 		break;
 	default:
 		break;

@@ -5,7 +5,8 @@ void GravitatoryGenerator::updateParticles(double t)
 	if (active) {
 		for (auto& p : particles)
 		{
-			p->addAccel(force, t);
+			p->addAccel(force);
 		}
+		//std::cout << particles.size() << "\n";
 	}	
 }

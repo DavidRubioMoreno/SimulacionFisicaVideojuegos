@@ -33,6 +33,6 @@ void UniformGenerator::generateParticle() {
     Vector3 velocity(vx, vy, vz);
 
     // Generamos la partícula con la velocidad aleatoria
-    sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, GRAVITY, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
+    sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
 }
 

@@ -63,8 +63,8 @@ void Particle::addForce(Vector3 force)
     acc = force / mass + acc;
 }
 
-void Particle::addAccel(Vector3 accel, double t) {
-    if(applyPhysics) vel += accel * t;
+void Particle::addAccel(Vector3 accel) {
+    if(applyPhysics) acc += accel;
 }
 
 void Particle::setAffectedByPhysics(bool affected)

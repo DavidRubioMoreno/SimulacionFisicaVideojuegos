@@ -22,7 +22,7 @@ public:
 	void addPuntualForce(Vector3 force);
 	void addMass(float mass);
 	void addForce(Vector3 force);
-	void addAccel(Vector3 accel, double t);
+	void addAccel(Vector3 accel);
 	void setAffectedByPhysics(bool affected);
 	float getMass() const { return mass; }
 	ParticleGenerator* getGenerator() { return generator; }

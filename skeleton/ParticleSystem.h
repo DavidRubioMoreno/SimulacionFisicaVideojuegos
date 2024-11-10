@@ -5,7 +5,7 @@
 #include <vector>
 #include <PxPhysicsAPI.h>
 
-constexpr float GRAVITY = -9.81;
+constexpr float G = -9.81;
 constexpr double DAMPING = 0.000001;
 constexpr float DESTROY_RANGE = 250;
 
@@ -27,7 +27,7 @@ class ParticleSystem
 {
 public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN, DEFAULT };
-	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE, SPRING };
+	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE, SPRING, BUOYANCY };
 	enum SpringType{BASIC, ANCHORED};
 
 	struct Info : GeneratorInfo{};
@@ -40,7 +40,7 @@ public:
 	GeneratorInfo getData() const { return data; }
 
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
-	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume = physx::PxVec3(100, 100, 100));
+	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume = physx::PxVec3(100, 100, 100), float density = 1.000);
 	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
 	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
 	std::list<ParticleGenerator*>::iterator generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos = physx::PxVec3(0,0,0));

@@ -23,7 +23,7 @@ protected:
 	double generationTime;
 	float timeToNextGen;
 	float elapsedTime;
-	const float PARTICLE_TIME = 250.0;
+	const float PARTICLE_TIME = 10.0;
 
 	ParticleSystem* sys = nullptr;
 	ParticleSystem::GeneratorType type;
