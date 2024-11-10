@@ -23,6 +23,7 @@ public:
 	void addMass(float mass);
 	void addForce(Vector3 force);
 	void addAccel(Vector3 accel, double t);
+	void setAffectedByPhysics(bool affected);
 	float getMass() const { return mass; }
 	ParticleGenerator* getGenerator() { return generator; }
 	void addSub(std::list<Particle*>::iterator id);
@@ -32,6 +33,7 @@ protected:
 	Vector3 vel;
 	Vector3 acc;
 	Vector3 initPosition;
+	bool applyPhysics;
 	float mass;
 	double damping;
 	float destroyTime;

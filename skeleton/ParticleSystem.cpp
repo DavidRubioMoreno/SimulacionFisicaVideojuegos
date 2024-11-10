@@ -4,7 +4,7 @@
 #include "GravitatoryGenerator.h"
 #include "TornadoGenerator.h"
 #include "ExplosionGenerator.h"
-#include "SpringForceGenerator.h"
+#include "AnchoredSpringFG.h"
 #include "DefaultParticleGenerator.h"
 
 void ParticleSystem::updateParticles(double t) {
@@ -180,27 +180,40 @@ void ParticleSystem::activateForceGenerator(std::list<ForceGenerator*>::iterator
 	(*fGen)->activate(active);
 }
 
-std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(int nParticles, float K, float initialLenght)
+std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos)
 {
 	generators.push_back(new DefaultParticleGenerator(0, this, DEFAULT));
-	forceGenerators.push_back(new SpringForceGenerator(SPRING, Vector3(0,0,0), Vector3(0,0,0), Vector3(0,0,0), K, initialLenght));
 
+	switch (type)
+	{
+	case ParticleSystem::BASIC:
+		forceGenerators.push_back(new SpringForceGenerator(SPRING, pos, Vector3(0, 0, 0), Vector3(0, 0, 0), K, initialLenght));
+		break;
+	case ParticleSystem::ANCHORED:
+		forceGenerators.push_back(new AnchoredSpringFG(SPRING, pos, Vector3(0, 0, 0), Vector3(0, 0, 0), K, initialLenght));
+		break;
+	default:
+		break;
+	}
 
 	auto gen = --generators.end();
 
 	applyForceGenerator(gen, --forceGenerators.end());
 	//applyForceGenerator(gen, addForceGenerator(GRAVITY, Vector3(0,0,0), Vector3(0,-9.8,0)));
 
-	Vector3 init(0, 0, 0);
+	Vector3 init(pos);
 
 	for (size_t i = 0; i < nParticles; i++)
 	{
 		init.x += initialLenght;
 		(*gen)->generateParticle();
-		setGeneratorPosition(gen, init);	
+		setGeneratorPosition(gen, init);
 	}
+
+	setGeneratorPosition(gen, pos);
 
 	return gen;
 }
+
 
 

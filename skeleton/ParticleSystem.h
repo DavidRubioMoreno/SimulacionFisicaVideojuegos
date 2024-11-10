@@ -28,6 +28,7 @@ class ParticleSystem
 public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN, DEFAULT };
 	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE, SPRING };
+	enum SpringType{BASIC, ANCHORED};
 
 	struct Info : GeneratorInfo{};
 
@@ -42,7 +43,7 @@ public:
 	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume = physx::PxVec3(100, 100, 100));
 	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
 	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
-	std::list<ParticleGenerator*>::iterator generateSpring(int nParticles, float K, float initialLenght);
+	std::list<ParticleGenerator*>::iterator generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos = physx::PxVec3(0,0,0));
 
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);

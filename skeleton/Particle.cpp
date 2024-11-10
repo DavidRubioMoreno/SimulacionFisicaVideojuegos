@@ -32,14 +32,15 @@ Particle::~Particle() {//liberamos el render item
 
 void Particle::integrate(double t) {
  
-    vel += acc * t; //modificamos la velocidad
+    if (applyPhysics) {
+        vel += acc * t; //modificamos la velocidad
 
-    vel *= (1.0 - damping); //aplicamos damping
+        vel *= (1.0 - damping); //aplicamos damping
 
-    pose->p += vel * t; // Actualiza la posición
+        pose->p += vel * t; // Actualiza la posición
 
-    acc = Vector3(0, 0, 0);
-
+        acc = Vector3(0, 0, 0);
+    } 
 }
 
 void Particle::setMass(float m)
@@ -63,7 +64,12 @@ void Particle::addForce(Vector3 force)
 }
 
 void Particle::addAccel(Vector3 accel, double t) {
-    vel += accel * t;
+    if(applyPhysics) vel += accel * t;
+}
+
+void Particle::setAffectedByPhysics(bool affected)
+{
+    applyPhysics = affected;
 }
 
 void Particle::addSub(std::list<Particle*>::iterator id)

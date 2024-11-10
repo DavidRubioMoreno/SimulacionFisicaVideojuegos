@@ -24,6 +24,7 @@
     <ClCompile Include="ExplosionGenerator.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="DefaultParticleGenerator.cpp" />
+    <ClCompile Include="AnchoredSpringFG.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="ExplosionGenerator.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="DefaultParticleGenerator.h" />
+    <ClInclude Include="AnchoredSpringFG.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
