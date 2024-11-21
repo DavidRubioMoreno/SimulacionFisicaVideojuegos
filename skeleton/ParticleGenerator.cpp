@@ -38,11 +38,11 @@ ParticleGenerator::~ParticleGenerator() {
 void ParticleGenerator::update(double t) {
 	elapsedTime += t;
 	if (elapsedTime > timeToNextGen) {
-		for (size_t i = 0; i < currentData.particleNumber[0]; i++)
+		for (size_t i = 0; i < currentData.particleNumber.front(); i++)
 		{
 			generateParticle();
 		}	
-		timeToNextGen += currentData.generationSpeed[0];
+		timeToNextGen += currentData.generationSpeed.front();
 	}
 }
 

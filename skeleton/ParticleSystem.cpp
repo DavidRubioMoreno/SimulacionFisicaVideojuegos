@@ -26,7 +26,7 @@ void ParticleSystem::updateParticles(double t) {
 		}
 	}
 
-	std::cout << "FPS: " << 1.0 / t << "\n";
+	//std::cout << "FPS: " << 1.0 / t << "\n";
 }
 
 void ParticleSystem::updateGenerators(double t) {
@@ -70,37 +70,37 @@ void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterato
 
 void ParticleSystem::setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed)
 {
-	(*id)->currentData.generationSpeed[0] = genSpeed;
+	(*id)->currentData.generationSpeed.front() = genSpeed;
 }
 
 void ParticleSystem::setGeneratorParticleNumber(std::list<ParticleGenerator*>::iterator id, int particlesPerGen)
 {
-	(*id)->currentData.particleNumber[0] = particlesPerGen;
+	(*id)->currentData.particleNumber.front() = particlesPerGen;
 }
 
 void ParticleSystem::setGeneratorVelGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr)
 {
-	(*id)->currentData.velocityGaussian[0] = distr;
+	(*id)->currentData.velocityGaussian.front() = distr;
 }
 
 void ParticleSystem::setGeneratorVelUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range)
 {
-	(*id)->currentData.velocityUniform[0] = range;
+	(*id)->currentData.velocityUniform.front() = range;
 }
 
 void ParticleSystem::setGeneratorPosGaussian(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> distr)
 {
-	(*id)->currentData.positionGaussian[0] = distr;
+	(*id)->currentData.positionGaussian.front() = distr;
 }
 
 void ParticleSystem::setGeneratorPosUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range)
 {
-	(*id)->currentData.positionUniform[0] = range;
+	(*id)->currentData.positionUniform.front() = range;
 }
 
 void ParticleSystem::setGeneratorColor(std::list<ParticleGenerator*>::iterator id, physx::PxVec4 color)
 {
-	(*id)->currentData.color[0] = color;
+	(*id)->currentData.color.front() = color;
 }
 
 bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const

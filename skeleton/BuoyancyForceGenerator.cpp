@@ -38,7 +38,7 @@ void BuoyancyForceGenerator::updateParticles(double t)
 				Vector3 finalForce(0, 0, 0);
 				float immersed = 0.0;
 
-				const float height = 2.0;
+				const float height = p->getHeight();
 				const float volume = pow(height, 3);
 
 				if (h - h0 > height * 0.5) {

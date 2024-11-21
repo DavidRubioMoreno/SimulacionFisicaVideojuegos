@@ -14,8 +14,8 @@ void UniformGenerator::generateParticle() {
     std::default_random_engine generator(seed);
 
     // Definimos la distribución uniforme 
-    std::uniform_real_distribution<float> distribution(currentData.velocityUniform[0].first, currentData.velocityUniform[0].second);  // Rango de la distribución uniforme
-    std::uniform_real_distribution<float> distributionPosition(currentData.positionUniform[0].first, currentData.positionUniform[0].second);
+    std::uniform_real_distribution<float> distribution(currentData.velocityUniform.front().first, currentData.velocityUniform.front().second);  // Rango de la distribución uniforme
+    std::uniform_real_distribution<float> distributionPosition(currentData.positionUniform.front().first, currentData.positionUniform.front().second);
 
   
 

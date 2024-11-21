@@ -121,7 +121,7 @@ void initPhysics(bool interactive)
 	pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
 	pSystem->setGeneratorPosUniform(generator1, {-20, 20});
 	//pSystem->setGeneratorParticleNumber(generator1, 10);
-	pSystem->setGeneratorSpeed(generator1, 0.01);
+	pSystem->setGeneratorSpeed(generator1, 1);
 	pSystem->setGeneratorColor(generator1, colorRed);
 
 	//pSystem->setGeneratorColor(gen2, colorWhite);
@@ -140,18 +140,12 @@ void initPhysics(bool interactive)
 	//pSystem->applyForceGenerator(gen4, fgen3);
 	//pSystem->applyForceGenerator(gen3, gravity);
 
-	/*float init = 1.0;
+	float init = 1.0;
+	auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 20, 500, init);
 
-	for (size_t i = 0; i < 1; i++)
-	{
-		auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 20, 500, init);
+	pSystem->applyForceGenerator(spring, gravity);
+		
 
-		pSystem->applyForceGenerator(spring, fgen3);
-		pSystem->applyForceGenerator(spring, gravity);
-		pSystem->applyForceGenerator(spring, fgen4);
-
-		init -= 0.05;
-	}*/
 	
 
 

@@ -10,7 +10,7 @@ Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d,
     pose = new physx::PxTransform(pos);
     PxSphereGeometry* geo = new PxSphereGeometry(1);
     PxShape* shape = CreateShape(*geo);
-
+    height = geo->radius * 2;
     renderItem = new RenderItem(shape, pose, color);// creamos render item
 
 }

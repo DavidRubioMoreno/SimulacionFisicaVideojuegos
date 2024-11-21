@@ -17,6 +17,7 @@ public:
 	Vector3 getPos() const { return renderItem->transform->p; }
 	Vector3 getVel() const { return vel; }
 	Vector3 getAccel() const { return acc; }
+	float getHeight() const { return height; }
 	inline Vector3 getInitPos() const { return initPosition; }
 	void setMass(float mass);
 	void addPuntualForce(Vector3 force);
@@ -24,8 +25,8 @@ public:
 	void addForce(Vector3 force);
 	void addAccel(Vector3 accel);
 	void setAffectedByPhysics(bool affected);
-	float getMass() const { return mass; }
-	ParticleGenerator* getGenerator() { return generator; }
+	inline float getMass() const { return mass; }
+	inline ParticleGenerator* getGenerator() { return generator; }
 	void addSub(std::list<Particle*>::iterator id);
 	const std::vector<std::list<Particle*>::iterator>& getSubs() { return subs; };
 
@@ -37,6 +38,7 @@ protected:
 	float mass;
 	double damping;
 	float destroyTime;
+	float height = 1.0;
 	physx::PxTransform* pose;
 	RenderItem* renderItem;
 	ParticleGenerator* generator = nullptr;
