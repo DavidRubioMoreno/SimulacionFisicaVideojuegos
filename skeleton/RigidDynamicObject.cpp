@@ -18,6 +18,9 @@ RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vec
 	case RigidDynamicObject::PLANE:
 		shape = CreateShape(PxBoxGeometry(size));
 		break;
+	case RigidDynamicObject::CAPSULE:
+		shape = CreateShape(PxCapsuleGeometry(size.x, size.y));
+		break;
 	default:
 		break;
 	}
