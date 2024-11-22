@@ -12,6 +12,7 @@
 #include "ProyectileController.h"
 #include "ParticleSystem.h"
 #include "ParticleGenerator.h"
+#include "RigidDynamicObject.h"
 #include <list>
 
 #include <iostream>
@@ -109,20 +110,21 @@ void initPhysics(bool interactive)
 
 	//GENERADORES PARTICULAS
 	generator1 = pSystem->addGenerator(ParticleSystem::FOG);
-	//auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
-	//auto gen3 = pSystem->addGenerator(ParticleSystem::FOG);
+	auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
+	auto gen3 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
 	//auto gen4 = pSystem->addGenerator(ParticleSystem::RAIN);
 
 	//
-	//pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
-	//pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
+	pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
+	pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
 	//pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
 
 	pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
 	pSystem->setGeneratorPosUniform(generator1, {-20, 20});
 	//pSystem->setGeneratorParticleNumber(generator1, 10);
-	pSystem->setGeneratorSpeed(generator1, 1);
+	pSystem->setGeneratorSpeed(gen3, 1);
 	pSystem->setGeneratorColor(generator1, colorRed);
+	pSystem->setGeneratorColor(gen3, colorWhite);
 
 	//pSystem->setGeneratorColor(gen2, colorWhite);
 
@@ -134,9 +136,9 @@ void initPhysics(bool interactive)
 	auto fgen4 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(320000, 0, 3000), Vector3(100, 100, 100));
 
 	//////GENERADORES A LOS QUE AFECTAN
-	pSystem->applyForceGenerator(generator1, gravity);
-	pSystem->applyForceGenerator(generator1, water);
-	//pSystem->applyForceGenerator(gen2, fgen2);
+	pSystem->applyForceGenerator(gen3, gravity);
+	pSystem->applyForceGenerator(gen3, water);
+	pSystem->applyForceGenerator(gen2, fgen2);
 	//pSystem->applyForceGenerator(gen4, fgen3);
 	//pSystem->applyForceGenerator(gen3, gravity);
 
@@ -145,10 +147,6 @@ void initPhysics(bool interactive)
 
 	pSystem->applyForceGenerator(spring, gravity);
 		
-
-	
-
-
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
 	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
@@ -157,6 +155,10 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+	
+	auto dynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
+	auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
+
 	}
 
 

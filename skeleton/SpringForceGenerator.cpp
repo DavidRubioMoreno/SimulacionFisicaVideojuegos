@@ -31,32 +31,12 @@ void SpringForceGenerator::updateParticles(double t)
 			// Calcula la fuerza final como magnitud * dirección
 			const Vector3 finalForce = relativePosV * forceMagnitude;
 
-			/*(*it)->setMass(1);
-			(*next)->setMass(1);*/
-
-			//if (it == particles.begin()) {
-
-			//	(*it)->setMass(100000000);
-			//	//(*it)->addAccel(Vector3(0, 9.8, 0), t);
-			//}
-
-
 			(*it)->addForce(finalForce + lastForce);
 
 			if(next == --particles.end())
 			 (*next)->addForce(-finalForce);
 
 			lastForce = -finalForce;
-
-			//std::cout << (*it)->getMass() << "\n";
-			//std::cout << (*next)->getMass() << "\n";
-
-			//std::cout << "Speed: " << (*next)->getVel().x << " Accel: " << (*next)->getAccel().x << " Increase: " << (-finalForce / (*next)->getMass()).x << " T: " << t << "\n";
-
-			
-			
-
-			
 		}	
 	}
 	

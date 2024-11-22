@@ -39,8 +39,8 @@ protected:
 	double damping;
 	float destroyTime;
 	float height = 1.0;
-	physx::PxTransform* pose;
-	RenderItem* renderItem;
+	physx::PxTransform* pose = nullptr;
+	RenderItem* renderItem = nullptr;
 	ParticleGenerator* generator = nullptr;
 	std::vector<std::list<Particle*>::iterator> subs;
 };
