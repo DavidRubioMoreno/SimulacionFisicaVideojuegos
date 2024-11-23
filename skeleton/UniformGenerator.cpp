@@ -1,5 +1,10 @@
 #include "UniformGenerator.h"
 
+UniformGenerator::UniformGenerator(ParticleSystem* sys, ParticleSystem::SolidShape shape, Vector3 pos, ParticleSystem::GeneratorType type)
+    : ParticleGenerator::ParticleGenerator(sys, type, shape, pos) {
+    solid = true;
+}
+
 void UniformGenerator::init() {
 
 }
@@ -17,8 +22,6 @@ void UniformGenerator::generateParticle() {
     std::uniform_real_distribution<float> distribution(currentData.velocityUniform.front().first, currentData.velocityUniform.front().second);  // Rango de la distribución uniforme
     std::uniform_real_distribution<float> distributionPosition(currentData.positionUniform.front().first, currentData.positionUniform.front().second);
 
-  
-
     // Generamos velocidades aleatorias en los ejes X, Y y Z
     float vx = distribution(generator);  // Velocidad en X
     float vy = distribution(generator);  // Velocidad en Y
@@ -32,7 +35,14 @@ void UniformGenerator::generateParticle() {
     // Creamos un vector de velocidad aleatorio con los valores generados
     Vector3 velocity(vx, vy, vz);
 
-    // Generamos la partícula con la velocidad aleatoria
-    sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
+    if (solid) {
+        sys->addSolid(new RigidDynamicObject(sys->getScene(), currentData.color.front(), generationSpawn + Vector3(px, py, pz), elapsedTime + SOLIDTIME, velocity, sphere));
+    }
+    else {
+        // Generamos la partícula con la velocidad aleatoria
+        sys->addParticle(new Particle(currentData.color.front(), generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
+    }
+   
+    
 }
 

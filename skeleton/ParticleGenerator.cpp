@@ -4,12 +4,25 @@
 
 using namespace physx;
 
-ParticleGenerator::ParticleGenerator(double t, ParticleSystem* sys, ParticleSystem::GeneratorType type)
-	: generationTime(sys->getData().generationSpeed[type]), elapsedTime(t),
-	timeToNextGen(generationTime + t), sys(sys), generationSpawn(Vector3(0, 0, 0)), type(type) 
+ParticleGenerator::ParticleGenerator(ParticleSystem* sys, ParticleSystem::GeneratorType type, ParticleSystem::SolidShape shapetype, Vector3 pos)
+	: generationTime(sys->getData().generationSpeed[type]), elapsedTime(0.0),
+	timeToNextGen(generationTime), sys(sys), generationSpawn(pos), type(type) 
 {
-	PxSphereGeometry* geo = new PxSphereGeometry(1);
-	sphere = CreateShape(*geo);
+	switch (shapetype)
+	{
+	case ParticleSystem::BOX:
+		sphere = CreateShape(PxBoxGeometry(1,1,1));
+		break;
+	case ParticleSystem::SPHERE:
+		sphere = CreateShape(PxSphereGeometry(1));
+		break;
+	case ParticleSystem::CAPSULE:
+		sphere = CreateShape(PxCapsuleGeometry(1, 1));
+		break;
+	default:
+		sphere = CreateShape(PxSphereGeometry(1));
+		break;
+	}
 
 	currentData.color.clear();
 	currentData.particleNumber.clear();

@@ -3,8 +3,8 @@
 class GaussianGenerator : public ParticleGenerator
 {
 public:
-	GaussianGenerator() : ParticleGenerator::ParticleGenerator(0.0, nullptr, ParticleSystem::GeneratorType::FOG) {}
-	GaussianGenerator(double t, ParticleSystem* sys, ParticleSystem::GeneratorType type) : ParticleGenerator::ParticleGenerator(t, sys, type) {}
+	GaussianGenerator() : ParticleGenerator::ParticleGenerator(nullptr, ParticleSystem::GeneratorType::FOG) {}
+	GaussianGenerator(ParticleSystem* sys, ParticleSystem::GeneratorType type) : ParticleGenerator::ParticleGenerator(sys, type) {}
 	void init() override;
 	void update(double t) override;
 protected:

@@ -7,12 +7,34 @@
 #include "AnchoredSpringFG.h"
 #include "DefaultParticleGenerator.h"
 #include "BuoyancyForceGenerator.h"
+#include "RigidDynamicObject.h"
+
+ParticleSystem::ParticleSystem(physx::PxScene* scene) : gScene(scene) {}
+
+ParticleSystem::~ParticleSystem() {//limpiamos
+	for (auto& g : generators) { delete g; }
+	generators.clear();
+
+	for (auto& p : particles) { delete p; }
+	particles.clear();
+
+	for (auto& d : dynamicObjects) { delete d; }
+	dynamicObjects.clear();
+
+	for (auto& g : forceGenerators) { delete g; }
+	forceGenerators.clear();
+}
+
+void ParticleSystem::update(double t)
+{
+	elapsedTime += t;
+	//std::cout << "FPS: " << 1.0 / t << "\n";
+	updateParticles(t);
+	updateSolids(t);
+	updateGenerators(t);
+}
 
 void ParticleSystem::updateParticles(double t) {
-
-	elapsedTime += t;
-
-	//update particulas
 	for (auto it = particles.begin(); it != particles.end();)
 	{		
 		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
@@ -25,8 +47,20 @@ void ParticleSystem::updateParticles(double t) {
 			++it;  // Solo incrementamos el iterador si no se eliminó
 		}
 	}
+}
 
-	//std::cout << "FPS: " << 1.0 / t << "\n";
+void ParticleSystem::updateSolids(double t)
+{
+	for (auto it = dynamicObjects.begin(); it != dynamicObjects.end();)
+	{
+		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
+			delete* it;  
+			it = dynamicObjects.erase(it); 		
+		}
+		else {
+			++it;  // Solo incrementamos el iterador si no se eliminó
+		}
+	}
 }
 
 void ParticleSystem::updateGenerators(double t) {
@@ -41,16 +75,6 @@ void ParticleSystem::updateGenerators(double t) {
 	}
 }
 
-ParticleSystem::~ParticleSystem() {//limpiamos
-	for (auto& g : generators) { delete g; }	
-	generators.clear();
-
-	for (auto& p : particles) { delete p; }	
-	particles.clear();
-
-	for (auto& g : forceGenerators) { delete g; }
-	forceGenerators.clear();
-}
 
 void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva particula
 	//Masa por defecto
@@ -62,6 +86,16 @@ void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva pa
 	{
 		 p->addSub((*gen)->addParticle(p));//añadimos la particula a los generadores de fuerza
 	}
+}
+
+void ParticleSystem::addSolid(RigidDynamicObject* rObject)
+{
+	dynamicObjects.push_back(rObject);
+}
+
+physx::PxScene* ParticleSystem::getScene()
+{
+	return gScene;
 }
 
 void ParticleSystem::setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position) {
@@ -124,22 +158,38 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorTy
 	switch (type)
 	{
 	case ParticleSystem::FOUNTAIN:
-		generators.push_back(new GaussianGenerator(0, this, type));//generador de tipo gausiano
+		generators.push_back(new GaussianGenerator(this, type));//generador de tipo gausiano
 		break;
 	case ParticleSystem::FOG:
-		generators.push_back(new UniformGenerator(0, this, type));//generador uniforme
+		generators.push_back(new UniformGenerator(this, type));//generador uniforme
 		break;
 	case ParticleSystem::EXPLOSION:
-		generators.push_back(new UniformGenerator(0, this, type));//generador uniforme
+		generators.push_back(new UniformGenerator(this, type));//generador uniforme
 		break;
 	case ParticleSystem::RAIN:
-		generators.push_back(new GaussianGenerator(0, this, type));//generador de tipo gausiano
+		generators.push_back(new GaussianGenerator(this, type));//generador de tipo gausiano
 		break;
 	default:
 		break;
 	}
 	
 	return --generators.end();//devolvemos un iterador al generador que hemos creado
+}
+
+std::list<ParticleGenerator*>::iterator ParticleSystem::addSolidGenerator(DistributionType type, SolidShape shapeType, physx::PxVec3 pos)
+{
+	switch (type)
+	{
+	case ParticleSystem::UNIFORM:
+		generators.push_back(new UniformGenerator(this, shapeType, pos));
+		break;
+	case ParticleSystem::GAUSSIAN:
+		break;
+	default:
+		break;
+	}
+
+	return --generators.end();
 }
 
 std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume, float density)
@@ -204,7 +254,6 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringTyp
 	auto gen = --generators.end();
 
 	applyForceGenerator(gen, --forceGenerators.end());
-	//applyForceGenerator(gen, addForceGenerator(GRAVITY, Vector3(0,0,0), Vector3(0,-9.8,0)));
 
 	Vector3 init(pos);
 

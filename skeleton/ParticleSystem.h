@@ -12,6 +12,7 @@ constexpr float DESTROY_RANGE = 250;
 class ParticleGenerator;
 class ForceGenerator;
 class Particle;
+class RigidDynamicObject;
 
 struct GeneratorInfo {
 	 std::vector<float> generationSpeed = { 0.05f, 0.01f, 0.005f, 0.01f, 0.0f };
@@ -29,17 +30,22 @@ public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN, DEFAULT };
 	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE, SPRING, BUOYANCY };
 	enum SpringType{BASIC, ANCHORED};
+	enum DistributionType{UNIFORM,GAUSSIAN};
+	enum SolidShape { BOX, SPHERE, CAPSULE };
 
 	struct Info : GeneratorInfo{};
 
-	ParticleSystem() = default;
+	ParticleSystem(physx::PxScene* scene);
 	~ParticleSystem();
-	void updateParticles(double t);
-	void updateGenerators(double t);
+	
+	void update(double t);
 	void addParticle(Particle* p);
+	void addSolid(RigidDynamicObject* rObject);
 	GeneratorInfo getData() const { return data; }
+	physx::PxScene* getScene();
 
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
+	std::list<ParticleGenerator*>::iterator addSolidGenerator(DistributionType type, SolidShape shapeType, physx::PxVec3 pos = physx::PxVec3(0, 0, 0));
 	std::list<ForceGenerator*>::iterator addForceGenerator(ForceGeneratorType id, physx::PxVec3 centre, physx::PxVec3 force, physx::PxVec3 volume = physx::PxVec3(100, 100, 100), float density = 1.000);
 	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
 	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
@@ -54,11 +60,16 @@ public:
 	void setGeneratorPosUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range);
 	void setGeneratorColor(std::list<ParticleGenerator*>::iterator id, physx::PxVec4 color);
 private:
+	void updateParticles(double t);
+	void updateSolids(double t);
+	void updateGenerators(double t);
 	bool particleOutOfRange(const physx::PxVec3& position) const;
 	void eliminateSubscriptions(Particle* p);
 	std::list<ParticleGenerator*> generators;
 	std::list<ForceGenerator*> forceGenerators;
 	std::list<Particle*> particles;
+	std::list<RigidDynamicObject*> dynamicObjects;
+	physx::PxScene* gScene = nullptr;
 	float elapsedTime = 0;
 	GeneratorInfo data;
 };

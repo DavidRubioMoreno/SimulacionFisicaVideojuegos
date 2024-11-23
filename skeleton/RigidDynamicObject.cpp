@@ -5,7 +5,7 @@
 using namespace physx;
 
 RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vector3 position, float lifeTime, Vector3 linearVelocity, ShapeType shapeForm, Vector3 size, float density, Vector3 angularVelocity)
-	: destroyTime(lifeTime), density(density), scene(scene)
+	: destroyTime(lifeTime), density(density), scene(scene), initPosition(position)
 {
 	switch (shapeForm)
 	{
@@ -40,7 +40,7 @@ RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vec
 }
 
 RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vector3 position, float lifeTime, Vector3 linearVelocity, physx::PxShape* shape, float density, Vector3 angularVelocity)
-	: destroyTime(lifeTime), density(density), scene(scene)
+	: destroyTime(lifeTime), density(density), scene(scene), initPosition(position)
 {
 	solid = scene->getPhysics().createRigidDynamic(PxTransform(position));
 	solid->setLinearVelocity(linearVelocity);
@@ -67,8 +67,14 @@ RigidDynamicObject::~RigidDynamicObject()
 
 	shape = nullptr;
 
+	scene->removeActor(*solid);
+	solid->release();
+	solid = nullptr;
+
 	scene = nullptr;
 
 	renderItem->release();
 	renderItem = nullptr;
+
+	
 }

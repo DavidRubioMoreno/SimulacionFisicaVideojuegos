@@ -101,13 +101,28 @@ void initPhysics(bool interactive)
 	gSphereY = new RenderItem(shape, t2, colorGreen);
 	gSphereZ = new RenderItem(shape, t3, colorBlue);
 	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
-
+		
+	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
+	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
+	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
+	gDispatcher = PxDefaultCpuDispatcherCreate(2);
+	sceneDesc.cpuDispatcher = gDispatcher;
+	sceneDesc.filterShader = contactReportFilterShader;
+	sceneDesc.simulationEventCallback = &gContactReportCallback;
+	gScene = gPhysics->createScene(sceneDesc);
+	
+	auto dynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
+	//auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
+	new RigidStaticObject(gScene, colorWhite, Vector3(0, -20, 0), RigidStaticObject::SPHERE, Vector3(100 ,100, 100));
 	
 	//SISTEMA DE PROYECTILES
 	pController = new ProyectileController();
 
 	//SISTEMA DE PARTICULAS
-	pSystem = new ParticleSystem();
+	pSystem = new ParticleSystem(gScene);
+
+	//GENERADORES DE RIGIDOS-SOLIDOS
+	auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::SPHERE, Vector3(0, 50, 0));
 
 	//GENERADORES PARTICULAS
 	//generator1 = pSystem->addGenerator(ParticleSystem::FOG);
@@ -147,21 +162,6 @@ void initPhysics(bool interactive)
 	//auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 20, 500, init);
 
 	//pSystem->applyForceGenerator(spring, gravity);
-		
-	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
-	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
-	gDispatcher = PxDefaultCpuDispatcherCreate(2);
-	sceneDesc.cpuDispatcher = gDispatcher;
-	sceneDesc.filterShader = contactReportFilterShader;
-	sceneDesc.simulationEventCallback = &gContactReportCallback;
-	gScene = gPhysics->createScene(sceneDesc);
-	
-	//auto dynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
-	//auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
-	new RigidStaticObject(gScene, colorWhite, Vector3(0, -20, 0), RigidStaticObject::PLANE, Vector3(200, 0.5, 100));
-	
-
 	}
 
 
@@ -175,17 +175,16 @@ void stepPhysics(bool interactive, double t)
 	elapsedTime += t;
 
 	pController->integrateProjectiles(t);
-	pSystem->updateGenerators(t);
-	pSystem->updateParticles(t);
+	pSystem->update(t);
 
 	/*if (elapsedTime > 0.5f) {
 		
 	}*/
 
-	if (elapsedTime > 1.5f) {
+	/*if (elapsedTime > 1.5f) {
 		new RigidDynamicObject(gScene, Vector4(0.7, 0.7, 0.0, 1.0), Vector3(0, 50, 0), 5.0f, Vector3(0, -50, 0), RigidDynamicObject::BOX, Vector3(4, 4, 4), 1.0f, Vector3(5, 0, 5));
 		elapsedTime = 0.0;
-	}
+	}*/
 
 	
 	

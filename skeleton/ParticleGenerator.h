@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Particle.h"
+#include "RigidDynamicObject.h"
 #include "ParticleSystem.h"
 #include <PxPhysicsAPI.h>
 #include <random>
@@ -10,7 +11,8 @@
 class ParticleGenerator
 {	
 protected:
-	ParticleGenerator(double t, ParticleSystem* sys, ParticleSystem::GeneratorType type);		
+	ParticleGenerator(ParticleSystem* sys, ParticleSystem::GeneratorType type,
+		ParticleSystem::SolidShape shapetype = ParticleSystem::SolidShape::SPHERE,Vector3 pos = Vector3(0, 0, 0));
 	virtual ~ParticleGenerator();
 	virtual void init() = 0;	
 	virtual void update(double t);
@@ -24,6 +26,7 @@ protected:
 	float timeToNextGen;
 	float elapsedTime;
 	const float PARTICLE_TIME = 10.0;
+	const float SOLIDTIME = 5.0;
 
 	ParticleSystem* sys = nullptr;
 	ParticleSystem::GeneratorType type;

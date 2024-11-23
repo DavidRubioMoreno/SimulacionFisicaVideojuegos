@@ -13,7 +13,7 @@ RigidStaticObject::RigidStaticObject(physx::PxScene* scene, Vector4 color, Vecto
 		shape = CreateShape(PxBoxGeometry(size));
 		break;
 	case RigidStaticObject::SPHERE:
-		shape = CreateShape(PxSphereGeometry(size.magnitude()));
+		shape = CreateShape(PxSphereGeometry(size.magnitude() / 2));
 		break;
 	case RigidStaticObject::PLANE:
 		shape = CreateShape(PxBoxGeometry(size));
