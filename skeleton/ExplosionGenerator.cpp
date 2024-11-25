@@ -23,3 +23,22 @@ void ExplosionGenerator::updateParticles(double t)
 	}	
 	
 }
+
+void ExplosionGenerator::updateSolids(double t)
+{
+
+	if (elapsedTime < DURATION) {
+		Vector3 finalForce;
+		Vector3 solidPos;
+
+		for (auto& p : particles)
+		{
+			solidPos = p->getPos();
+			float r = (centre - solidPos).magnitude();
+			if (r < R) {
+				finalForce = (K / (r * r)) * (solidPos - centre) * pow(2.711828, t / elapsedTime);
+				p->addForce(finalForce);
+			}
+		}
+	}
+}

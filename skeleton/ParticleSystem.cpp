@@ -71,7 +71,7 @@ void ParticleSystem::updateGenerators(double t) {
 
 	for (auto& gen : forceGenerators)
 	{
-		gen->updateParticles(t);
+		gen->update(t);
 	}
 }
 
@@ -184,6 +184,7 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addSolidGenerator(Distri
 		generators.push_back(new UniformGenerator(this, shapeType, pos));
 		break;
 	case ParticleSystem::GAUSSIAN:
+		generators.push_back(new GaussianGenerator(this, shapeType, pos));
 		break;
 	default:
 		break;

@@ -14,6 +14,11 @@ public:
 	void updateRigid();
 	float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return solid->getGlobalPose().p; }
+	Vector3 getVel() const { return solid->getLinearVelocity(); }
+	float getHeight() const { return height; }
+	void addForce(const Vector3& force);
+	void addAccel(const Vector3& accel);
+	void setAffectedByPhysics(bool affected);
 	const Vector3 getInitPos() const { return initPosition; }
 	~RigidDynamicObject();
 private:
@@ -23,6 +28,8 @@ private:
 	RenderItem* renderItem = nullptr;
 	physx::PxShape* shape = nullptr;
 	physx::PxScene* scene = nullptr;
+	bool affectedByPhysics;
 	const Vector3 initPosition;
+	const float height;
 };
 

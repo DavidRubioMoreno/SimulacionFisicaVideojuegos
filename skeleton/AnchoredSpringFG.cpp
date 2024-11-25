@@ -13,3 +13,10 @@ void AnchoredSpringFG::updateParticles(double t)
 		(*particles.begin())->setAffectedByPhysics(false);
 	SpringForceGenerator::updateParticles(t);
 }
+
+void AnchoredSpringFG::updateSolids(double t)
+{
+	if (solidObjects.begin() != solidObjects.end())
+		(*solidObjects.begin())->setAffectedByPhysics(false);
+	SpringForceGenerator::updateSolids(t);
+}

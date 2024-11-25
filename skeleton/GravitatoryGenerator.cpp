@@ -10,3 +10,13 @@ void GravitatoryGenerator::updateParticles(double t)
 		//std::cout << particles.size() << "\n";
 	}	
 }
+
+void GravitatoryGenerator::updateSolids(double t)
+{
+	if (active) {
+		for (auto& s : solidObjects)
+		{
+			s->addAccel(force);
+		}
+	}
+}

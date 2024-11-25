@@ -33,30 +33,47 @@ void BuoyancyForceGenerator::updateParticles(double t)
 			const Vector3 pos = p->getPos();
 			if (pos.x < areaLimit1.x && pos.x > areaLimit2.x && pos.z < areaLimit1.z && pos.z > areaLimit2.z) {
 				const float h = pos.y;
-				const float h0 = liquidParticle->getPos().y + volume.y / 2;
-
-				Vector3 finalForce(0, 0, 0);
-				float immersed = 0.0;
-
 				const float height = p->getHeight();
-				const float volume = pow(height, 3);
-
-				if (h - h0 > height * 0.5) {
-					immersed = 0.0;
-				}
-				else if (h0 - h > height * 0.5) {
-					immersed = 1.0;
-				}
-				else {
-					immersed = (h0 - h) / height + 0.5;
-				}
-
-				finalForce.y = liquidDensity * volume * immersed * 9.8;
-
-				p->addForce(finalForce);
+				p->addForce(getFinalForce(h, height));
 			}
 		}
-
-		//std::cout << particles.size() << "\n";
 	}
+}
+
+void BuoyancyForceGenerator::updateSolids(double t)
+{
+	if (active) {
+
+		for (auto& s : solidObjects)
+		{
+			const Vector3 pos = s->getPos();
+			if (pos.x < areaLimit1.x && pos.x > areaLimit2.x && pos.z < areaLimit1.z && pos.z > areaLimit2.z) {
+				const float h = pos.y;			
+				const float height = s->getHeight();
+				s->addForce(getFinalForce(h, height));
+			}
+		}
+	}
+}
+
+Vector3 BuoyancyForceGenerator::getFinalForce(float h, float height)
+{
+	Vector3 finalForce(0, 0, 0);
+	float immersed = 0.0;
+	const float h0 = liquidParticle->getPos().y + volume.y / 2;
+	const float volume = pow(height, 3);
+
+	if (h - h0 > height * 0.5) {
+		immersed = 0.0;
+	}
+	else if (h0 - h > height * 0.5) {
+		immersed = 1.0;
+	}
+	else {
+		immersed = (h0 - h) / height + 0.5;
+	}
+
+	finalForce.y = liquidDensity * volume * immersed * 9.8;
+
+	return finalForce;
 }

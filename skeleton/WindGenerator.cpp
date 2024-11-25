@@ -14,9 +14,26 @@ void WindGenerator::updateParticles(double t)
 		for (auto& p : particles)
 		{
 			Vector3 pos = p->getPos();
-			if (pos.x < areaLimit1.x && pos.x > areaLimit2.x && pos.y < areaLimit1.y && pos.y > areaLimit2.y && pos.z < areaLimit1.z && pos.z > areaLimit2.z) {
+			if (pos.x < areaLimit1.x && pos.x > areaLimit2.x && pos.y < areaLimit1.y
+				&& pos.y > areaLimit2.y && pos.z < areaLimit1.z && pos.z > areaLimit2.z) {
 				finalForce = (windCoeficcient) * (force - p->getVel());
 				p->addForce(finalForce);
+			}
+		}
+	}
+}
+
+void WindGenerator::updateSolids(double t)
+{
+	if (active) {
+		Vector3 finalForce;
+		for (auto& s : solidObjects)
+		{
+			Vector3 pos = s->getPos();
+			if (pos.x < areaLimit1.x && pos.x > areaLimit2.x && pos.y < areaLimit1.y
+				&& pos.y > areaLimit2.y && pos.z < areaLimit1.z && pos.z > areaLimit2.z) {
+				finalForce = (windCoeficcient) * (force - s->getVel());
+				s->addForce(finalForce);
 			}
 		}
 	}

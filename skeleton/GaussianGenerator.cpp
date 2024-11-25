@@ -1,5 +1,10 @@
 #include "GaussianGenerator.h"
 
+GaussianGenerator::GaussianGenerator(ParticleSystem* sys, ParticleSystem::SolidShape shape, Vector3 pos, ParticleSystem::GeneratorType type)
+    : ParticleGenerator::ParticleGenerator(sys, type, shape, pos) {
+    solid = true;
+}
+
 void GaussianGenerator::init() {
 
 }
@@ -14,7 +19,7 @@ void GaussianGenerator::generateParticle() {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine generator(seed);
 
-    // Definimos la distribución normal con media 0.0 y desviación estándar 1.0 (modificable)
+    // Definimos la distribución normal 
     std::normal_distribution<float> distribution(currentData.velocityGaussian[0].first, currentData.velocityGaussian[0].second);  // media, desviación estándar
     std::normal_distribution<float> distributionP(currentData.positionGaussian[0].first, currentData.positionGaussian[0].second);
 
@@ -28,7 +33,12 @@ void GaussianGenerator::generateParticle() {
     float py = distributionP(generator);  // Posicion en Y
     float pz = distributionP(generator);  // Posicion en Z
 
-    Vector3 velocity(vx , vy , vz );  // Factor de escala de 5 para aumentar la magnitud
+    Vector3 velocity(vx , vy , vz ); 
 
-	sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
+    if (solid) {
+        sys->addSolid(new RigidDynamicObject(sys->getScene(), currentData.color.front(), generationSpawn + Vector3(px, py, pz), elapsedTime + SOLIDTIME, velocity, sphere));
+    }
+    else {
+        sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
+    }
 }

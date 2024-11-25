@@ -8,7 +8,9 @@ public:
 	~SpringForceGenerator();
 	inline void setK(float k) { K = k; }
 	virtual void updateParticles(double t) override;
+	virtual void updateSolids(double t) override;
 protected:
+	Vector3 getFinalForce(Vector3 relativePos);
 	float K;
 	float lenght;
 	float forceTotal = 0.0;
