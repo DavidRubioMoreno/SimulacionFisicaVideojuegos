@@ -65,6 +65,7 @@ private:
 	void updateGenerators(double t);
 	bool particleOutOfRange(const physx::PxVec3& position) const;
 	void eliminateSubscriptions(Particle* p);
+	void eliminateSubscriptionsSolid(RigidDynamicObject* s);
 	std::list<ParticleGenerator*> generators;
 	std::list<ForceGenerator*> forceGenerators;
 	std::list<Particle*> particles;

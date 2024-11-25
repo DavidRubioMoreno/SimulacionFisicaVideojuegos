@@ -36,7 +36,7 @@ void UniformGenerator::generateParticle() {
     Vector3 velocity(vx, vy, vz);
 
     if (solid) {
-        sys->addSolid(new RigidDynamicObject(sys->getScene(), currentData.color.front(), generationSpawn + Vector3(px, py, pz), elapsedTime + SOLIDTIME, velocity, sphere));
+        sys->addSolid(new RigidDynamicObject(sys->getScene(), currentData.color.front(), generationSpawn + Vector3(px, py, pz), elapsedTime + SOLIDTIME, velocity, sphere, this));
     }
     else {
         // Generamos la partícula con la velocidad aleatoria

@@ -36,7 +36,7 @@ void GaussianGenerator::generateParticle() {
     Vector3 velocity(vx , vy , vz ); 
 
     if (solid) {
-        sys->addSolid(new RigidDynamicObject(sys->getScene(), currentData.color.front(), generationSpawn + Vector3(px, py, pz), elapsedTime + SOLIDTIME, velocity, sphere));
+        sys->addSolid(new RigidDynamicObject(sys->getScene(), currentData.color.front(), generationSpawn + Vector3(px, py, pz), elapsedTime + SOLIDTIME, velocity, sphere, this));
     }
     else {
         sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));

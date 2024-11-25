@@ -54,6 +54,7 @@ void ParticleSystem::updateSolids(double t)
 	for (auto it = dynamicObjects.begin(); it != dynamicObjects.end();)
 	{
 		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
+			eliminateSubscriptionsSolid((*it));
 			delete* it;  
 			it = dynamicObjects.erase(it); 		
 		}
@@ -91,6 +92,11 @@ void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva pa
 void ParticleSystem::addSolid(RigidDynamicObject* rObject)
 {
 	dynamicObjects.push_back(rObject);
+
+	for (auto& gen : rObject->getGenerator()->subscriptions)
+	{
+		rObject->addSub((*gen)->addSolid(rObject));//añadimos el solido a los generadores de fuerza
+	}
 }
 
 physx::PxScene* ParticleSystem::getScene()
@@ -150,6 +156,18 @@ void ParticleSystem::eliminateSubscriptions(Particle* p)
 		if (i >= p->getSubs().size())
 			break;
 		(*gen)->elimParticle(p->getSubs()[i]);
+		i++;
+	}
+}
+
+void ParticleSystem::eliminateSubscriptionsSolid(RigidDynamicObject* s)
+{
+	int i = 0;
+	for (auto& gen : s->getGenerator()->subscriptions)
+	{
+		if (i >= s->getSubs().size())
+			break;
+		(*gen)->elimSolid(s->getSubs()[i]);
 		i++;
 	}
 }
@@ -227,6 +245,13 @@ void ParticleSystem::applyForceGenerator(std::list<ParticleGenerator*>::iterator
 	{
 		if ((*pGen) == p->getGenerator() && fGen == p->getGenerator()->subs().back()) {
 			p->addSub((*fGen)->addParticle(p));
+		}
+	}
+
+	for (auto& s : dynamicObjects)//subscribe a los solidos de ese generador ya creados
+	{
+		if ((*pGen) == s->getGenerator() && fGen == s->getGenerator()->subs().back()) {
+			s->addSub((*fGen)->addSolid(s));
 		}
 	}
 }

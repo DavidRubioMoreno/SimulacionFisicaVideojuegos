@@ -2,9 +2,11 @@
 #include "PxPhysics.h"
 #include "PxScene.h"
 
+
 using namespace physx;
 
-RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vector3 position, float lifeTime, Vector3 linearVelocity, ShapeType shapeForm, Vector3 size, float density, Vector3 angularVelocity)
+RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vector3 position, float lifeTime,
+	Vector3 linearVelocity, ShapeType shapeForm, Vector3 size, float density, Vector3 angularVelocity)
 	: destroyTime(lifeTime), density(density), scene(scene), initPosition(position), height(size.magnitude() / 2), affectedByPhysics(true)
 {
 	switch (shapeForm)
@@ -39,8 +41,9 @@ RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vec
 	renderItem = new RenderItem(shape, solid, color);
 }
 
-RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vector3 position, float lifeTime, Vector3 linearVelocity, physx::PxShape* shape, float density, Vector3 angularVelocity)
-	: destroyTime(lifeTime), density(density), scene(scene), initPosition(position), height(5.0), affectedByPhysics(true)
+RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vector3 position, float lifeTime, 
+	Vector3 linearVelocity, physx::PxShape* shape, ParticleGenerator* gen, float density, Vector3 angularVelocity)
+	: destroyTime(lifeTime), density(density), scene(scene), initPosition(position), height(5.0), affectedByPhysics(true), generator(gen)
 {
 	solid = scene->getPhysics().createRigidDynamic(PxTransform(position));
 	solid->setLinearVelocity(linearVelocity);
@@ -68,6 +71,11 @@ void RigidDynamicObject::addForce(const Vector3& force)
 void RigidDynamicObject::addAccel(const Vector3& accel)
 {
 	solid->addForce(accel, PxForceMode::eACCELERATION);
+}
+
+void RigidDynamicObject::addSub(std::list<RigidDynamicObject*>::iterator sub)
+{
+	subs.push_back(sub);
 }
 
 void RigidDynamicObject::setAffectedByPhysics(bool affected)
@@ -98,5 +106,5 @@ RigidDynamicObject::~RigidDynamicObject()
 	renderItem->release();
 	renderItem = nullptr;
 
-	
+	subs.clear();
 }
