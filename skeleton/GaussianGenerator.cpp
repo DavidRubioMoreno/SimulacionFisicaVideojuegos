@@ -35,10 +35,19 @@ void GaussianGenerator::generateParticle() {
 
     Vector3 velocity(vx , vy , vz ); 
 
+    Vector4 color = currentData.color.front();
+
+    if (currentData.randomColor.front()) {
+        std::uniform_real_distribution<float> distributionColor(0.0, 1.0);
+        color.x = distributionColor(generator);
+        color.y = distributionColor(generator);
+        color.z = distributionColor(generator);
+    }
+
     if (solid) {
-        sys->addSolid(new RigidDynamicObject(sys->getScene(), currentData.color.front(), generationSpawn + Vector3(px, py, pz), elapsedTime + SOLIDTIME, velocity, sphere, this));
+        sys->addSolid(new RigidDynamicObject(sys->getScene(), color, generationSpawn + Vector3(px, py, pz), elapsedTime + currentData.lifeTime.front(), velocity, sphere, this, 1000.0, velocity));
     }
     else {
-        sys->addParticle(new Particle(currentData.color[0], generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
+        sys->addParticle(new Particle(color, generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
     }
 }

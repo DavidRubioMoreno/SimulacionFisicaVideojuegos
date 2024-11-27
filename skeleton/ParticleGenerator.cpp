@@ -31,6 +31,10 @@ ParticleGenerator::ParticleGenerator(ParticleSystem* sys, ParticleSystem::Genera
 	currentData.positionGaussian.clear();
 	currentData.velocityUniform.clear();
 	currentData.positionUniform.clear();
+	currentData.destroyRange.clear();
+	currentData.mass.clear();
+	currentData.lifeTime.clear();
+	currentData.randomColor.clear();
 
 	currentData.color.push_back(sys->getData().color[type]);
 	currentData.particleNumber.push_back(sys->getData().particleNumber[type]);
@@ -39,6 +43,10 @@ ParticleGenerator::ParticleGenerator(ParticleSystem* sys, ParticleSystem::Genera
 	currentData.velocityUniform.push_back(sys->getData().velocityUniform[type]);
 	currentData.positionGaussian.push_back(sys->getData().positionGaussian[type]);
 	currentData.positionUniform.push_back(sys->getData().positionUniform[type]);
+	currentData.destroyRange.push_back(sys->getData().destroyRange[type]);
+	currentData.lifeTime.push_back(sys->getData().lifeTime[type]);
+	currentData.mass.push_back(sys->getData().mass[type]);
+	currentData.randomColor.push_back(sys->getData().randomColor[type]);
 }
 
 

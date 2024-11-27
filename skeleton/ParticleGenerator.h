@@ -26,7 +26,7 @@ protected:
 	float timeToNextGen;
 	float elapsedTime;
 	const float PARTICLE_TIME = 10.0;
-	const float SOLIDTIME = 5.0;
+	const float SOLIDTIME = 15.0;
 
 	ParticleSystem* sys = nullptr;
 	ParticleSystem::GeneratorType type;

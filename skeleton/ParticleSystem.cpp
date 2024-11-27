@@ -143,6 +143,11 @@ void ParticleSystem::setGeneratorColor(std::list<ParticleGenerator*>::iterator i
 	(*id)->currentData.color.front() = color;
 }
 
+void ParticleSystem::setGeneratorRandomColor(std::list<ParticleGenerator*>::iterator id, bool random)
+{
+	(*id)->currentData.randomColor.front() = random;
+}
+
 bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const
 {
 	return  abs(position.x) > DESTROY_RANGE || abs(position.y) > DESTROY_RANGE || abs(position.z) > DESTROY_RANGE;

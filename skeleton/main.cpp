@@ -122,8 +122,13 @@ void initPhysics(bool interactive)
 	pSystem = new ParticleSystem(gScene);
 
 	//GENERADORES DE RIGIDOS-SOLIDOS
-	auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX, Vector3(0, 50, 0));
-	pSystem->setGeneratorSpeed(solidGenerator, 0.1);
+	auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::CAPSULE, Vector3(0, 50, 0));
+	auto solidGenerator1 = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX, Vector3(0, 50, 0));
+	pSystem->setGeneratorSpeed(solidGenerator, 0.02);
+	pSystem->setGeneratorPosUniform(solidGenerator, { -20, 20 });
+	pSystem->setGeneratorRandomColor(solidGenerator, true);
+	pSystem->setGeneratorRandomColor(solidGenerator1, true);
+	
 
 	//GENERADORES PARTICULAS
 	//generator1 = pSystem->addGenerator(ParticleSystem::FOG);
@@ -147,7 +152,7 @@ void initPhysics(bool interactive)
 
 	//////GENERADORES DE FUERZA
 	auto gravity = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 9.8, 0));
-	auto water = pSystem->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(1000, 20, 1000), 1000);
+	auto water = pSystem->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(1000, 20, 1000), 1000);
 	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(0, 50, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
 	auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 200000, 0), Vector3(100, 100, 100));
 	//auto fgen4 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(320000, 0, 3000), Vector3(100, 100, 100));
@@ -159,7 +164,7 @@ void initPhysics(bool interactive)
 	////pSystem->applyForceGenerator(gen4, fgen3);
 	////pSystem->applyForceGenerator(gen3, gravity);
 	//pSystem->applyForceGenerator(solidGenerator, gravity);
-	pSystem->applyForceGenerator(solidGenerator, fgen3);
+	pSystem->applyForceGenerator(solidGenerator, water);
 	//float init = 1.0;
 	//auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 20, 500, init);
 
