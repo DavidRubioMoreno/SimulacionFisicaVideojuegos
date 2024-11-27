@@ -37,7 +37,8 @@ void ParticleSystem::update(double t)
 void ParticleSystem::updateParticles(double t) {
 	for (auto it = particles.begin(); it != particles.end();)
 	{		
-		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
+		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos(),
+			(*it)->getGenerator()->currentData.destroyRange.front())) {
 			eliminateSubscriptions((*it));
 			delete *it;  // Liberamos la memoria de la partícula
 			it = particles.erase(it);  // Eliminamos la partícula y obtenemos el siguiente iterador			
@@ -53,7 +54,8 @@ void ParticleSystem::updateSolids(double t)
 {
 	for (auto it = dynamicObjects.begin(); it != dynamicObjects.end();)
 	{
-		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos())) {
+		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos(),
+			(*it)->getGenerator()->currentData.destroyRange.front())) {
 			eliminateSubscriptionsSolid((*it));
 			delete* it;  
 			it = dynamicObjects.erase(it); 		
@@ -148,9 +150,14 @@ void ParticleSystem::setGeneratorRandomColor(std::list<ParticleGenerator*>::iter
 	(*id)->currentData.randomColor.front() = random;
 }
 
-bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position) const
+void ParticleSystem::setGeneratorDestroyRange(std::list<ParticleGenerator*>::iterator id, float destroyRange)
 {
-	return  abs(position.x) > DESTROY_RANGE || abs(position.y) > DESTROY_RANGE || abs(position.z) > DESTROY_RANGE;
+	(*id)->currentData.destroyRange.front() = destroyRange;
+}
+
+bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position, const float& range) const
+{
+	return  abs(position.x) > range || abs(position.y) > range || abs(position.z) > range;
 }
 
 void ParticleSystem::eliminateSubscriptions(Particle* p)

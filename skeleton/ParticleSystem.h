@@ -23,7 +23,7 @@ struct GeneratorInfo {
 	 std::vector<std::pair<float, float>> positionGaussian = { {0,0.01}, {0,0}, {0,0} , {0.0, 10.0}, {0,0}};
 	 std::vector<std::pair<float, float>> positionUniform = { {0,0}, {-50,50}, {0,0} , {0,0} ,{0,0} };
 	 std::vector<physx::PxVec4>color = { {0, 0, 1, 0.8} , {0.5, 0.5, 0.5, 1}, {1, 0.3, 0.3, 1} , {0.1, 0.1, 0.8, 1}, {1, 1, 0, 1}};
-	 std::vector<float> mass = { 1.0, 1.0, 1.0, 1.0, 1.0 };
+	 std::vector<float> density = { 1000, 100, 2000, 1000, 1000 };
 	 std::vector<float> lifeTime = {10.0, 10.0, 10.0, 10.0, 10.0};
 	 std::vector<float> destroyRange = { DESTROY_RANGE, DESTROY_RANGE, DESTROY_RANGE, DESTROY_RANGE, DESTROY_RANGE };
 	 std::vector<bool> randomColor = { false, false, false, false, false };
@@ -65,11 +65,12 @@ public:
 	void setGeneratorPosUniform(std::list<ParticleGenerator*>::iterator id, std::pair<float, float> range);
 	void setGeneratorColor(std::list<ParticleGenerator*>::iterator id, physx::PxVec4 color);
 	void setGeneratorRandomColor(std::list<ParticleGenerator*>::iterator id, bool random);
+	void setGeneratorDestroyRange(std::list<ParticleGenerator*>::iterator id, float destroyRange);
 private:
 	void updateParticles(double t);
 	void updateSolids(double t);
 	void updateGenerators(double t);
-	bool particleOutOfRange(const physx::PxVec3& position) const;
+	bool particleOutOfRange(const physx::PxVec3& position, const float& range) const;
 	void eliminateSubscriptions(Particle* p);
 	void eliminateSubscriptionsSolid(RigidDynamicObject* s);
 	std::list<ParticleGenerator*> generators;

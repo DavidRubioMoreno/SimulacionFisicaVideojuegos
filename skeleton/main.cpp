@@ -127,6 +127,8 @@ void initPhysics(bool interactive)
 	pSystem->setGeneratorSpeed(solidGenerator, 0.02);
 	pSystem->setGeneratorPosUniform(solidGenerator, { -20, 20 });
 	pSystem->setGeneratorRandomColor(solidGenerator, true);
+	pSystem->setGeneratorDestroyRange(solidGenerator, 10.0);
+
 	pSystem->setGeneratorRandomColor(solidGenerator1, true);
 	
 
