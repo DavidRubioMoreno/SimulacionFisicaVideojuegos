@@ -27,6 +27,7 @@ struct GeneratorInfo {
 	 std::vector<float> lifeTime = {10.0, 10.0, 10.0, 10.0, 10.0};
 	 std::vector<float> destroyRange = { DESTROY_RANGE, DESTROY_RANGE, DESTROY_RANGE, DESTROY_RANGE, DESTROY_RANGE };
 	 std::vector<bool> randomColor = { false, false, false, false, false };
+	 std::vector<physx::PxVec3> size = { {0.5, 0.5, 0.5}, {0.5, 0.5, 0.5}, {1, 1, 1}, {0.5, 0.5, 0.5}, {1,1,1} };
 };
 
 class ParticleSystem
@@ -68,6 +69,7 @@ public:
 	void setGeneratorDestroyRange(std::list<ParticleGenerator*>::iterator id, float destroyRange);
 	void setGeneratorLifeTime(std::list<ParticleGenerator*>::iterator id, float time);
 	void setGeneratorDensity(std::list<ParticleGenerator*>::iterator id, float density);
+	void setGeneratorParticleSize(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 size);
 private:
 	void updateParticles(double t);
 	void updateSolids(double t);

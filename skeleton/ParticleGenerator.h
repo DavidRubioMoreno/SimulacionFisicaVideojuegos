@@ -17,6 +17,7 @@ protected:
 	virtual void init() = 0;	
 	virtual void update(double t);
 	void setSpawnPoint(Vector3& v);
+	void changeSize(const Vector3& size);
 	virtual void generateParticle() = 0;
 	void addForceGenerator(std::list<ForceGenerator*>::iterator forceGenerator);
 	const std::vector<std::list<ForceGenerator*>::iterator>& subs() { return subscriptions; }
@@ -30,6 +31,7 @@ protected:
 
 	ParticleSystem* sys = nullptr;
 	ParticleSystem::GeneratorType type;
+	ParticleSystem::SolidShape shape;
 	physx::PxShape* sphere = nullptr;
 	ParticleSystem::Info currentData;
 

@@ -45,7 +45,7 @@ void UniformGenerator::generateParticle() {
     }
 
     if (solid) {
-        sys->addSolid(new RigidDynamicObject(sys->getScene(), color, generationSpawn + Vector3(px, py, pz), elapsedTime + currentData.lifeTime.front(), velocity, sphere, this, 1000.0, velocity));
+        sys->addSolid(new RigidDynamicObject(sys->getScene(), color, generationSpawn + Vector3(px, py, pz), elapsedTime + currentData.lifeTime.front(), velocity, sphere, this, currentData.density.front(), velocity));
     }
     else {
         // Generamos la partícula con la velocidad aleatoria

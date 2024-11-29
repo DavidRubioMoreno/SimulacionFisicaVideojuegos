@@ -165,6 +165,11 @@ void ParticleSystem::setGeneratorDensity(std::list<ParticleGenerator*>::iterator
 	(*id)->currentData.density.front() = density;
 }
 
+void ParticleSystem::setGeneratorParticleSize(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 size)
+{
+	(*id)->changeSize(size);
+}
+
 bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position, const float& range) const
 {
 	return  abs(position.x) > range || abs(position.y) > range || abs(position.z) > range;
