@@ -6,7 +6,7 @@ using namespace physx;
 
 ParticleGenerator::ParticleGenerator(ParticleSystem* sys, ParticleSystem::GeneratorType type, ParticleSystem::SolidShape shapetype, Vector3 pos)
 	: generationTime(sys->getData().generationSpeed[type]), elapsedTime(0.0),
-	timeToNextGen(generationTime), sys(sys), generationSpawn(pos), type(type) , shape(shape)
+	timeToNextGen(generationTime), sys(sys), generationSpawn(pos), type(type) , shape(shapetype)
 {
 
 	Vector3 size = sys->getData().size[type];
