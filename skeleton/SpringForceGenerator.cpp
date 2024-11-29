@@ -65,5 +65,5 @@ Vector3 SpringForceGenerator::getFinalForce(Vector3 relativePosV)
 	// Normalización del vector de posición relativa para dirección de la fuerza
 	relativePosV.normalize();
 
-	return relativePosV * deltaX * K;
+	return Vector3(relativePosV * deltaX * K);
 }

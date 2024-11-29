@@ -155,6 +155,16 @@ void ParticleSystem::setGeneratorDestroyRange(std::list<ParticleGenerator*>::ite
 	(*id)->currentData.destroyRange.front() = destroyRange;
 }
 
+void ParticleSystem::setGeneratorLifeTime(std::list<ParticleGenerator*>::iterator id, float time)
+{
+	(*id)->currentData.lifeTime.front() = time;
+}
+
+void ParticleSystem::setGeneratorDensity(std::list<ParticleGenerator*>::iterator id, float density)
+{
+	(*id)->currentData.density.front() = density;
+}
+
 bool ParticleSystem::particleOutOfRange(const physx::PxVec3& position, const float& range) const
 {
 	return  abs(position.x) > range || abs(position.y) > range || abs(position.z) > range;
@@ -275,7 +285,7 @@ void ParticleSystem::activateForceGenerator(std::list<ForceGenerator*>::iterator
 
 std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos)
 {
-	generators.push_back(new DefaultParticleGenerator(0, this, DEFAULT));
+	generators.push_back(new DefaultParticleGenerator(this, DEFAULT));
 
 	switch (type)
 	{
@@ -294,6 +304,8 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringTyp
 	applyForceGenerator(gen, --forceGenerators.end());
 
 	Vector3 init(pos);
+
+	setGeneratorPosition(gen, pos);
 
 	for (size_t i = 0; i < nParticles; i++)
 	{

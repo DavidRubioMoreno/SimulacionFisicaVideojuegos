@@ -48,6 +48,6 @@ void GaussianGenerator::generateParticle() {
         sys->addSolid(new RigidDynamicObject(sys->getScene(), color, generationSpawn + Vector3(px, py, pz), elapsedTime + currentData.lifeTime.front(), velocity, sphere, this, 1000.0, velocity));
     }
     else {
-        sys->addParticle(new Particle(color, generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + PARTICLE_TIME, this, sphere));
+        sys->addParticle(new Particle(color, generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + currentData.lifeTime.front(), this, sphere));
     }
 }

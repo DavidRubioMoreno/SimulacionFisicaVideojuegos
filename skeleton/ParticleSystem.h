@@ -66,6 +66,8 @@ public:
 	void setGeneratorColor(std::list<ParticleGenerator*>::iterator id, physx::PxVec4 color);
 	void setGeneratorRandomColor(std::list<ParticleGenerator*>::iterator id, bool random);
 	void setGeneratorDestroyRange(std::list<ParticleGenerator*>::iterator id, float destroyRange);
+	void setGeneratorLifeTime(std::list<ParticleGenerator*>::iterator id, float time);
+	void setGeneratorDensity(std::list<ParticleGenerator*>::iterator id, float density);
 private:
 	void updateParticles(double t);
 	void updateSolids(double t);
