@@ -102,3 +102,23 @@ void ParticleGenerator::addForceGenerator(std::list<ForceGenerator*>::iterator f
 {
 	subscriptions.push_back(forceGenerator);
 }
+
+Vector3 ParticleGenerator::getUniformDistribution(float a, float b)
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine generator(seed);
+
+	std::uniform_real_distribution<float> distribution(a, b);
+
+	return Vector3(distribution(generator), distribution(generator), distribution(generator));
+}
+
+Vector3 ParticleGenerator::getNormalDistribution(float mean, float dv)
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine generator(seed);
+
+	std::normal_distribution<float> distribution(mean, dv);
+
+	return Vector3(distribution(generator), distribution(generator), distribution(generator));
+}

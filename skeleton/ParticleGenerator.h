@@ -20,6 +20,8 @@ protected:
 	void changeSize(const Vector3& size);
 	virtual void generateParticle() = 0;
 	void addForceGenerator(std::list<ForceGenerator*>::iterator forceGenerator);
+	Vector3 getUniformDistribution(float a, float b);
+	Vector3 getNormalDistribution(float mean, float dv);
 	const std::vector<std::list<ForceGenerator*>::iterator>& subs() { return subscriptions; }
 
 	Vector3 generationSpawn;
@@ -28,6 +30,7 @@ protected:
 	float elapsedTime;
 	const float PARTICLE_TIME = 10.0;
 	const float SOLIDTIME = 15.0;
+	bool solid = false;
 
 	ParticleSystem* sys = nullptr;
 	ParticleSystem::GeneratorType type;

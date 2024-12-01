@@ -40,8 +40,13 @@ ParticleSystem* pSystem = NULL;
 
 
 PxMaterial*				gMaterial	= NULL;
+PxMaterial* gResitantMat = NULL;
+PxMaterial* gIceMat = NULL;
 
 PxPvd*                  gPvd        = NULL;
+
+
+PxActor* gFloor = NULL;
 
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene* gScene = NULL;
@@ -56,6 +61,9 @@ double elapsedTime = 0.0;
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2){
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
+	if (actor2 == gFloor) {
+		std::cout << "colision" << "\n";
+	}
 }
 
 
@@ -73,6 +81,10 @@ void initPhysics(bool interactive)
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
 
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+
+	gIceMat = gPhysics->createMaterial(0.1f, 0.01f, 0.2f);
+
+	gResitantMat = gPhysics->createMaterial(0.9f, 0.5f, 1.0f);
 
 	const float DISTANCE_TO_CENTRE = 10;
 
@@ -116,11 +128,16 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 	
-	auto dynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
-	//auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
-	new RigidStaticObject(gScene, colorGreen, Vector3(0, 0, -100), RigidStaticObject::PLANE, Vector3(50 ,50, 10));
-	new RigidStaticObject(gScene, colorGreen, Vector3(0, 0, 100), RigidStaticObject::PLANE, Vector3(50, 50, 10));
+	auto gDynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
 	
+	//auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
+	auto gStatic = new RigidStaticObject(gScene, colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50 ,5, 50));
+	gFloor = gStatic->getActor();
+
+	new RigidStaticObject(gScene, colorRed, Vector3(0, 0, 100), RigidStaticObject::PLANE, Vector3(50, 50, 10));
+	
+	onCollision(gDynamic->getActor(), gFloor);
+
 	//SISTEMA DE PROYECTILES
 	pController = new ProyectileController();
 
@@ -128,7 +145,7 @@ void initPhysics(bool interactive)
 	pSystem = new ParticleSystem(gScene);
 
 	//GENERADORES DE RIGIDOS-SOLIDOS
-	auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX, Vector3(0, 0, 90));
+	/*auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX, Vector3(0, 0, 90));
 	auto solidGenerator1 = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::CAPSULE, Vector3(0, 0, -90));
 	pSystem->setGeneratorSpeed(solidGenerator, 0.02);
 	pSystem->setGeneratorPosUniform(solidGenerator, { -20, 20 });
@@ -140,7 +157,7 @@ void initPhysics(bool interactive)
 	pSystem->setGeneratorRandomColor(solidGenerator1, true);
 	pSystem->setGeneratorPosUniform(solidGenerator1, { -20, 20 });
 	pSystem->setGeneratorVelUniform(solidGenerator1, { -100, 100 });
-	pSystem->setGeneratorDensity(solidGenerator1, 10000);
+	pSystem->setGeneratorDensity(solidGenerator1, 10000);*/
 	
 
 	//GENERADORES PARTICULAS
@@ -176,12 +193,13 @@ void initPhysics(bool interactive)
 	//pSystem->applyForceGenerator(gen2, fgen2);
 	////pSystem->applyForceGenerator(gen4, fgen3);
 	////pSystem->applyForceGenerator(gen3, gravity);
-	pSystem->applyForceGenerator(solidGenerator1, water);
-	pSystem->applyForceGenerator(solidGenerator, water);
-	float init = 1.0;
-	auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 10, 50, init, Vector3(0, 100, 0));
+	//pSystem->applyForceGenerator(solidGenerator1, water);
+	//pSystem->applyForceGenerator(solidGenerator, water);
 
+	float init = 1.0;
+	auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 10, 50, init, Vector3(0, 50, 0));
 	pSystem->applyForceGenerator(spring, gravity);
+
 	}
 
 
@@ -196,17 +214,6 @@ void stepPhysics(bool interactive, double t)
 
 	pController->integrateProjectiles(t);
 	pSystem->update(t);
-
-	/*if (elapsedTime > 0.5f) {
-		
-	}*/
-
-	/*if (elapsedTime > 1.5f) {
-		new RigidDynamicObject(gScene, Vector4(0.7, 0.7, 0.0, 1.0), Vector3(0, 50, 0), 5.0f, Vector3(0, -50, 0), RigidDynamicObject::BOX, Vector3(4, 4, 4), 1.0f, Vector3(5, 0, 5));
-		elapsedTime = 0.0;
-	}*/
-
-	
 	
 	gScene->simulate(t);
 	gScene->fetchResults(true);
@@ -220,8 +227,6 @@ void cleanupPhysics(bool interactive)
 
 	delete pController;
 	delete pSystem;
-
-
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();

@@ -19,6 +19,7 @@ public:
 	float getTime() const { return destroyTime; }
 	Vector3 getPos() const { return solid->getGlobalPose().p; }
 	Vector3 getVel() const { return solid->getLinearVelocity(); }
+	physx::PxRigidDynamic* getActor() { return solid; }
 	float getHeight() const { return height; }
 	void addForce(const Vector3& force);
 	void addAccel(const Vector3& accel);

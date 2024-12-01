@@ -34,7 +34,8 @@ RigidDynamicObject::RigidDynamicObject(physx::PxScene* scene, Vector4 color, Vec
 	if (shape != nullptr)
 		solid->attachShape(*shape);
 
-	PxRigidBodyExt::updateMassAndInertia(*solid, density);
+	solid->setMassSpaceInertiaTensor(Vector3(size.y * size.z, size.x * size.z, size.x * size.y));
+	//PxRigidBodyExt::updateMassAndInertia(*solid, density);
 
 	scene->addActor(*solid);
 

@@ -10,6 +10,5 @@ public:
 	void update(double t) override;
 protected:
 	void generateParticle() override;
-	bool solid = false;
 };
 

@@ -14,42 +14,25 @@ void UniformGenerator::update(double t) {
 }
 
 void UniformGenerator::generateParticle() {
-    // Usamos el tiempo actual como semilla para el generador de números aleatorios
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine generator(seed);
+    Vector3 velocity = getUniformDistribution(currentData.velocityUniform.front().first, currentData.velocityUniform.front().second);
 
-    // Definimos la distribución uniforme 
-    std::uniform_real_distribution<float> distribution(currentData.velocityUniform.front().first, currentData.velocityUniform.front().second);  // Rango de la distribución uniforme
-    std::uniform_real_distribution<float> distributionPosition(currentData.positionUniform.front().first, currentData.positionUniform.front().second);
-
-    // Generamos velocidades aleatorias en los ejes X, Y y Z
-    float vx = distribution(generator);  // Velocidad en X
-    float vy = distribution(generator);  // Velocidad en Y
-    float vz = distribution(generator);  // Velocidad en Z
-
-    // Generamos posiciones aleatorias en los ejes X, Y y Z
-    float px = distributionPosition(generator);  // Posicion en X
-    float py = distributionPosition(generator);  // Posicion en Y
-    float pz = distributionPosition(generator);  // Posicion en Z
-
-    // Creamos un vector de velocidad aleatorio con los valores generados
-    Vector3 velocity(vx, vy, vz);
+    Vector3 position = getUniformDistribution(currentData.positionUniform.front().first, currentData.positionUniform.front().second);
 
     Vector4 color = currentData.color.front();
 
     if (currentData.randomColor.front()) {
-        std::uniform_real_distribution<float> distributionColor(0.0, 1.0);
-        color.x = distributionColor(generator);
-        color.y = distributionColor(generator);
-        color.z = distributionColor(generator);
+        Vector3 rgb = getUniformDistribution(0, 1);
+        color = Vector4(rgb, color.w);
     }
 
     if (solid) {
-        sys->addSolid(new RigidDynamicObject(sys->getScene(), color, generationSpawn + Vector3(px, py, pz), elapsedTime + currentData.lifeTime.front(), velocity, sphere, this, currentData.density.front(), velocity));
+        sys->addSolid(new RigidDynamicObject(sys->getScene(), color, generationSpawn + position,
+            elapsedTime + currentData.lifeTime.front(), velocity, sphere, this, currentData.density.front(), velocity));
     }
     else {
         // Generamos la partícula con la velocidad aleatoria
-        sys->addParticle(new Particle(color, generationSpawn + Vector3(px, py, pz), velocity, Vector3(0, 0, 0), DAMPING, elapsedTime + currentData.lifeTime.front(), this, sphere));
+        sys->addParticle(new Particle(color, generationSpawn + position, velocity, Vector3(0, 0, 0),
+            DAMPING, elapsedTime + currentData.lifeTime.front(), this, sphere));
     }
    
     
