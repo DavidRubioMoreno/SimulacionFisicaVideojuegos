@@ -28,6 +28,7 @@
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="RigidDynamicObject.cpp" />
     <ClCompile Include="RigidStaticObject.cpp" />
+    <ClCompile Include="GameManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="RigidDynamicObject.h" />
     <ClInclude Include="RigidStaticObject.h" />
+    <ClInclude Include="GameManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

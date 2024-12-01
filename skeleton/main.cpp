@@ -11,9 +11,7 @@
 #include "Particle.h"
 #include "ProyectileController.h"
 #include "ParticleSystem.h"
-#include "ParticleGenerator.h"
-#include "RigidDynamicObject.h"
-#include "RigidStaticObject.h"
+#include "GameManager.h"
 #include <list>
 
 #include <iostream>
@@ -48,6 +46,8 @@ PxPvd*                  gPvd        = NULL;
 
 PxActor* gFloor = NULL;
 
+GameManager* mngr = NULL;
+
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene* gScene = NULL;
 
@@ -59,11 +59,7 @@ float speedIncrease = 0.0f;
 double elapsedTime = 0.0;
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2){
-	PX_UNUSED(actor1);
-	PX_UNUSED(actor2);
-	if (actor2 == gFloor) {
-		std::cout << "colision" << "\n";
-	}
+	mngr->onCollision(actor1, actor2);
 }
 
 
@@ -127,22 +123,25 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	
-	auto gDynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
-	
-	//auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
-	auto gStatic = new RigidStaticObject(gScene, colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50 ,5, 50));
-	gFloor = gStatic->getActor();
 
-	new RigidStaticObject(gScene, colorRed, Vector3(0, 0, 100), RigidStaticObject::PLANE, Vector3(50, 50, 10));
 	
-	onCollision(gDynamic->getActor(), gFloor);
+	//auto gDynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
+	//
+	////auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
+	//auto gStatic = new RigidStaticObject(gScene, colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50 ,5, 50));
+	//gFloor = gStatic->getActor();
+
+	//new RigidStaticObject(gScene, colorRed, Vector3(0, 0, 100), RigidStaticObject::PLANE, Vector3(50, 50, 10));
+	//
+	//onCollision(gFloor, gFloor);
 
 	//SISTEMA DE PROYECTILES
 	pController = new ProyectileController();
 
 	//SISTEMA DE PARTICULAS
 	pSystem = new ParticleSystem(gScene);
+
+	mngr = new GameManager(pSystem);
 
 	//GENERADORES DE RIGIDOS-SOLIDOS
 	/*auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX, Vector3(0, 0, 90));
@@ -212,8 +211,10 @@ void stepPhysics(bool interactive, double t)
 
 	elapsedTime += t;
 
+	mngr->update(t);
 	pController->integrateProjectiles(t);
 	pSystem->update(t);
+
 	
 	gScene->simulate(t);
 	gScene->fetchResults(true);
@@ -227,6 +228,7 @@ void cleanupPhysics(bool interactive)
 
 	delete pController;
 	delete pSystem;
+	delete mngr;
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
