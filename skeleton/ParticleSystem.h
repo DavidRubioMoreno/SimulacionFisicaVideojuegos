@@ -6,9 +6,10 @@
 #include <PxPhysicsAPI.h>
 
 constexpr float G = -9.81;
-constexpr double DAMPING = 0.000001;
+constexpr double DAMPING = 0.0001;
 constexpr float DESTROY_RANGE = 250;
 constexpr int GENTYPES = 5;
+constexpr int MAXSOLIDS = 1000;
 
 class ParticleGenerator;
 class ForceGenerator;
@@ -48,6 +49,7 @@ public:
 	void addParticle(Particle* p);
 	void addSolid(RigidDynamicObject* rObject);
 	GeneratorInfo getData() const { return data; }
+	int getNumberSolids() const { return solidsInScene; }
 	physx::PxScene* getScene();
 
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
@@ -83,6 +85,7 @@ private:
 	std::list<RigidDynamicObject*> dynamicObjects;
 	physx::PxScene* gScene = nullptr;
 	float elapsedTime = 0;
+	int solidsInScene = 0;
 	GeneratorInfo data;
 };
 

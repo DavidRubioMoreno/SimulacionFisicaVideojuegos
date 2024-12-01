@@ -53,10 +53,6 @@ PxScene* gScene = NULL;
 
 ContactReportCallback gContactReportCallback;
 
-std::list<ParticleGenerator*>::iterator generator1;
-
-float speedIncrease = 0.0f;
-double elapsedTime = 0.0;
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2){
 	mngr->onCollision(actor1, actor2);
@@ -124,16 +120,6 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	
-	//auto gDynamic = new RigidDynamicObject(gScene, colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4,4,4), 1.0f, Vector3(5,0,5));
-	//
-	////auto dynamic1 = new RigidDynamicObject(gScene, colorRed, Vector3(0, 0, 0), 5.0f, Vector3(10, 10, 0), RigidDynamicObject::BOX);
-	//auto gStatic = new RigidStaticObject(gScene, colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50 ,5, 50));
-	//gFloor = gStatic->getActor();
-
-	//new RigidStaticObject(gScene, colorRed, Vector3(0, 0, 100), RigidStaticObject::PLANE, Vector3(50, 50, 10));
-	//
-	//onCollision(gFloor, gFloor);
 
 	//SISTEMA DE PROYECTILES
 	pController = new ProyectileController();
@@ -141,6 +127,7 @@ void initPhysics(bool interactive)
 	//SISTEMA DE PARTICULAS
 	pSystem = new ParticleSystem(gScene);
 
+	//GAME MANAGER
 	mngr = new GameManager(pSystem);
 
 	//GENERADORES DE RIGIDOS-SOLIDOS
@@ -209,8 +196,6 @@ void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 
-	elapsedTime += t;
-
 	mngr->update(t);
 	pController->integrateProjectiles(t);
 	pSystem->update(t);
@@ -260,6 +245,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//std::cout << "VECTOR: " << vectorRotado.x << ", " << vectorRotado.y << ", " << vectorRotado.z << "\n";
 	//std::cout << "INIT_POS: " << camera.p.x << ", " << camera.p.y << ", " << camera.p.z << "\n";
 
+	mngr->keyPress(key, camera);
+
 	switch(toupper(key))
 	{
 	case 'G':
@@ -270,9 +257,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case 'J':
 		pController->addProyectile(Proyectil::ProjectileType::PROYECTILE);
-		break;
-	case 'E':
-		pSystem->applyForceGenerator(generator1, pSystem->addForceGenerator(ParticleSystem::EXPLOSIVE, Vector3(0, 0, 0), Vector3(5000, 5000, 5000), Vector3(100, 100, 100)));
 		break;
 	default:
 		break;

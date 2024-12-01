@@ -6,6 +6,7 @@
 #include "RigidDynamicObject.h"
 #include "RigidStaticObject.h"
 
+using namespace physx;
 
 GameManager::GameManager(ParticleSystem* sys) : currentState(INTRO), pSys(sys)
 {
@@ -174,7 +175,19 @@ void GameManager::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
-	std::cout << "ayo" << "\n";
+	
+}
+
+void GameManager::keyPress(unsigned char key, const PxTransform& camera)
+{
+	switch (toupper(key))
+	{
+	case 'E':
+		pSys->addSolidGenerator(ParticleSystem::DistributionType::UNIFORM, ParticleSystem::SolidShape::CAPSULE);
+		break;
+	default:
+		break;
+	}
 }
 
 void GameManager::playerHit()

@@ -16,6 +16,7 @@ public:
 	void init();
 	void update(double t);
 	void onCollision(physx::PxActor* actor1, physx::PxActor* actor2);
+	void keyPress(unsigned char key, const physx::PxTransform& camera);
 	//void setPlayer(Player* p);
 	//void setHead(IntroHead* h);
 	//void setEnemies(std::vector<Enemy*>* e);

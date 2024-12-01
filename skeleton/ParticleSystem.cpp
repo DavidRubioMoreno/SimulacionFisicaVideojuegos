@@ -59,6 +59,7 @@ void ParticleSystem::updateSolids(double t)
 			eliminateSubscriptionsSolid((*it));
 			delete* it;  
 			it = dynamicObjects.erase(it); 		
+			solidsInScene--;
 		}
 		else {
 			++it;  // Solo incrementamos el iterador si no se eliminó
@@ -94,6 +95,8 @@ void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva pa
 void ParticleSystem::addSolid(RigidDynamicObject* rObject)
 {
 	dynamicObjects.push_back(rObject);
+
+	solidsInScene++;
 
 	for (auto& gen : rObject->getGenerator()->subscriptions)
 	{

@@ -64,10 +64,12 @@ ParticleGenerator::~ParticleGenerator() {
 void ParticleGenerator::update(double t) {
 	elapsedTime += t;
 	if (elapsedTime > timeToNextGen) {
-		for (size_t i = 0; i < currentData.particleNumber.front(); i++)
-		{
-			generateParticle();
-		}	
+		if (!solid || sys->getNumberSolids() < MAXSOLIDS) {
+			for (size_t i = 0; i < currentData.particleNumber.front(); i++)
+			{
+				generateParticle();
+			}
+		}		
 		timeToNextGen += currentData.generationSpeed.front();
 	}
 }
