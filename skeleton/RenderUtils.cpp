@@ -57,7 +57,7 @@ void keyboardCallback(unsigned char key, int x, int y)
 	if(key==27)
 		exit(0);
 
-	if(!sCamera->handleKey(key, x, y))
+	if(!sCamera->handleKey(key, x, y, 5.0))
 		keyPress(key, sCamera->getTransform());
 }
 

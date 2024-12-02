@@ -9,7 +9,7 @@ class GameManager
 {
 public:
 	enum State {INTRO,GAME,FINAL};
-	GameManager(ParticleSystem* sys);
+	GameManager(ParticleSystem* sys, Camera* cam);
 	~GameManager();
 	void updateState(State next);
 	void playerHit();
@@ -38,6 +38,8 @@ private:
 	const Vector4 colorGreen = { 0, 1, 0, 1 };
 	const Vector4 colorBlue = { 0, 0, 1, 1 };
 	const Vector4 colorWhite = { 1, 1, 1, 1 };
+	Camera* camera = nullptr;
+	//const physx::PxTransform& camera;
 	//Player* player = nullptr;
 	//IntroHead* head = nullptr;
 	//IG2App* app = nullptr;

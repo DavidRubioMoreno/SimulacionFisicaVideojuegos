@@ -44,6 +44,8 @@ public:
 	bool				handleKey(unsigned char key, int x, int y, float speed = 1.0f);
 	void				handleMotion(int x, int y);
 	void				handleAnalogMove(float x, float y);
+	void                setDir(physx::PxVec3 dir);
+	void                setPos(physx::PxVec3 pos);
 
 	physx::PxVec3		getEye()	const;
 	physx::PxVec3		getDir()	const;

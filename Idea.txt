@@ -1,0 +1,27 @@
+Título: “Fuerza y Caos”
+Descripción del juego
+En Fuerza y Caos, el jugador controla una esfera mágica que debe atravesar una serie de desafíos en un entorno dinámico lleno de elementos interactivos y efectos de física basados en sólidos rígidos y partículas. El objetivo principal es completar niveles generados proceduralmente recolectando puntos de energía para desbloquear habilidades y progresar. El diseño rejugable se garantiza a través de mapas siempre cambiantes, desafíos aleatorios y tablas de clasificación globales.
+
+Mecánicas principales
+Control principal:
+
+El jugador mueve la esfera mediante inclinación (si es móvil), arrastre, o con controles clásicos.
+La esfera reacciona a la física realista, incluyendo fricción, gravedad y colisiones.
+Interacción con fuerzas:
+
+Muelles: Utiliza plataformas elásticas para lanzarte a áreas inaccesibles o esquivar trampas.
+Viento: Corrientes de aire afectan la trayectoria de la esfera; los jugadores deben calcular sus movimientos para no ser desviados.
+Hielo: Superficies resbaladizas alteran la fricción y requieren precisión al controlar.
+Agua: En zonas acuáticas, la esfera flota o se hunde dependiendo de su densidad (puedes cambiarla con power-ups).
+Tornados: Vórtices que succionan partículas y objetos, creando rutas inesperadas o trampas.
+Explosiones: Bombas que generan ondas de choque, lanzando la esfera o destruyendo obstáculos cercanos.
+Generación procedural:
+
+Los niveles son creados aleatoriamente con diferentes combinaciones de elementos (rampas, caídas, plataformas inestables, etc.) y fuerzas físicas.
+Cada partida es única, incrementando la rejugabilidad.
+Partículas como indicadores:
+
+Partículas de fuego o humo indican peligros.
+Agua salpicando avisa de zonas con poco control de tracción.
+Hojas o polvo indican corrientes de viento cercanas.
+Objetivo del juego

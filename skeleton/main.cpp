@@ -128,7 +128,7 @@ void initPhysics(bool interactive)
 	pSystem = new ParticleSystem(gScene);
 
 	//GAME MANAGER
-	mngr = new GameManager(pSystem);
+	mngr = new GameManager(pSystem, GetCamera());
 
 	//GENERADORES DE RIGIDOS-SOLIDOS
 	/*auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX, Vector3(0, 0, 90));
@@ -182,9 +182,9 @@ void initPhysics(bool interactive)
 	//pSystem->applyForceGenerator(solidGenerator1, water);
 	//pSystem->applyForceGenerator(solidGenerator, water);
 
-	float init = 1.0;
-	auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 10, 50, init, Vector3(0, 50, 0));
-	pSystem->applyForceGenerator(spring, gravity);
+	//float init = 1.0;
+	//auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 10, 50, init, Vector3(0, 50, 0));
+	//pSystem->applyForceGenerator(spring, gravity);
 
 	}
 
@@ -199,7 +199,7 @@ void stepPhysics(bool interactive, double t)
 	mngr->update(t);
 	pController->integrateProjectiles(t);
 	pSystem->update(t);
-
+	
 	
 	gScene->simulate(t);
 	gScene->fetchResults(true);

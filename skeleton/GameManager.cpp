@@ -8,7 +8,7 @@
 
 using namespace physx;
 
-GameManager::GameManager(ParticleSystem* sys) : currentState(INTRO), pSys(sys)
+GameManager::GameManager(ParticleSystem* sys, Camera* cam) : currentState(INTRO), pSys(sys), camera(cam)
 {
 	init();
 }
@@ -37,9 +37,11 @@ GameManager::~GameManager()
 
 void GameManager::init()
 {
-	auto gDynamic = new RigidDynamicObject(pSys->getScene(), colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4, 4, 4), 1.0f, Vector3(5, 0, 5));
-	auto gStatic = new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50 ,5, 50));
-	onCollision(gDynamic->getActor(), gStatic->getActor());
+	//auto gDynamic = new RigidDynamicObject(pSys->getScene(), colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4, 4, 4), 1.0f, Vector3(5, 0, 5));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50, 5, 50)));
+	camera->setPos(Vector3(100, 0, 0));
+	camera->setDir(Vector3(-1, -0.2, 0));
+	//onCollision(gDynamic->getActor(), gStatic->getActor());
 }
 
 //void GameManager::setPlayer(Player* p)
@@ -175,7 +177,6 @@ void GameManager::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
-	
 }
 
 void GameManager::keyPress(unsigned char key, const PxTransform& camera)
@@ -183,7 +184,6 @@ void GameManager::keyPress(unsigned char key, const PxTransform& camera)
 	switch (toupper(key))
 	{
 	case 'E':
-		pSys->addSolidGenerator(ParticleSystem::DistributionType::UNIFORM, ParticleSystem::SolidShape::CAPSULE);
 		break;
 	default:
 		break;

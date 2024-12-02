@@ -78,6 +78,17 @@ void Camera::handleAnalogMove(float x, float y)
 	mEye += viewY*x;
 }
 
+void Camera::setDir(physx::PxVec3 dir)
+{
+	mDir = dir;
+	mDir.normalize();
+}
+
+void Camera::setPos(physx::PxVec3 pos)
+{
+	mEye = pos;
+}
+
 void Camera::handleMotion(int x, int y)
 {
 	int dx = mMouseX - x;
