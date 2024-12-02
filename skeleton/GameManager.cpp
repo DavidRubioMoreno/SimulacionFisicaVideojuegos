@@ -38,9 +38,40 @@ GameManager::~GameManager()
 void GameManager::init()
 {
 	//auto gDynamic = new RigidDynamicObject(pSys->getScene(), colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4, 4, 4), 1.0f, Vector3(5, 0, 5));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50, 5, 50)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50, 5, 100)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 100, 0), RigidStaticObject::PLANE, Vector3(50, 5, 100)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 5, 60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 20, -60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
+
 	camera->setPos(Vector3(100, 0, 0));
 	camera->setDir(Vector3(-1, -0.2, 0));
+
+	Vector3 initialWallPos(0, 10, -50);
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		auto gen = pSys->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::SPHERE, Vector3(initialWallPos));
+		pSys->setGeneratorPosUniform(gen, { 0,0 });
+		pSys->setGeneratorVelUniform(gen, { 0,0 });
+		pSys->setGeneratorRandomColor(gen, true);
+		pSys->setGeneratorParticleSize(gen, Vector3(2.5, 0, 0));
+		pSys->setGeneratorSpeed(gen, 0.15);
+		pSys->setGeneratorDestroyRange(gen, 500);
+
+		initialWallPos.z += 10;
+	}
+
+	/*for (size_t i = 0; i < 10; i++)
+	{
+		for (size_t j = 0; j < 10; j++)
+		{
+			dynamics.push_back(new RigidDynamicObject(pSys->getScene(), colorBlue, initialWallPos, 10.0, Vector3(0, 0, 0), RigidDynamicObject::BOX, Vector3(2, 2, 4), 1000));
+			initialWallPos.z += 10;
+		}
+		initialWallPos.y += 4.5;
+		initialWallPos.z = -50;
+	}*/
+	
 	//onCollision(gDynamic->getActor(), gStatic->getActor());
 }
 

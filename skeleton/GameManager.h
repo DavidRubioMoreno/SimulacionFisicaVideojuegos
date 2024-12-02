@@ -4,6 +4,7 @@
 
 class ParticleSystem;
 class RigidStaticObject;
+class RigidDynamicObject;
 
 class GameManager
 {
@@ -34,6 +35,7 @@ private:
 	State currentState;
 	ParticleSystem* pSys = nullptr;
 	std::vector<RigidStaticObject*> statics;
+	std::vector<RigidDynamicObject*> dynamics;
 	const Vector4 colorRed = { 1, 0, 0, 1 };
 	const Vector4 colorGreen = { 0, 1, 0, 1 };
 	const Vector4 colorBlue = { 0, 0, 1, 1 };
