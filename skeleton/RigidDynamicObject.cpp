@@ -94,8 +94,7 @@ void RigidDynamicObject::setAffectedByPhysics(bool affected)
 
 RigidDynamicObject::~RigidDynamicObject()
 {
-	if (shape != nullptr)
-		shape->release();
+
 
 	shape = nullptr;
 

@@ -73,7 +73,7 @@ void initPhysics(bool interactive)
 
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
 
-	gMaterial = gPhysics->createMaterial(1.0f, 1.0f, 0.0f);
+	gMaterial = gPhysics->createMaterial(0.6f, 0.4f, 0.0f);
 
 	gIceMat = gPhysics->createMaterial(0.1f, 0.01f, 0.2f);
 

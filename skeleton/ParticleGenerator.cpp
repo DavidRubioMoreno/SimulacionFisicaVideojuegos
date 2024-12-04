@@ -82,19 +82,23 @@ void ParticleGenerator::changeSize(const Vector3& size)
 {
 	currentData.size.front() = size;
 	sphere->release();
+
 	switch (shape)
 	{
 	case ParticleSystem::BOX:
-		sphere = CreateShape(PxBoxGeometry(size));
+		if(size.x > 0 && size.y > 0 && size.z > 0)
+			sphere = CreateShape(PxBoxGeometry(size));
 		break;
 	case ParticleSystem::SPHERE:
+		if (size.x > 0 || size.y > 0 || size.z > 0)
 		sphere = CreateShape(PxSphereGeometry(size.magnitude()));
 		break;
 	case ParticleSystem::CAPSULE:
+		if (size.x > 0 && size.y > 0)
 		sphere = CreateShape(PxCapsuleGeometry(size.x, size.y));
 		break;
 	default:
-		sphere = CreateShape(PxSphereGeometry(size.magnitude()));
+		sphere = CreateShape(PxSphereGeometry(1));
 		break;
 	}
 

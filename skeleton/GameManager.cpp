@@ -10,7 +10,7 @@ using namespace physx;
 
 GameManager::GameManager(ParticleSystem* sys, Camera* cam, PxVec3* window) : currentState(INTRO), pSys(sys), camera(cam), window(window)
 {
-	init();
+
 }
 
 GameManager::~GameManager()
@@ -41,6 +41,14 @@ GameManager::~GameManager()
 
 	dynamics.clear();
 
+	car = nullptr;
+
+}
+
+void GameManager::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
+{
+	PX_UNUSED(actor1);
+	PX_UNUSED(actor2);
 }
 
 void GameManager::init()
@@ -53,55 +61,84 @@ void GameManager::init()
 
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, -70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(20, 50, 3)));
-	//statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 5, 60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
-	//statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 20, -60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(-20, -50, 0), RigidStaticObject::PLANE, Vector3(20, 50, 3)));
+
 
 	camera->setPos(Vector3(150, 0, 0));
 	camera->setDir(Vector3(-1, 0, 0));
 
-	Vector3 initialWallPos(0, 10, -50);
 
 	mainSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::BOX, Vector3(0, 50, 0));
-	pSys->setGeneratorParticleSize(mainSpawner, Vector3(10, 1, 20));
+	pSys->setGeneratorParticleSize(mainSpawner, Vector3(10, 1, 50));
 	pSys->setGeneratorRandomColor(mainSpawner, true);
-	pSys->setGeneratorLifeTime(mainSpawner, 10000);
+	pSys->setGeneratorLifeTime(mainSpawner, LIFETIME);
 
 	ballSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::SPHERE, Vector3(0, 50, 0));
 	pSys->setGeneratorParticleSize(ballSpawner, Vector3(10, 0, 0));
 	pSys->setGeneratorRandomColor(ballSpawner, true);
-	pSys->setGeneratorLifeTime(ballSpawner, 10000);
+	pSys->setGeneratorLifeTime(ballSpawner, LIFETIME);
 
 	blockSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::BOX, Vector3(0, 50, 0));
 	pSys->setGeneratorParticleSize(blockSpawner, Vector3(5, 5, 5));
+	//pSys->setGeneratorDensity(blockSpawner, 1000000.0);
 	pSys->setGeneratorRandomColor(blockSpawner, true);
-	pSys->setGeneratorLifeTime(blockSpawner, 10000);
+	pSys->setGeneratorLifeTime(blockSpawner, LIFETIME);
+
+	carSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::CAPSULE, Vector3(0, 10, 150));
+	pSys->setGeneratorParticleSize(carSpawner, Vector3(5, 10, 0));
+	pSys->setGeneratorDensity(carSpawner, 1.0);
+	pSys->setGeneratorDestroyRange(carSpawner, 500.0);
+	pSys->setGeneratorLifeTime(carSpawner, LIFETIME);
+
+	auto wind = pSys->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 0, -10000000), Vector3(1000, 1000, 1000));
+	pSys->applyForceGenerator(carSpawner, wind);
 
 }
 
 void GameManager::keyPress(unsigned char key, const PxTransform& camTr)
 {
-	Vector3 mousePos = camera->getMousePos();
-	Vector3 mappingVector = Vector3(0, mapCoordinates().y, mapCoordinates().x);
 
-	pSys->setGeneratorPosition(mainSpawner, mappingVector);
-	pSys->setGeneratorPosition(ballSpawner, mappingVector);
-	pSys->setGeneratorPosition(blockSpawner, mappingVector);
-
-	switch (toupper(key))
+	switch (currentState)
 	{
-	case 'B':
-		pSys->generatorCreateObject(mainSpawner);
+	case GameManager::INTRO:
+		switch (toupper(key))
+		{
+		case ' ':
+			updateState(GAME);
+			break;
+		default:
+			break;
+		}
 		break;
-	case 'N':
-		pSys->generatorCreateObject(ballSpawner);
+	case GameManager::GAME:
+		updateGameGenerators();
+		switch (toupper(key))
+		{
+		case '1':
+			if (!crossing)pSys->generatorCreateObject(mainSpawner);
+			break;
+		case '2':
+			if (!crossing)pSys->generatorCreateObject(ballSpawner);
+			break;
+		case '3':
+			if (!crossing)pSys->generatorCreateObject(blockSpawner);
+			break;
+		case ' ':
+			startCrossing();
+			break;
+		default:
+			break;
+		}
 		break;
-	case 'M':
-		pSys->generatorCreateObject(blockSpawner);
+	case GameManager::FINAL:
 		break;
 	default:
 		break;
 	}
+
+	//std::cout << key << "\n";
+
+	
 }
 
 
@@ -110,10 +147,18 @@ void GameManager::updateIntroState()
 
 }
 
-void GameManager::emitFire(bool emit)
+void GameManager::startCrossing()
 {
-	
+	crossing = !crossing;
+
+	if (crossing) {
+		car = pSys->generatorCreateObject(carSpawner);
+	}
+	else {
+		car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
+	}
 }
+
 
 void GameManager::updateState(State next)
 {
@@ -149,6 +194,7 @@ void GameManager::enterState(State state)
 		updateUI();
 		break;
 	case GameManager::GAME:
+		init();
 		break;
 	case GameManager::FINAL:
 		break;
@@ -187,6 +233,15 @@ void GameManager::updateUI()
 	}
 }
 
+void GameManager::updateGameGenerators()
+{
+	Vector3 mappingVector = Vector3(0, mapCoordinates().y, mapCoordinates().x);
+
+	pSys->setGeneratorPosition(mainSpawner, mappingVector);
+	pSys->setGeneratorPosition(ballSpawner, mappingVector);
+	pSys->setGeneratorPosition(blockSpawner, mappingVector);
+}
+
 physx::PxVec2 GameManager::mapCoordinates()
 {
 
@@ -214,11 +269,7 @@ void GameManager::update(double t)
 
 }
 
-void GameManager::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
-{
-	PX_UNUSED(actor1);
-	PX_UNUSED(actor2);
-}
+
 
 
 

@@ -334,9 +334,15 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringTyp
 	return gen;
 }
 
-void ParticleSystem::generatorCreateObject(std::list<ParticleGenerator*>::iterator pGen)
+RigidDynamicObject* ParticleSystem::generatorCreateObject(std::list<ParticleGenerator*>::iterator pGen)
 {
 	(*pGen)->generateParticle();
+
+	if ((*pGen)->solid) {
+		return dynamicObjects.back();
+	}
+
+	return nullptr;
 }
 
 

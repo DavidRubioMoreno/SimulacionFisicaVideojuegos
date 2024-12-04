@@ -58,7 +58,7 @@ public:
 	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
 	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
 	std::list<ParticleGenerator*>::iterator generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos = physx::PxVec3(0,0,0));
-	void generatorCreateObject(std::list<ParticleGenerator*>::iterator pGen);
+	RigidDynamicObject* generatorCreateObject(std::list<ParticleGenerator*>::iterator pGen);
 
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);
@@ -80,6 +80,7 @@ private:
 	bool particleOutOfRange(const physx::PxVec3& position, const float& range) const;
 	void eliminateSubscriptions(Particle* p);
 	void eliminateSubscriptionsSolid(RigidDynamicObject* s);
+
 	std::list<ParticleGenerator*> generators;
 	std::list<ForceGenerator*> forceGenerators;
 	std::list<Particle*> particles;
