@@ -1,10 +1,12 @@
 #pragma once
 #include <vector>
 #include "callbacks.hpp"
+#include <list>
 
 class ParticleSystem;
 class RigidStaticObject;
 class RigidDynamicObject;
+class ParticleGenerator;
 
 class GameManager
 {
@@ -41,6 +43,7 @@ private:
 	const Vector4 colorBlue = { 0, 0, 1, 1 };
 	const Vector4 colorWhite = { 1, 1, 1, 1 };
 	Camera* camera = nullptr;
+	std::list<ParticleGenerator*>::iterator mainSpawner;
 	//const physx::PxTransform& camera;
 	//Player* player = nullptr;
 	//IntroHead* head = nullptr;

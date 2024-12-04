@@ -166,6 +166,8 @@ void initPhysics(bool interactive)
 
 	////pSystem->setGeneratorColor(gen2, colorWhite);
 
+	drawText("HolaCrack", 1600, 20);
+
 	//////GENERADORES DE FUERZA
 	auto gravity = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
 	auto water = pSystem->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -100, 0), Vector3(0, 0, 0), Vector3(1000, 20, 1000), 1000);
@@ -199,6 +201,7 @@ void stepPhysics(bool interactive, double t)
 	mngr->update(t);
 	pController->integrateProjectiles(t);
 	pSystem->update(t);
+	
 	
 	
 	gScene->simulate(t);

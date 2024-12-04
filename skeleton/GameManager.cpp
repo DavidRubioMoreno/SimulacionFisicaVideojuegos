@@ -33,6 +33,14 @@ GameManager::~GameManager()
 	}
 
 	statics.clear();
+
+	for (auto& solid : dynamics)
+	{
+		delete solid;
+	}
+
+	dynamics.clear();
+
 }
 
 void GameManager::init()
@@ -48,7 +56,11 @@ void GameManager::init()
 
 	Vector3 initialWallPos(0, 10, -50);
 
-	for (size_t i = 0; i < 10; i++)
+	mainSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::BOX, Vector3(0, 50, 0));
+	pSys->setGeneratorParticleSize(mainSpawner, Vector3(20, 5, 8));
+	pSys->setGeneratorRandomColor(mainSpawner, true);
+
+	/*for (size_t i = 0; i < 10; i++)
 	{
 		auto gen = pSys->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::SPHERE, Vector3(initialWallPos));
 		pSys->setGeneratorPosUniform(gen, { 0,0 });
@@ -59,7 +71,9 @@ void GameManager::init()
 		pSys->setGeneratorDestroyRange(gen, 500);
 
 		initialWallPos.z += 10;
-	}
+	}*/
+
+	
 
 	/*for (size_t i = 0; i < 10; i++)
 	{
@@ -188,7 +202,7 @@ void GameManager::updateUI()
 
 void GameManager::update(double t)
 {
-	
+	std::cout << "X: " << camera->getMousePos().x << " Y: " << camera->getMousePos().y << "\n";
 
 	switch (currentState)
 	{
@@ -210,11 +224,15 @@ void GameManager::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 	PX_UNUSED(actor2);
 }
 
-void GameManager::keyPress(unsigned char key, const PxTransform& camera)
+void GameManager::keyPress(unsigned char key, const PxTransform& camTr)
 {
+	Vector3 mousePos = camera->getMousePos();
+
 	switch (toupper(key))
 	{
 	case 'E':
+		pSys->setGeneratorPosition(mainSpawner, Vector3(0, mousePos.y, mousePos.x));
+		pSys->generatorCreateObject(mainSpawner);
 		break;
 	default:
 		break;

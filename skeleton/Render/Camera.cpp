@@ -128,6 +128,11 @@ PxVec3 Camera::getDir() const
 	return mDir; 
 }
 
+PxVec3 Camera::getMousePos() const
+{
+	return PxVec3(mMouseX, mMouseY, 0);
+}
+
 
 }
 

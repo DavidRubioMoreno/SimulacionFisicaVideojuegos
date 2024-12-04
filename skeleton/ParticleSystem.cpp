@@ -37,8 +37,10 @@ void ParticleSystem::update(double t)
 void ParticleSystem::updateParticles(double t) {
 	for (auto it = particles.begin(); it != particles.end();)
 	{		
-		if (elapsedTime > (*it)->getTime() || particleOutOfRange((*it)->getPos() - (*it)->getInitPos(),
+		if (elapsedTime > (*it)->getTime() || 
+			particleOutOfRange((*it)->getPos() - (*it)->getInitPos(),
 			(*it)->getGenerator()->currentData.destroyRange.front())) {
+
 			eliminateSubscriptions((*it));
 			delete *it;  // Liberamos la memoria de la partícula
 			it = particles.erase(it);  // Eliminamos la partícula y obtenemos el siguiente iterador			
@@ -217,6 +219,8 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addGenerator(GeneratorTy
 	case ParticleSystem::RAIN:
 		generators.push_back(new GaussianGenerator(this, type));//generador de tipo gausiano
 		break;
+	case ParticleSystem::DEFAULT:
+		generators.push_back(new DefaultParticleGenerator(this, type));//generador manual
 	default:
 		break;
 	}
@@ -233,6 +237,9 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::addSolidGenerator(Distri
 		break;
 	case ParticleSystem::GAUSSIAN:
 		generators.push_back(new GaussianGenerator(this, shapeType, pos));
+		break;
+	case ParticleSystem::NONE:
+		generators.push_back(new DefaultParticleGenerator(this, shapeType, pos));
 		break;
 	default:
 		break;
@@ -325,6 +332,11 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringTyp
 	setGeneratorPosition(gen, pos);
 
 	return gen;
+}
+
+void ParticleSystem::generatorCreateObject(std::list<ParticleGenerator*>::iterator pGen)
+{
+	(*pGen)->generateParticle();
 }
 
 

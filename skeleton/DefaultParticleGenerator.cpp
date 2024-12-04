@@ -12,7 +12,7 @@ void DefaultParticleGenerator::init()
 
 void DefaultParticleGenerator::update(double t)
 {
-
+	elapsedTime += t;
 }
 
 void DefaultParticleGenerator::generateParticle()

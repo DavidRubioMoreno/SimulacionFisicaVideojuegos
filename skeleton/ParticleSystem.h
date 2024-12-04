@@ -37,7 +37,7 @@ public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN, DEFAULT };
 	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE, SPRING, BUOYANCY };
 	enum SpringType{BASIC, ANCHORED};
-	enum DistributionType{UNIFORM,GAUSSIAN};
+	enum DistributionType{UNIFORM, GAUSSIAN, NONE};
 	enum SolidShape { BOX, SPHERE, CAPSULE };
 
 	struct Info : GeneratorInfo{};
@@ -58,6 +58,7 @@ public:
 	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
 	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
 	std::list<ParticleGenerator*>::iterator generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos = physx::PxVec3(0,0,0));
+	void generatorCreateObject(std::list<ParticleGenerator*>::iterator pGen);
 
 	void setGeneratorPosition(std::list<ParticleGenerator*>::iterator id, physx::PxVec3 position);
 	void setGeneratorSpeed(std::list<ParticleGenerator*>::iterator id, float genSpeed);
