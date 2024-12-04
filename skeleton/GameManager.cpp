@@ -61,7 +61,7 @@ void GameManager::init()
 
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, -70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(-20, -50, 0), RigidStaticObject::PLANE, Vector3(20, 50, 3)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(20, 50, 3)));
 
 
 	camera->setPos(Vector3(150, 0, 0));
@@ -74,6 +74,7 @@ void GameManager::init()
 	pSys->setGeneratorLifeTime(mainSpawner, LIFETIME);
 
 	ballSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::SPHERE, Vector3(0, 50, 0));
+	pSys->setGeneratorDensity(ballSpawner, 0.1);
 	pSys->setGeneratorParticleSize(ballSpawner, Vector3(10, 0, 0));
 	pSys->setGeneratorRandomColor(ballSpawner, true);
 	pSys->setGeneratorLifeTime(ballSpawner, LIFETIME);
@@ -86,12 +87,15 @@ void GameManager::init()
 
 	carSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::CAPSULE, Vector3(0, 10, 150));
 	pSys->setGeneratorParticleSize(carSpawner, Vector3(5, 10, 0));
-	pSys->setGeneratorDensity(carSpawner, 1.0);
+	pSys->setGeneratorDensity(carSpawner, 0.9);
 	pSys->setGeneratorDestroyRange(carSpawner, 500.0);
 	pSys->setGeneratorLifeTime(carSpawner, LIFETIME);
 
 	auto wind = pSys->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 0, -10000000), Vector3(1000, 1000, 1000));
 	pSys->applyForceGenerator(carSpawner, wind);
+
+	auto water = pSys->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(90, 20, 300), 1000);
+	pSys->applyForceAllGenerators(water);
 
 }
 
@@ -156,6 +160,7 @@ void GameManager::startCrossing()
 	}
 	else {
 		car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
+		car = nullptr;
 	}
 }
 
@@ -260,6 +265,11 @@ void GameManager::update(double t)
 	case GameManager::INTRO:
 		break;
 	case GameManager::GAME:
+		if (crossing && car->getPos().y < HEIGHTLIMIT) {
+			car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
+			crossing = false;
+			car = nullptr;
+		}
 		break;
 	case GameManager::FINAL:
 		break;

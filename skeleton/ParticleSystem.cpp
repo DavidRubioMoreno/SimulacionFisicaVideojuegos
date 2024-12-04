@@ -293,6 +293,14 @@ void ParticleSystem::applyForceGenerator(std::list<ParticleGenerator*>::iterator
 	}
 }
 
+void ParticleSystem::applyForceAllGenerators(std::list<ForceGenerator*>::iterator fGen)
+{
+	for (auto it = generators.begin(); it != generators.end(); ++it)
+	{
+		applyForceGenerator(it, fGen);
+	}
+}
+
 void ParticleSystem::activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active)
 {
 	(*fGen)->activate(active);

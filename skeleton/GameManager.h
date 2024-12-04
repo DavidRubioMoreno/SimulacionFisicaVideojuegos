@@ -59,6 +59,7 @@ private:
 	const int x_min = -143, x_max = 143;
 	const int y_min = -75, y_max = 75;
 
+	const float HEIGHTLIMIT = -80;
 	const float LIFETIME = 10000;
 
 };
