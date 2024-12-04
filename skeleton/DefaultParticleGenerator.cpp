@@ -22,7 +22,7 @@ void DefaultParticleGenerator::generateParticle()
 	Vector4 color = currentData.color.front();
 
 	if (currentData.randomColor.front()) {
-		Vector3 rgb = getUniformDistribution(0, 1);
+		Vector3 rgb = getUniformDistribution(0, 2);
 		color = Vector4(rgb, color.w);
 	}
 

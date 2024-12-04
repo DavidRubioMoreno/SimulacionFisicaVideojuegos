@@ -32,14 +32,18 @@ private:
 	ParticleSystem* pSys = nullptr;
 	std::vector<RigidStaticObject*> statics;
 	std::vector<RigidDynamicObject*> dynamics;
+	std::list<ParticleGenerator*>::iterator mainSpawner;
+	std::list<ParticleGenerator*>::iterator ballSpawner;
+	std::list<ParticleGenerator*>::iterator blockSpawner;
 	const Vector4 colorRed = { 1, 0, 0, 1 };
 	const Vector4 colorGreen = { 0, 1, 0, 1 };
 	const Vector4 colorBlue = { 0, 0, 1, 1 };
 	const Vector4 colorWhite = { 1, 1, 1, 1 };
+	const Vector4 colorOrange = { 255, 2, 0.0, 1.0 };
+	const Vector4 colorBlack = { 2, 0.5, 0.1, 1.0 };
 	Camera* camera = nullptr;
 	physx::PxVec3* window = nullptr;
-	std::list<ParticleGenerator*>::iterator mainSpawner;
-	int x_min = -150, x_max = 150;
+	int x_min = -143, x_max = 143;
 	int y_min = -75, y_max = 75;
 
 };
