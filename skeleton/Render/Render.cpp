@@ -237,7 +237,7 @@ namespace
 void reshapeCallback(int width, int height)
 {
 	glViewport(0, 0, width, height);
-	
+	window_size = PxVec3(width, height, 0);
 }
 }
 
@@ -250,7 +250,7 @@ void setupDefaultWindow(const char *name)
 
 	glutInit(&argc, argv);
 	
-	glutInitWindowSize(1200, 600);
+	glutInitWindowSize(window_size.x, window_size.y);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
 	int mainHandle = glutCreateWindow(name);
 	glutSetWindow(mainHandle);

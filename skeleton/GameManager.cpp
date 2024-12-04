@@ -8,7 +8,7 @@
 
 using namespace physx;
 
-GameManager::GameManager(ParticleSystem* sys, Camera* cam) : currentState(INTRO), pSys(sys), camera(cam)
+GameManager::GameManager(ParticleSystem* sys, Camera* cam, PxVec3* window) : currentState(INTRO), pSys(sys), camera(cam), window(window)
 {
 	init();
 }
@@ -46,13 +46,13 @@ GameManager::~GameManager()
 void GameManager::init()
 {
 	//auto gDynamic = new RigidDynamicObject(pSys->getScene(), colorGreen, Vector3(50, 0, 0), 5.0f, Vector3(-10, 10, 0), RigidDynamicObject::BOX, Vector3(4, 4, 4), 1.0f, Vector3(5, 0, 5));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50, 5, 100)));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 100, 0), RigidStaticObject::PLANE, Vector3(50, 5, 100)));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 5, 60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 20, -60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(50, 5, 150)));
+	//statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 100, 0), RigidStaticObject::PLANE, Vector3(50, 5, 100)));
+	//statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 5, 60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
+	//statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, Vector3(0, 20, -60), RigidStaticObject::PLANE, Vector3(50, 50, 5)));
 
-	camera->setPos(Vector3(100, 0, 0));
-	camera->setDir(Vector3(-1, -0.2, 0));
+	camera->setPos(Vector3(150, 0, 0));
+	camera->setDir(Vector3(-1, 0, 0));
 
 	Vector3 initialWallPos(0, 10, -50);
 
@@ -200,9 +200,16 @@ void GameManager::updateUI()
 	}
 }
 
+physx::PxVec2 GameManager::mapCoordinates()
+{
+	return physx::PxVec2(x_max - (camera->getMousePos().x / window->x) * (x_max - x_min),
+		y_max - (camera->getMousePos().y / window->y) * (y_max - y_min));
+}
+
 void GameManager::update(double t)
 {
-	std::cout << "X: " << camera->getMousePos().x << " Y: " << camera->getMousePos().y << "\n";
+	//std::cout << "X: " << camera->getMousePos().x << " Y: " << camera->getMousePos().y << "\n";
+	//std::cout << "X: " << window->x << " Y: " << window->y << "\n";
 
 	switch (currentState)
 	{
@@ -231,7 +238,7 @@ void GameManager::keyPress(unsigned char key, const PxTransform& camTr)
 	switch (toupper(key))
 	{
 	case 'E':
-		pSys->setGeneratorPosition(mainSpawner, Vector3(0, mousePos.y, mousePos.x));
+		pSys->setGeneratorPosition(mainSpawner, Vector3(0, mapCoordinates().y, mapCoordinates().x));
 		pSys->generatorCreateObject(mainSpawner);
 		break;
 	default:

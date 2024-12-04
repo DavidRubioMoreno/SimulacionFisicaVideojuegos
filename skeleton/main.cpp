@@ -17,6 +17,7 @@
 #include <iostream>
 
 std::string display_text = "This is a test";
+physx::PxVec3 window_size = { 1200,400,0 };
 
 
 using namespace physx;
@@ -128,62 +129,15 @@ void initPhysics(bool interactive)
 	pSystem = new ParticleSystem(gScene);
 
 	//GAME MANAGER
-	mngr = new GameManager(pSystem, GetCamera());
-
-	//GENERADORES DE RIGIDOS-SOLIDOS
-	/*auto solidGenerator = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX, Vector3(0, 0, 90));
-	auto solidGenerator1 = pSystem->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::CAPSULE, Vector3(0, 0, -90));
-	pSystem->setGeneratorSpeed(solidGenerator, 0.02);
-	pSystem->setGeneratorPosUniform(solidGenerator, { -20, 20 });
-	pSystem->setGeneratorRandomColor(solidGenerator, true);
-	pSystem->setGeneratorDestroyRange(solidGenerator, 200.0);
-	pSystem->setGeneratorVelUniform(solidGenerator, { -100, 100 });
-	pSystem->setGeneratorParticleSize(solidGenerator, Vector3(20, 2, 5));
-
-	pSystem->setGeneratorRandomColor(solidGenerator1, true);
-	pSystem->setGeneratorPosUniform(solidGenerator1, { -20, 20 });
-	pSystem->setGeneratorVelUniform(solidGenerator1, { -100, 100 });
-	pSystem->setGeneratorDensity(solidGenerator1, 10000);*/
-	
-
-	//GENERADORES PARTICULAS
-	//generator1 = pSystem->addGenerator(ParticleSystem::FOG);
-	//auto gen2 = pSystem->addGenerator(ParticleSystem::FOUNTAIN);
-	//auto gen3 = pSystem->addGenerator(ParticleSystem::EXPLOSION);
-	////auto gen4 = pSystem->addGenerator(ParticleSystem::RAIN);
-
-	////
-	//pSystem->setGeneratorPosition(gen2, Vector3(100, 0, 0));
-	//pSystem->setGeneratorPosition(gen3, Vector3(-100, 0, 0));
-	////pSystem->setGeneratorPosition(gen4, Vector3(200, 0, 0));
-
-	//pSystem->setGeneratorPosition(generator1, Vector3(0, 0, 0));
-	//pSystem->setGeneratorPosUniform(generator1, {-20, 20});
-	////pSystem->setGeneratorParticleNumber(generator1, 10);
-	//pSystem->setGeneratorSpeed(gen3, 1);
-	//pSystem->setGeneratorColor(generator1, colorRed);
-	//pSystem->setGeneratorColor(gen3, colorWhite);
-
-	////pSystem->setGeneratorColor(gen2, colorWhite);
-	std::string a = "Hola";
+	mngr = new GameManager(pSystem, GetCamera(), &window_size);
 
 	
-
 	//////GENERADORES DE FUERZA
 	auto gravity = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
 	auto water = pSystem->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -100, 0), Vector3(0, 0, 0), Vector3(1000, 20, 1000), 1000);
 	auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(0, 50, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
 	auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 200000, 0), Vector3(100, 100, 100));
 	//auto fgen4 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(320000, 0, 3000), Vector3(100, 100, 100));
-
-	////////GENERADORES A LOS QUE AFECTAN
-	//pSystem->applyForceGenerator(gen3, gravity);
-	//pSystem->applyForceGenerator(gen3, water);
-	//pSystem->applyForceGenerator(gen2, fgen2);
-	////pSystem->applyForceGenerator(gen4, fgen3);
-	////pSystem->applyForceGenerator(gen3, gravity);
-	//pSystem->applyForceGenerator(solidGenerator1, water);
-	//pSystem->applyForceGenerator(solidGenerator, water);
 
 	//float init = 1.0;
 	//auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 10, 50, init, Vector3(0, 50, 0));

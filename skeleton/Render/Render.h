@@ -48,6 +48,7 @@
 #include <string>
 
 extern std::string display_text;
+extern physx::PxVec3 window_size;
 
 namespace Snippets
 {
