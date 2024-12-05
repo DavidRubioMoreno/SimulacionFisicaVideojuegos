@@ -275,6 +275,7 @@
     <ClCompile Include="RigidStaticObject.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="TornadoGenerator.cpp" />
+    <ClCompile Include="TorqueForceGenerator.cpp" />
     <ClCompile Include="UniformGenerator.cpp" />
     <ClCompile Include="WindGenerator.cpp" />
   </ItemGroup>
@@ -301,6 +302,7 @@
     <ClInclude Include="RigidStaticObject.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="TornadoGenerator.h" />
+    <ClInclude Include="TorqueForceGenerator.h" />
     <ClInclude Include="UniformGenerator.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="WindGenerator.h" />

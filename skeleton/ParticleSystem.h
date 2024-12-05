@@ -9,7 +9,7 @@ constexpr float G = -9.81;
 constexpr double DAMPING = 0.0001;
 constexpr float DESTROY_RANGE = 250;
 constexpr int GENTYPES = 5;
-constexpr int MAXSOLIDS = 1000;
+constexpr int MAXSOLIDS = 200;
 
 class ParticleGenerator;
 class ForceGenerator;
@@ -35,7 +35,7 @@ class ParticleSystem
 {
 public:
 	enum GeneratorType { FOUNTAIN, FOG, EXPLOSION, RAIN, DEFAULT };
-	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE, SPRING, BUOYANCY };
+	enum ForceGeneratorType { GRAVITY, WIND, TORNADO, EXPLOSIVE, SPRING, BUOYANCY, TORQUE };
 	enum SpringType{BASIC, ANCHORED};
 	enum DistributionType{UNIFORM, GAUSSIAN, NONE};
 	enum SolidShape { BOX, SPHERE, CAPSULE };

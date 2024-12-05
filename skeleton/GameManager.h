@@ -40,12 +40,14 @@ private:
 	std::vector<RigidDynamicObject*> dynamics;
 
 	RigidDynamicObject* car = nullptr;
+	RigidStaticObject* finishLine = nullptr;
 
 	Generator mainSpawner;
 	Generator ballSpawner;
 	Generator blockSpawner;
 	Generator carSpawner;
 	Generator carSmoke;
+	Generator cursorMarker;
 
 	const Vector4 colorRed = { 1, 0, 0, 1 };
 	const Vector4 colorGreen = { 0, 1, 0, 1 };

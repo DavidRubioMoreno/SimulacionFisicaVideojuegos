@@ -7,6 +7,7 @@
 #include "AnchoredSpringFG.h"
 #include "DefaultParticleGenerator.h"
 #include "BuoyancyForceGenerator.h"
+#include "TorqueForceGenerator.h"
 #include "RigidDynamicObject.h"
 
 ParticleSystem::ParticleSystem(physx::PxScene* scene) : gScene(scene) {}
@@ -266,6 +267,9 @@ std::list<ForceGenerator*>::iterator ParticleSystem::addForceGenerator(ForceGene
 		break;
 	case ParticleSystem::BUOYANCY:
 		forceGenerators.push_back(new BuoyancyForceGenerator(id, centre, force, volume, density));
+		break;
+	case ParticleSystem::TORQUE:
+		forceGenerators.push_back(new TorqueForceGenerator(id, centre, force, volume));
 		break;
 	default:
 		break;

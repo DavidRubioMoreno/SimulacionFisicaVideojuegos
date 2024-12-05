@@ -42,6 +42,7 @@ GameManager::~GameManager()
 	dynamics.clear();
 
 	car = nullptr;
+	finishLine = nullptr;
 
 }
 
@@ -49,6 +50,10 @@ void GameManager::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
+	if (crossing && (actor1 == finishLine->getActor() && actor2 == car->getActor()
+		|| actor2 == finishLine->getActor() && actor1 == car->getActor())) {
+		//std::cout << "GGS" << "\n";
+	}
 }
 
 void GameManager::init()
@@ -59,9 +64,18 @@ void GameManager::init()
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -40, -150), RigidStaticObject::PLANE, Vector3(50, 25, 20)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -40, 150), RigidStaticObject::PLANE, Vector3(50, 25, 20)));
 
+	//BRIDGE
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, -70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(20, 50, 3)));
+
+	//FINISHLINE WALLS
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, 0, -150), RigidStaticObject::PLANE, Vector3(40, 1, 5)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(35, -8, -150), RigidStaticObject::PLANE, Vector3(1, 8, 1)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(-35, -8, -150), RigidStaticObject::PLANE, Vector3(1, 8, 1)));
+
+	finishLine = new RigidStaticObject(pSys->getScene(), colorGreen, Vector3(0, -15, -165), RigidStaticObject::CAPSULE, Vector3(7, 7, 0));
+	statics.push_back(finishLine);
 
 
 	camera->setPos(Vector3(150, 0, 0));
@@ -85,11 +99,17 @@ void GameManager::init()
 	pSys->setGeneratorRandomColor(blockSpawner, true);
 	pSys->setGeneratorLifeTime(blockSpawner, LIFETIME);
 
-	carSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::CAPSULE, Vector3(0, 10, 150));
-	pSys->setGeneratorParticleSize(carSpawner, Vector3(5, 10, 0));
+	carSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::SPHERE, Vector3(0, 10, 150));
+	pSys->setGeneratorParticleSize(carSpawner, Vector3(3, 3, 0));
 	pSys->setGeneratorDensity(carSpawner, 0.9);
 	pSys->setGeneratorDestroyRange(carSpawner, 500.0);
 	pSys->setGeneratorLifeTime(carSpawner, LIFETIME);
+
+	auto water = pSys->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(90, 20, 300), 1000);
+	pSys->applyForceAllGenerators(water);
+
+	auto motor = pSys->addForceGenerator(ParticleSystem::TORQUE, Vector3(0, 0, 0), Vector3(-100000, 0, 0), Vector3(1000, 1000, 1000));
+	pSys->applyForceGenerator(carSpawner, motor);
 
 	carSmoke = pSys->addGenerator(ParticleSystem::RAIN);
 	pSys->setGeneratorColor(carSmoke, Vector4(0.3, 0.3, 0.3, 1.0));
@@ -97,14 +117,17 @@ void GameManager::init()
 	pSys->setGeneratorPosGaussian(carSmoke, { 0, 1 });
 	pSys->activateGenerator(carSmoke, false);
 
-	auto wind = pSys->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 0, -10000000), Vector3(1000, 1000, 1000));
-	pSys->applyForceGenerator(carSpawner, wind);
-
-	auto water = pSys->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(90, 20, 300), 1000);
-	pSys->applyForceAllGenerators(water);
-
 	auto inverseGravity = pSys->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 3.8, 0));
 	pSys->applyForceGenerator(carSmoke, inverseGravity);
+
+	cursorMarker = pSys->addGenerator(ParticleSystem::EXPLOSION);
+	pSys->setGeneratorColor(cursorMarker, colorRed);
+	pSys->setGeneratorLifeTime(cursorMarker, 1.0);
+	pSys->setGeneratorVelUniform(cursorMarker, { -2, 2 });
+	pSys->setGeneratorSpeed(cursorMarker, 0.1);
+	pSys->setGeneratorParticleSize(cursorMarker, Vector3(0.5, 0, 0));
+	pSys->setGeneratorParticleNumber(cursorMarker, 5);
+
 
 }
 
@@ -190,12 +213,13 @@ void GameManager::startCrossing()
 	crossing = !crossing;
 
 	pSys->activateGenerator(carSmoke, crossing);
+	pSys->activateGenerator(cursorMarker, !crossing);
 
 	if (crossing) {
 		car = pSys->generatorCreateObject(carSpawner);		
 	}
 	else {
-		car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
+		car->addAccel(Vector3(0, LIFETIME * LIFETIME * LIFETIME, 0));
 		car = nullptr;
 	}
 }
@@ -296,6 +320,8 @@ void GameManager::update(double t)
 	//std::cout << "X: " << window->x << " Y: " << window->y << "\n";
 	//std::cout << "X: " << camera->getEye().z << " Y: " << camera->getEye().y << "\n";
 
+	Vector3 mappingVector = Vector3(0, mapCoordinates().y, mapCoordinates().x);
+
 	switch (currentState)
 	{
 	case GameManager::INTRO:
@@ -303,18 +329,19 @@ void GameManager::update(double t)
 	case GameManager::GAME:
 		if (crossing) {
 
-			if (car->getPos().y < HEIGHTLIMIT || car->getPos().z < -200) {
+			if (car->getPos().y < HEIGHTLIMIT || car->getPos().z < -200 || car->getPos().y > 100) {
 				car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
 				crossing = false;
 				car = nullptr;
 				pSys->activateGenerator(carSmoke, false);
+				pSys->activateGenerator(cursorMarker, true);
 			}
 
 			if (car != nullptr) {
 				pSys->setGeneratorPosition(carSmoke, car->getPos());
-			}
-			
+			}		
 		}
+		pSys->setGeneratorPosition(cursorMarker, mappingVector);
 		break;
 	case GameManager::FINAL:
 		break;

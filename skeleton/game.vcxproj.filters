@@ -29,6 +29,7 @@
     <ClCompile Include="RigidDynamicObject.cpp" />
     <ClCompile Include="RigidStaticObject.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="TorqueForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="RigidDynamicObject.h" />
     <ClInclude Include="RigidStaticObject.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="TorqueForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -70,6 +70,11 @@ void RigidDynamicObject::addForce(const Vector3& force)
 	solid->addForce(force);
 }
 
+void RigidDynamicObject::addTorque(const Vector3& torque)
+{
+	solid->addTorque(torque);
+}
+
 void RigidDynamicObject::addAccel(const Vector3& accel)
 {
 	solid->addForce(accel, PxForceMode::eACCELERATION);

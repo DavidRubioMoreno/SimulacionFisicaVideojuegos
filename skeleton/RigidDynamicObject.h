@@ -22,6 +22,7 @@ public:
 	physx::PxRigidDynamic* getActor() { return solid; }
 	float getHeight() const { return height; }
 	void addForce(const Vector3& force);
+	void addTorque(const Vector3& torque);
 	void addAccel(const Vector3& accel);
 	void addSub(std::list<RigidDynamicObject*>::iterator sub);
 	const std::vector<std::list<RigidDynamicObject*>::iterator>& getSubs() { return subs; };
