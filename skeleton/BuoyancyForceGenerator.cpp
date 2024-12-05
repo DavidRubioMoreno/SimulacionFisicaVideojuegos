@@ -9,7 +9,7 @@ BuoyancyForceGenerator::BuoyancyForceGenerator(ParticleSystem::ForceGeneratorTyp
 	areaLimit1 = Vector3(centre.x + volume.x * 0.5, centre.y + volume.y * 0.5, centre.z + volume.z * 0.5);
 	areaLimit2 = Vector3(centre.x - volume.x * 0.5, centre.y - volume.y * 0.5, centre.z - volume.z * 0.5);
 
-	const PxBoxGeometry* geo = new PxBoxGeometry(volume / 2);
+	const PxBoxGeometry* geo = new PxBoxGeometry(volume * 0.5);
 	PxShape* shape = CreateShape(*geo);
 
 	liquidParticle = new Particle(Vector4(0.5, 0.5, 1, 0), centre, Vector3(0, 0, 0), Vector3(0, 0, 0), 0, 1e6, nullptr, shape);

@@ -10,7 +10,7 @@ using namespace physx;
 
 GameManager::GameManager(ParticleSystem* sys, Camera* cam, PxVec3* window) : currentState(INTRO), pSys(sys), camera(cam), window(window)
 {
-
+	demo();
 }
 
 GameManager::~GameManager()
@@ -96,6 +96,31 @@ void GameManager::init()
 
 	auto water = pSys->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(90, 20, 300), 1000);
 	pSys->applyForceAllGenerators(water);
+
+}
+
+void GameManager::demo()
+{
+	camera->setPos(Vector3(150, 0, 0));
+	camera->setDir(Vector3(-1, 0, 0));
+
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -60, 0), RigidStaticObject::PLANE, Vector3(50, 5, 150)));
+
+	auto gen1 = pSys->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::BOX);
+	pSys->setGeneratorRandomColor(gen1, true);
+	pSys->setGeneratorParticleSize(gen1, Vector3(10, 2, 2));
+
+	auto gen2 = pSys->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::CAPSULE, Vector3(0, 0, -50));
+	pSys->setGeneratorRandomColor(gen2, true);
+
+	auto gen3 = pSys->addSolidGenerator(ParticleSystem::UNIFORM, ParticleSystem::SPHERE, Vector3(0, 0, 50));
+	pSys->setGeneratorParticleSize(gen3, Vector3(2, 0, 0));
+
+	auto water = pSys->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(90, 20, 300), 1000);
+	pSys->applyForceGenerator(gen1, water);
+
+	auto wind = pSys->addForceGenerator(ParticleSystem::WIND, Vector3(0, -20, 0), Vector3(500, 0, 500));
+	pSys->applyForceGenerator(gen1, wind);
 
 }
 
@@ -199,7 +224,8 @@ void GameManager::enterState(State state)
 		updateUI();
 		break;
 	case GameManager::GAME:
-		init();
+		//demo();
+		//init();
 		break;
 	case GameManager::FINAL:
 		break;

@@ -21,6 +21,7 @@ private:
 	void updateState(State next);
 	void playerHit();
 	void init();
+	void demo();
 	void updateIntroState();
 	void startCrossing();
 	void setState(State next);
