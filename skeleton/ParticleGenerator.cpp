@@ -64,7 +64,7 @@ ParticleGenerator::~ParticleGenerator() {
 void ParticleGenerator::update(double t) {
 	elapsedTime += t;
 	if (elapsedTime > timeToNextGen) {
-		if (!solid || sys->getNumberSolids() < MAXSOLIDS) {
+		if (active && (!solid || sys->getNumberSolids() < MAXSOLIDS)) {
 			for (size_t i = 0; i < currentData.particleNumber.front(); i++)
 			{
 				generateParticle();
@@ -102,6 +102,11 @@ void ParticleGenerator::changeSize(const Vector3& size)
 		break;
 	}
 
+}
+
+void ParticleGenerator::setActive(bool a)
+{
+	active = a;
 }
 
 void ParticleGenerator::addForceGenerator(std::list<ForceGenerator*>::iterator forceGenerator)

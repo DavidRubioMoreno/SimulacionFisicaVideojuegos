@@ -58,6 +58,7 @@ public:
 	void applyForceGenerator(std::list<ParticleGenerator*>::iterator pGen, std::list<ForceGenerator*>::iterator fGen);
 	void applyForceAllGenerators(std::list<ForceGenerator*>::iterator fGen);
 	void activateForceGenerator(std::list<ForceGenerator*>::iterator fGen, bool active);
+	void activateGenerator(std::list<ParticleGenerator*>::iterator pGen, bool active);
 	std::list<ParticleGenerator*>::iterator generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos = physx::PxVec3(0,0,0));
 	RigidDynamicObject* generatorCreateObject(std::list<ParticleGenerator*>::iterator pGen);
 

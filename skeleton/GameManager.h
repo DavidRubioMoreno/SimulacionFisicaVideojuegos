@@ -8,6 +8,8 @@ class RigidStaticObject;
 class RigidDynamicObject;
 class ParticleGenerator;
 
+using Generator = std::list<ParticleGenerator*>::iterator;
+
 class GameManager
 {
 public:
@@ -39,10 +41,11 @@ private:
 
 	RigidDynamicObject* car = nullptr;
 
-	std::list<ParticleGenerator*>::iterator mainSpawner;
-	std::list<ParticleGenerator*>::iterator ballSpawner;
-	std::list<ParticleGenerator*>::iterator blockSpawner;
-	std::list<ParticleGenerator*>::iterator carSpawner;
+	Generator mainSpawner;
+	Generator ballSpawner;
+	Generator blockSpawner;
+	Generator carSpawner;
+	Generator carSmoke;
 
 	const Vector4 colorRed = { 1, 0, 0, 1 };
 	const Vector4 colorGreen = { 0, 1, 0, 1 };

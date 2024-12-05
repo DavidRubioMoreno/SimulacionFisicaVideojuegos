@@ -131,18 +131,6 @@ void initPhysics(bool interactive)
 	//GAME MANAGER
 	mngr = new GameManager(pSystem, GetCamera(), &window_size);
 
-	
-	//////GENERADORES DE FUERZA
-	//auto gravity = pSystem->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
-	//auto water = pSystem->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -100, 0), Vector3(0, 0, 0), Vector3(1000, 20, 1000), 1000);
-	//auto fgen2 = pSystem->addForceGenerator(ParticleSystem::TORNADO, Vector3(0, 50, 0), Vector3(50, 0, 0), Vector3(100, 100, 100));
-	//auto fgen3 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 200000, 0), Vector3(100, 100, 100));
-	//auto fgen4 = pSystem->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(320000, 0, 3000), Vector3(100, 100, 100));
-
-	//float init = 1.0;
-	//auto spring = pSystem->generateSpring(ParticleSystem::ANCHORED, 10, 50, init, Vector3(0, 50, 0));
-	//pSystem->applyForceGenerator(spring, gravity);
-
 	}
 
 

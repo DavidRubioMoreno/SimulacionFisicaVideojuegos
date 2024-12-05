@@ -306,6 +306,11 @@ void ParticleSystem::activateForceGenerator(std::list<ForceGenerator*>::iterator
 	(*fGen)->activate(active);
 }
 
+void ParticleSystem::activateGenerator(std::list<ParticleGenerator*>::iterator pGen, bool active)
+{
+	(*pGen)->setActive(active);
+}
+
 std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos)
 {
 	generators.push_back(new DefaultParticleGenerator(this, DEFAULT));

@@ -10,7 +10,7 @@ using namespace physx;
 
 GameManager::GameManager(ParticleSystem* sys, Camera* cam, PxVec3* window) : currentState(INTRO), pSys(sys), camera(cam), window(window)
 {
-	demo();
+
 }
 
 GameManager::~GameManager()
@@ -91,11 +91,20 @@ void GameManager::init()
 	pSys->setGeneratorDestroyRange(carSpawner, 500.0);
 	pSys->setGeneratorLifeTime(carSpawner, LIFETIME);
 
+	carSmoke = pSys->addGenerator(ParticleSystem::RAIN);
+	pSys->setGeneratorColor(carSmoke, Vector4(0.3, 0.3, 0.3, 1.0));
+	pSys->setGeneratorLifeTime(carSmoke, 4.0);
+	pSys->setGeneratorPosGaussian(carSmoke, { 0, 1 });
+	pSys->activateGenerator(carSmoke, false);
+
 	auto wind = pSys->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, 0), Vector3(0, 0, -10000000), Vector3(1000, 1000, 1000));
 	pSys->applyForceGenerator(carSpawner, wind);
 
 	auto water = pSys->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(90, 20, 300), 1000);
 	pSys->applyForceAllGenerators(water);
+
+	auto inverseGravity = pSys->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, 3.8, 0));
+	pSys->applyForceGenerator(carSmoke, inverseGravity);
 
 }
 
@@ -180,8 +189,10 @@ void GameManager::startCrossing()
 {
 	crossing = !crossing;
 
+	pSys->activateGenerator(carSmoke, crossing);
+
 	if (crossing) {
-		car = pSys->generatorCreateObject(carSpawner);
+		car = pSys->generatorCreateObject(carSpawner);		
 	}
 	else {
 		car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
@@ -224,8 +235,7 @@ void GameManager::enterState(State state)
 		updateUI();
 		break;
 	case GameManager::GAME:
-		//demo();
-		//init();
+		init();
 		break;
 	case GameManager::FINAL:
 		break;
@@ -291,10 +301,19 @@ void GameManager::update(double t)
 	case GameManager::INTRO:
 		break;
 	case GameManager::GAME:
-		if (crossing && car->getPos().y < HEIGHTLIMIT) {
-			car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
-			crossing = false;
-			car = nullptr;
+		if (crossing) {
+
+			if (car->getPos().y < HEIGHTLIMIT || car->getPos().z < -200) {
+				car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
+				crossing = false;
+				car = nullptr;
+				pSys->activateGenerator(carSmoke, false);
+			}
+
+			if (car != nullptr) {
+				pSys->setGeneratorPosition(carSmoke, car->getPos());
+			}
+			
 		}
 		break;
 	case GameManager::FINAL:
