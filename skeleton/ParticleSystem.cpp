@@ -315,9 +315,13 @@ void ParticleSystem::activateGenerator(std::list<ParticleGenerator*>::iterator p
 	(*pGen)->setActive(active);
 }
 
-std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringType type, int nParticles, float K, float initialLenght, physx::PxVec3 pos)
+std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringType type, int nParticles, float K, float initialLenght,
+	physx::PxVec3 pos, float lifetime, bool randomColor, physx::PxVec4 color)
 {
-	generators.push_back(new DefaultParticleGenerator(this, DEFAULT));
+	auto gen = addGenerator(ParticleSystem::DEFAULT);
+	setGeneratorColor(gen, color);
+	setGeneratorLifeTime(gen, lifetime);
+	setGeneratorRandomColor(gen, randomColor);
 
 	switch (type)
 	{
@@ -330,8 +334,6 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringTyp
 	default:
 		break;
 	}
-
-	auto gen = --generators.end();
 
 	applyForceGenerator(gen, --forceGenerators.end());
 

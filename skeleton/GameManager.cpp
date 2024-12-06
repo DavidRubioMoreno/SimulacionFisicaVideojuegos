@@ -70,7 +70,7 @@ void GameManager::init()
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(20, 50, 3)));
 
 	//FINISHLINE WALLS
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, 0, -150), RigidStaticObject::PLANE, Vector3(40, 1, 5)));
+	//statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, 0, -150), RigidStaticObject::PLANE, Vector3(40, 1, 5)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(35, -8, -150), RigidStaticObject::PLANE, Vector3(1, 8, 1)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(-35, -8, -150), RigidStaticObject::PLANE, Vector3(1, 8, 1)));
 
@@ -127,6 +127,19 @@ void GameManager::init()
 	pSys->setGeneratorSpeed(cursorMarker, 0.1);
 	pSys->setGeneratorParticleSize(cursorMarker, Vector3(0.5, 0, 0));
 	pSys->setGeneratorParticleNumber(cursorMarker, 5);
+
+	auto upWind = pSys->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, -150), Vector3(0, 100000, 0));
+	auto gravity = pSys->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
+
+	auto springFinish1 = pSys->generateSpring(ParticleSystem::ANCHORED, 30, 500, 1, Vector3(35, -1, -150), LIFETIME, false, colorOrange);
+	pSys->setGeneratorLifeTime(springFinish1, LIFETIME);
+	auto springFinish2 = pSys->generateSpring(ParticleSystem::ANCHORED, 30, 500, 1, Vector3(-35, -1, -150), LIFETIME, false, colorOrange);
+	pSys->setGeneratorLifeTime(springFinish2, LIFETIME);
+
+	pSys->applyForceGenerator(springFinish1, upWind);
+	pSys->applyForceGenerator(springFinish2, upWind);
+	pSys->applyForceGenerator(springFinish1, gravity);
+	pSys->applyForceGenerator(springFinish2, gravity);
 
 
 }
@@ -328,6 +341,11 @@ void GameManager::update(double t)
 		break;
 	case GameManager::GAME:
 		if (crossing) {
+
+			Vector3 cameraPos = camera->getEye();
+			cameraPos.z = car->getPos().z;
+			cameraPos.y = car->getPos().y;
+			camera->setPos(cameraPos);
 
 			if (car->getPos().y < HEIGHTLIMIT || car->getPos().z < -200 || car->getPos().y > 100) {
 				car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
