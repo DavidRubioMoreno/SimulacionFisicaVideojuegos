@@ -10,7 +10,7 @@ using namespace physx;
 
 GameManager::GameManager(ParticleSystem* sys, Camera* cam, PxVec3* window) : currentState(INTRO), pSys(sys), camera(cam), window(window)
 {
-
+	intro();
 }
 
 GameManager::~GameManager()
@@ -52,22 +52,24 @@ void GameManager::onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 	PX_UNUSED(actor2);
 	if (crossing && (actor1 == finishLine->getActor() && actor2 == car->getActor()
 		|| actor2 == finishLine->getActor() && actor1 == car->getActor())) {
-		//std::cout << "GGS" << "\n";
+		pSys->activateGenerator(winConfety, true);
+		camera->setPos(Vector3(150, 60, 0));
+		finished = true;
 	}
 }
 
 void GameManager::init()
 {
 	//FLOOR
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -60, 0), RigidStaticObject::PLANE, Vector3(50, 5, 150)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -75, 0), RigidStaticObject::PLANE, Vector3(50, 20, 150)));
 
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -40, -150), RigidStaticObject::PLANE, Vector3(50, 25, 20)));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -40, 150), RigidStaticObject::PLANE, Vector3(50, 25, 20)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -55, -150), RigidStaticObject::PLANE, Vector3(50, 40, 20)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorOrange, Vector3(0, -55, 150), RigidStaticObject::PLANE, Vector3(50, 40, 20)));
 
 	//BRIDGE
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
 	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, -70), RigidStaticObject::PLANE, Vector3(20, 25, 3)));
-	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(20, 50, 3)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, -50, 0), RigidStaticObject::PLANE, Vector3(20, 45, 3)));
 
 	//FINISHLINE WALLS
 	//statics.push_back(new RigidStaticObject(pSys->getScene(), colorBlack, Vector3(0, 0, -150), RigidStaticObject::PLANE, Vector3(40, 1, 5)));
@@ -94,16 +96,24 @@ void GameManager::init()
 	pSys->setGeneratorLifeTime(ballSpawner, LIFETIME);
 
 	blockSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::BOX, Vector3(0, 50, 0));
-	pSys->setGeneratorParticleSize(blockSpawner, Vector3(5, 5, 5));
+	pSys->setGeneratorParticleSize(blockSpawner, Vector3(5, 10, 5));
 	//pSys->setGeneratorDensity(blockSpawner, 1000000.0);
 	pSys->setGeneratorRandomColor(blockSpawner, true);
 	pSys->setGeneratorLifeTime(blockSpawner, LIFETIME);
 
 	carSpawner = pSys->addSolidGenerator(ParticleSystem::NONE, ParticleSystem::SPHERE, Vector3(0, 10, 150));
 	pSys->setGeneratorParticleSize(carSpawner, Vector3(3, 3, 0));
-	pSys->setGeneratorDensity(carSpawner, 0.9);
+	pSys->setGeneratorDensity(carSpawner, 5.0);
 	pSys->setGeneratorDestroyRange(carSpawner, 500.0);
 	pSys->setGeneratorLifeTime(carSpawner, LIFETIME);
+	pSys->setGeneratorColor(carSpawner, colorRed);
+
+	auto waterGenerator = pSys->addGenerator(ParticleSystem::FOG);
+	pSys->setGeneratorDensity(waterGenerator, 800);
+	pSys->setGeneratorColor(waterGenerator, colorBlue);
+	pSys->setGeneratorPosition(waterGenerator, Vector3(0, -50, 0));
+	pSys->setGeneratorPosUniform(waterGenerator, { -25, 25 });
+	pSys->setGeneratorSpeed(waterGenerator, 0.1);
 
 	auto water = pSys->addForceGenerator(ParticleSystem::BUOYANCY, Vector3(0, -50, 0), Vector3(0, 0, 0), Vector3(90, 20, 300), 1000);
 	pSys->applyForceAllGenerators(water);
@@ -131,9 +141,9 @@ void GameManager::init()
 	auto upWind = pSys->addForceGenerator(ParticleSystem::WIND, Vector3(0, 0, -150), Vector3(0, 100000, 0));
 	auto gravity = pSys->addForceGenerator(ParticleSystem::GRAVITY, Vector3(0, 0, 0), Vector3(0, -9.8, 0));
 
-	auto springFinish1 = pSys->generateSpring(ParticleSystem::ANCHORED, 30, 500, 1, Vector3(35, -1, -150), LIFETIME, false, colorOrange);
+	auto springFinish1 = pSys->generateSpring(ParticleSystem::ANCHORED, 10, 500, 1, Vector3(35, -1, -150), LIFETIME, false, colorOrange);
 	pSys->setGeneratorLifeTime(springFinish1, LIFETIME);
-	auto springFinish2 = pSys->generateSpring(ParticleSystem::ANCHORED, 30, 500, 1, Vector3(-35, -1, -150), LIFETIME, false, colorOrange);
+	auto springFinish2 = pSys->generateSpring(ParticleSystem::ANCHORED, 10, 500, 1, Vector3(-35, -1, -150), LIFETIME, false, colorOrange);
 	pSys->setGeneratorLifeTime(springFinish2, LIFETIME);
 
 	pSys->applyForceGenerator(springFinish1, upWind);
@@ -141,6 +151,18 @@ void GameManager::init()
 	pSys->applyForceGenerator(springFinish1, gravity);
 	pSys->applyForceGenerator(springFinish2, gravity);
 
+	pSys->applyForceGenerator(waterGenerator, gravity);
+
+	winConfety = pSys->addGenerator(ParticleSystem::FOUNTAIN);
+	pSys->setGeneratorRandomColor(winConfety, true);
+	pSys->setGeneratorPosition(winConfety, Vector3(0, 100, 0));
+	pSys->setGeneratorParticleNumber(winConfety, 100);
+	pSys->setGeneratorDestroyRange(winConfety, 80);
+	pSys->setGeneratorSpeed(winConfety, 1.0);
+	pSys->setGeneratorVelGaussian(winConfety, { 0, 50 });
+	pSys->activateGenerator(winConfety, false);
+
+	pSys->applyForceGenerator(winConfety, gravity);
 
 }
 
@@ -215,9 +237,49 @@ void GameManager::keyPress(unsigned char key, const PxTransform& camTr)
 	
 }
 
-
-void GameManager::updateIntroState()
+void GameManager::intro()
 {
+	camera->setPos(Vector3(100, 60, 0));
+	camera->setDir(Vector3(-1, 0, 0));
+
+	Vector3 initPos(-30, 60, 60);
+	//B
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos, RigidStaticObject::PLANE, Vector3(3, 15, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 15, -5), RigidStaticObject::PLANE, Vector3(3, 2, 10)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, -15, -5), RigidStaticObject::PLANE, Vector3(3, 2, 10)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -7), RigidStaticObject::PLANE, Vector3(3, 2, 8)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 9, -15), RigidStaticObject::PLANE, Vector3(3, 7, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, -9, -15), RigidStaticObject::PLANE, Vector3(3, 7, 2)));
+	//R
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -22), RigidStaticObject::PLANE, Vector3(3, 10, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 7, -25), RigidStaticObject::PLANE, Vector3(3, 2, 4)));
+	//I
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -34), RigidStaticObject::PLANE, Vector3(3, 10, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 13, -34), RigidStaticObject::SPHERE, Vector3(4, 0, 0)));
+	//D
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -42), RigidStaticObject::PLANE, Vector3(3, 10, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, -8, -48), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 8, -48), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 4, -54), RigidStaticObject::PLANE, Vector3(3, 15, 2)));
+	//G
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -62), RigidStaticObject::PLANE, Vector3(3, 10, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, -8, -68), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 8, -68), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, -4, -74), RigidStaticObject::PLANE, Vector3(3, 15, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, -17, -67), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	//E
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -82), RigidStaticObject::PLANE, Vector3(3, 10, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, -8, -88), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 8, -88), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -88), RigidStaticObject::PLANE, Vector3(3, 2, 7)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 4, -94), RigidStaticObject::PLANE, Vector3(3, 5, 2)));
+	//I
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 0, -110), RigidStaticObject::PLANE, Vector3(3, 10, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 13, -110), RigidStaticObject::SPHERE, Vector3(4, 0, 0)));
+	//T
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 5, -119), RigidStaticObject::PLANE, Vector3(3, 15, 2)));
+	statics.push_back(new RigidStaticObject(pSys->getScene(), colorRed, initPos + Vector3(0, 13, -119), RigidStaticObject::PLANE, Vector3(3, 2, 6)));
+
 
 }
 
@@ -225,8 +287,11 @@ void GameManager::startCrossing()
 {
 	crossing = !crossing;
 
+	finished = false;
+
 	pSys->activateGenerator(carSmoke, crossing);
 	pSys->activateGenerator(cursorMarker, !crossing);
+	pSys->activateGenerator(winConfety, false);
 
 	if (crossing) {
 		car = pSys->generatorCreateObject(carSpawner);		
@@ -342,11 +407,13 @@ void GameManager::update(double t)
 	case GameManager::GAME:
 		if (crossing) {
 
-			Vector3 cameraPos = camera->getEye();
-			cameraPos.z = car->getPos().z;
-			cameraPos.y = car->getPos().y;
-			camera->setPos(cameraPos);
-
+			if (!finished) {
+				Vector3 cameraPos = camera->getEye();
+				cameraPos.z = car->getPos().z;
+				cameraPos.y = car->getPos().y;
+				camera->setPos(cameraPos);
+			}
+			
 			if (car->getPos().y < HEIGHTLIMIT || car->getPos().z < -200 || car->getPos().y > 100) {
 				car->addAccel(Vector3(0, LIFETIME * LIFETIME, 0));
 				crossing = false;
@@ -371,11 +438,5 @@ void GameManager::update(double t)
 
 
 
-
-
-void GameManager::playerHit()
-{
-
-}
 
 

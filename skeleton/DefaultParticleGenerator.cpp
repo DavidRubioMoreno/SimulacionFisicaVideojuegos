@@ -30,6 +30,6 @@ void DefaultParticleGenerator::generateParticle()
 		sys->addSolid(new RigidDynamicObject(sys->getScene(), color, generationSpawn, elapsedTime + currentData.lifeTime.front(), speed, sphere, this, currentData.density.front()));
 	}
 	else {
-		sys->addParticle(new Particle(color, generationSpawn, speed, Vector3(0, 0, 0), DAMPING, elapsedTime + currentData.lifeTime.front(), this, sphere));
+		sys->addParticle(new Particle(color, generationSpawn, speed, Vector3(0, 0, 0), DAMPING, elapsedTime + currentData.lifeTime.front(), this, sphere, currentData.density.front()));
 	}
 }

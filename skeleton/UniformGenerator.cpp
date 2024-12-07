@@ -32,7 +32,7 @@ void UniformGenerator::generateParticle() {
     else {
         // Generamos la partícula con la velocidad aleatoria
         sys->addParticle(new Particle(color, generationSpawn + position, velocity, Vector3(0, 0, 0),
-            DAMPING, elapsedTime + currentData.lifeTime.front(), this, sphere));
+            DAMPING, elapsedTime + currentData.lifeTime.front(), this, sphere, currentData.density.front()));
     }
    
     

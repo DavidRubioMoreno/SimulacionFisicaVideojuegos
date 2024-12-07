@@ -21,10 +21,9 @@ public:
 	void keyPress(unsigned char key, const physx::PxTransform& camera);
 private:
 	void updateState(State next);
-	void playerHit();
+	void intro();
 	void init();
 	void demo();
-	void updateIntroState();
 	void startCrossing();
 	void setState(State next);
 	void enterState(State state);
@@ -48,6 +47,7 @@ private:
 	Generator carSpawner;
 	Generator carSmoke;
 	Generator cursorMarker;
+	Generator winConfety;
 
 	const Vector4 colorRed = { 1, 0, 0, 1 };
 	const Vector4 colorGreen = { 0, 1, 0, 1 };

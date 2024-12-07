@@ -84,9 +84,6 @@ void ParticleSystem::updateGenerators(double t) {
 
 
 void ParticleSystem::addParticle(Particle* p) {//guardamos puntero a la nueva particula
-	//Masa por defecto
-	p->setMass(2);
-
 	particles.push_back(p);
 
 	for (auto& gen : p->getGenerator()->subscriptions)
@@ -322,6 +319,7 @@ std::list<ParticleGenerator*>::iterator ParticleSystem::generateSpring(SpringTyp
 	setGeneratorColor(gen, color);
 	setGeneratorLifeTime(gen, lifetime);
 	setGeneratorRandomColor(gen, randomColor);
+	setGeneratorDensity(gen, 1);
 
 	switch (type)
 	{

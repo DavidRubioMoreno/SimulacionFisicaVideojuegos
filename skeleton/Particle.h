@@ -10,7 +10,7 @@ class Particle
 {
 public:
 	Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime);
-	Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime, ParticleGenerator* gen, physx::PxShape* shape);
+	Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double damping, float dTime, ParticleGenerator* gen, physx::PxShape* shape, float density = 10);
 	~Particle();
 	void integrate(double t);
 	inline float getTime() const { return destroyTime; }
@@ -38,7 +38,7 @@ protected:
 	float mass;
 	double damping;
 	float destroyTime;
-	float height = 1.0;
+	float height;
 	physx::PxTransform* pose = nullptr;
 	RenderItem* renderItem = nullptr;
 	ParticleGenerator* generator = nullptr;

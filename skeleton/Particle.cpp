@@ -15,10 +15,10 @@ Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d,
 
 }
 
-Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime, ParticleGenerator* gen, PxShape* shape)
-    : vel(vel), acc(a), damping(d), destroyTime(dTime), initPosition(pos), generator(gen)
+Particle::Particle(Vector4 color, Vector3 pos, Vector3 vel, Vector3 a, double d, float dTime, ParticleGenerator* gen, PxShape* shape, float density)
+    : vel(vel), acc(a), damping(d), destroyTime(dTime), initPosition(pos), generator(gen), height(1)
 {
-
+    mass = height * height * height * density;
     pose = new physx::PxTransform(pos);
     renderItem = new RenderItem(shape, pose, color);// creamos render item
 
