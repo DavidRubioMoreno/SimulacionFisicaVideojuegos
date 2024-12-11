@@ -17,7 +17,7 @@
 #include <iostream>
 
 std::string display_text = "This is a test";
-physx::PxVec3 window_size = { 1200,400,0 };
+physx::PxVec3 window_size = { 1600,900,0 };
 
 
 using namespace physx;
@@ -89,27 +89,27 @@ void initPhysics(bool interactive)
 
 
 	//Transforms de los ejes
-	PxTransform* t1 = new PxTransform(X_axis.getX() * DISTANCE_TO_CENTRE, X_axis.getY(), X_axis.getZ());
-	PxTransform* t2 = new PxTransform(Y_axis.getX(), Y_axis.getY() * DISTANCE_TO_CENTRE, Y_axis.getZ());
-	PxTransform* t3 = new PxTransform(Z_axis.getX(), Z_axis.getY(), Z_axis.getZ() * DISTANCE_TO_CENTRE);
+	//PxTransform* t1 = new PxTransform(X_axis.getX() * DISTANCE_TO_CENTRE, X_axis.getY(), X_axis.getZ());
+	//PxTransform* t2 = new PxTransform(Y_axis.getX(), Y_axis.getY() * DISTANCE_TO_CENTRE, Y_axis.getZ());
+	//PxTransform* t3 = new PxTransform(Z_axis.getX(), Z_axis.getY(), Z_axis.getZ() * DISTANCE_TO_CENTRE);
 
 	//Centro transform(0, 0, 0)
-	PxTransform* t4 = new PxTransform(centre.getX(), centre.getY(), centre.getZ());
+	//PxTransform* t4 = new PxTransform(centre.getX(), centre.getY(), centre.getZ());
 
 	//Colores
-	const Vector4 colorRed = { 1, 0, 0, 1 };
-	const Vector4 colorGreen = { 0, 1, 0, 1 };
-	const Vector4 colorBlue = { 0, 0, 1, 1 };
-	const Vector4 colorWhite = { 1, 1, 1, 1 };
+	//const Vector4 colorRed = { 1, 0, 0, 1 };
+	//const Vector4 colorGreen = { 0, 1, 0, 1 };
+	//const Vector4 colorBlue = { 0, 0, 1, 1 };
+	//const Vector4 colorWhite = { 1, 1, 1, 1 };
 
 	//Geometrias y formas
-	PxSphereGeometry* geo = new PxSphereGeometry(PxSphereGeometry(1));
-	PxShape* shape = CreateShape(*geo, gMaterial);
+	//PxSphereGeometry* geo = new PxSphereGeometry(PxSphereGeometry(1));
+	//PxShape* shape = CreateShape(*geo, gMaterial);
 	
 	//Items
-	gSphereX = new RenderItem(shape, t1, colorRed);
-	gSphereY = new RenderItem(shape, t2, colorGreen);
-	gSphereZ = new RenderItem(shape, t3, colorBlue);
+	//gSphereX = new RenderItem(shape, t1, colorRed);
+	//gSphereY = new RenderItem(shape, t2, colorGreen);
+	//gSphereZ = new RenderItem(shape, t3, colorBlue);
 	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
 		
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
@@ -175,36 +175,9 @@ void cleanupPhysics(bool interactive)
 void keyPress(unsigned char key, const PxTransform& camera)
 {
 
-	
 	PX_UNUSED(camera);
 
-	PxVec3 vectorOriginal(0, 0, -1);  // Un vector en el eje X
-
-	// Aplicamos la rotación usando el cuaternión
-	PxVec3 vectorRotado = camera.q.rotate(vectorOriginal);
-
-	pController->setDir(vectorRotado); 
-	pController->setPos(camera.p);
-
-	//std::cout << "VECTOR: " << vectorRotado.x << ", " << vectorRotado.y << ", " << vectorRotado.z << "\n";
-	//std::cout << "INIT_POS: " << camera.p.x << ", " << camera.p.y << ", " << camera.p.z << "\n";
-
 	mngr->keyPress(key, camera);
-
-	switch(toupper(key))
-	{
-	case 'G':
-		pController->addProyectile(Proyectil::ProjectileType::BEACH_BALL);
-		break;
-	case 'H':
-		pController->addProyectile(Proyectil::ProjectileType::MORTAR);
-		break;
-	case 'J':
-		pController->addProyectile(Proyectil::ProjectileType::PROYECTILE);
-		break;
-	default:
-		break;
-	}
 }
 
 

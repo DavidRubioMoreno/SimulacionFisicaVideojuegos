@@ -132,8 +132,8 @@ void GameManager::init()
 
 	cursorMarker = pSys->addGenerator(ParticleSystem::EXPLOSION);
 	pSys->setGeneratorColor(cursorMarker, colorRed);
-	pSys->setGeneratorLifeTime(cursorMarker, 1.0);
-	pSys->setGeneratorVelUniform(cursorMarker, { -2, 2 });
+	pSys->setGeneratorLifeTime(cursorMarker, 1.5);
+	pSys->setGeneratorVelUniform(cursorMarker, { -1, 1 });
 	pSys->setGeneratorSpeed(cursorMarker, 0.1);
 	pSys->setGeneratorParticleSize(cursorMarker, Vector3(0.5, 0, 0));
 	pSys->setGeneratorParticleNumber(cursorMarker, 5);
