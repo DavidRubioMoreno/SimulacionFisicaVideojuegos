@@ -15,17 +15,6 @@ GameManager::GameManager(ParticleSystem* sys, Camera* cam, PxVec3* window) : cur
 
 GameManager::~GameManager()
 {
-	switch (currentState)
-	{
-	case GameManager::INTRO:
-		break;
-	case GameManager::GAME:
-		break;
-	case GameManager::FINAL:
-		break;
-	default:
-		break;
-	}
 
 	for (auto& solid : statics)
 	{
