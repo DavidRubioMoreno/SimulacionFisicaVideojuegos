@@ -32,6 +32,8 @@ GameManager::~GameManager()
 
 	car = nullptr;
 	finishLine = nullptr;
+	window = nullptr;
+	camera = nullptr;
 
 }
 

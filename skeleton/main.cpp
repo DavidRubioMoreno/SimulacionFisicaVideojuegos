@@ -17,7 +17,7 @@
 #include <iostream>
 
 std::string display_text = "This is a test";
-physx::PxVec3 window_size = { 1600,900,0 };
+physx::PxVec3 window_size = { 1920,1080,0 };
 
 
 using namespace physx;
@@ -86,31 +86,6 @@ void initPhysics(bool interactive)
 	const Vector3D X_axis(1, 0, 0 );
 	const Vector3D Y_axis(0, 1, 0 );
 	const Vector3D Z_axis(0, 0, 1 );
-
-
-	//Transforms de los ejes
-	//PxTransform* t1 = new PxTransform(X_axis.getX() * DISTANCE_TO_CENTRE, X_axis.getY(), X_axis.getZ());
-	//PxTransform* t2 = new PxTransform(Y_axis.getX(), Y_axis.getY() * DISTANCE_TO_CENTRE, Y_axis.getZ());
-	//PxTransform* t3 = new PxTransform(Z_axis.getX(), Z_axis.getY(), Z_axis.getZ() * DISTANCE_TO_CENTRE);
-
-	//Centro transform(0, 0, 0)
-	//PxTransform* t4 = new PxTransform(centre.getX(), centre.getY(), centre.getZ());
-
-	//Colores
-	//const Vector4 colorRed = { 1, 0, 0, 1 };
-	//const Vector4 colorGreen = { 0, 1, 0, 1 };
-	//const Vector4 colorBlue = { 0, 0, 1, 1 };
-	//const Vector4 colorWhite = { 1, 1, 1, 1 };
-
-	//Geometrias y formas
-	//PxSphereGeometry* geo = new PxSphereGeometry(PxSphereGeometry(1));
-	//PxShape* shape = CreateShape(*geo, gMaterial);
-	
-	//Items
-	//gSphereX = new RenderItem(shape, t1, colorRed);
-	//gSphereY = new RenderItem(shape, t2, colorGreen);
-	//gSphereZ = new RenderItem(shape, t3, colorBlue);
-	//gSphereCentre = new RenderItem(shape, t4, colorWhite);
 		
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
