@@ -16,7 +16,7 @@ void ExplosionGenerator::updateParticles(double t)
 			particlePos = p->getPos();
 			float r = (centre - particlePos).magnitude();
 			if (r < R) {
-				finalForce = (K / (r * r)) * (particlePos - centre) * pow(2.711828, t / elapsedTime);
+				finalForce = (K / (r * r)) * (particlePos - centre) * pow(2.711828, elapsedTime / 5.0);
 				p->addForce(finalForce);
 			}
 		}
@@ -36,7 +36,7 @@ void ExplosionGenerator::updateSolids(double t)
 			solidPos = p->getPos();
 			float r = (centre - solidPos).magnitude();
 			if (r < R) {
-				finalForce = (K / (r * r)) * (solidPos - centre) * pow(2.711828, t / elapsedTime);
+				finalForce = (K / (r * r)) * (solidPos - centre) * pow(2.711828, elapsedTime / 5.0);
 				p->addForce(finalForce);
 			}
 		}

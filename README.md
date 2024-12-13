@@ -1,5 +1,7 @@
 # SimulacionFisicaVideojuegos
 
+Carpetas bin y common https://ucomplutense-my.sharepoint.com/:f:/g/personal/liagar05_ucm_es/ElNxHPmZVj9Ni9-8FKTKp7cBJHAarnL3vvEvG50z0QMrzg
+
 Manual de juego
 
 Objetivo: construir un puente para que el 'coche' cruce la meta
