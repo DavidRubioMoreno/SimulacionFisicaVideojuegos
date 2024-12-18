@@ -50,6 +50,7 @@ public:
 	void addSolid(RigidDynamicObject* rObject);
 	GeneratorInfo getData() const { return data; }
 	int getNumberSolids() const { return solidsInScene; }
+	float getElapsed()const { return elapsedTime; }
 	physx::PxScene* getScene();
 
 	std::list<ParticleGenerator*>::iterator addGenerator(GeneratorType type);
